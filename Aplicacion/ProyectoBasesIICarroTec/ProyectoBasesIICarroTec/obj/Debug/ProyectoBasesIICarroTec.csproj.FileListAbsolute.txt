@@ -1,0 +1,31 @@
+C:\Users\rober\source\repos\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\bin\Debug\ProyectoBasesIICarroTec.exe.config
+C:\Users\rober\source\repos\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\bin\Debug\ProyectoBasesIICarroTec.exe
+C:\Users\rober\source\repos\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\bin\Debug\ProyectoBasesIICarroTec.pdb
+C:\Users\rober\source\repos\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.csprojAssemblyReference.cache
+C:\Users\rober\source\repos\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.DashboardCliente.resources
+C:\Users\rober\source\repos\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.DashbordAdmin.resources
+C:\Users\rober\source\repos\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.Login.resources
+C:\Users\rober\source\repos\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.Properties.Resources.resources
+C:\Users\rober\source\repos\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.csproj.GenerateResource.cache
+C:\Users\rober\source\repos\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.csproj.CoreCompileInputs.cache
+C:\Users\rober\source\repos\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.exe
+C:\Users\rober\source\repos\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.pdb
+C:\Users\rober\source\repos\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.VistasAdmin.DashboardAdminFabrica.resources
+C:\Users\rober\source\repos\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.RegistrarCliente.resources
+C:\Users\rober\source\repos\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.RegistrarEmpleado.resources
+C:\Users\Israel Padilla\Desktop\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\bin\Debug\ProyectoBasesIICarroTec.exe.config
+C:\Users\Israel Padilla\Desktop\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\bin\Debug\ProyectoBasesIICarroTec.exe
+C:\Users\Israel Padilla\Desktop\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\bin\Debug\ProyectoBasesIICarroTec.pdb
+C:\Users\Israel Padilla\Desktop\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.csprojAssemblyReference.cache
+C:\Users\Israel Padilla\Desktop\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.VistasAdmin.DashboardAdminFabrica.resources
+C:\Users\Israel Padilla\Desktop\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.DashboardCliente.resources
+C:\Users\Israel Padilla\Desktop\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.DashbordAdmin.resources
+C:\Users\Israel Padilla\Desktop\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.Login.resources
+C:\Users\Israel Padilla\Desktop\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.Properties.Resources.resources
+C:\Users\Israel Padilla\Desktop\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.RegistrarCliente.resources
+C:\Users\Israel Padilla\Desktop\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.RegistrarEmpleado.resources
+C:\Users\Israel Padilla\Desktop\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.csproj.GenerateResource.cache
+C:\Users\Israel Padilla\Desktop\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.csproj.CoreCompileInputs.cache
+C:\Users\Israel Padilla\Desktop\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.exe
+C:\Users\Israel Padilla\Desktop\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.pdb
+C:\Users\Israel Padilla\Desktop\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.CrearVehiculo.resources

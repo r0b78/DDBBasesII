@@ -1,0 +1,274 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F83C9BCF-27CE-4DC3-BFED-227E038CD197}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>ProyectoBasesIICarroTec</RootNamespace>
+    <AssemblyName>ProyectoBasesIICarroTec</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DataBase.cs" />
+    <Compile Include="VistasAdmin\CrearDescuentos.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VistasAdmin\CrearDescuentos.Designer.cs">
+      <DependentUpon>CrearDescuentos.cs</DependentUpon>
+    </Compile>
+    <Compile Include="VistasCliente\VerSucursal.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VistasCliente\VerSucursal.Designer.cs">
+      <DependentUpon>VerSucursal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="VistasEmpleado\AprobarPedido.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VistasEmpleado\AprobarPedido.Designer.cs">
+      <DependentUpon>AprobarPedido.cs</DependentUpon>
+    </Compile>
+    <Compile Include="VistasEmpleado\CrearPedido.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VistasEmpleado\CrearPedido.Designer.cs">
+      <DependentUpon>CrearPedido.cs</DependentUpon>
+    </Compile>
+    <Compile Include="VistasAdmin\CrearVehiculo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VistasAdmin\CrearVehiculo.Designer.cs">
+      <DependentUpon>CrearVehiculo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="VistasAdmin\DashboardAdminFabrica.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VistasAdmin\DashboardAdminFabrica.Designer.cs">
+      <DependentUpon>DashboardAdminFabrica.cs</DependentUpon>
+    </Compile>
+    <Compile Include="VistasAdmin\ModificarEmpleado.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VistasAdmin\ModificarEmpleado.Designer.cs">
+      <DependentUpon>ModificarEmpleado.cs</DependentUpon>
+    </Compile>
+    <Compile Include="VistasAdmin\ModificarVehiculo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VistasAdmin\ModificarVehiculo.Designer.cs">
+      <DependentUpon>ModificarVehiculo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="VistasAdmin\ReporteVentas.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VistasAdmin\ReporteVentas.Designer.cs">
+      <DependentUpon>ReporteVentas.cs</DependentUpon>
+    </Compile>
+    <Compile Include="VistasAdmin\ReporteVentasxTipoPago.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VistasAdmin\ReporteVentasxTipoPago.Designer.cs">
+      <DependentUpon>ReporteVentasxTipoPago.cs</DependentUpon>
+    </Compile>
+    <Compile Include="VistasAdmin\SeleccionarEmpleado.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VistasAdmin\SeleccionarEmpleado.Designer.cs">
+      <DependentUpon>SeleccionarEmpleado.cs</DependentUpon>
+    </Compile>
+    <Compile Include="VistasAdmin\SeleccionarEmpleadosXFabrica.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VistasAdmin\SeleccionarEmpleadosXFabrica.Designer.cs">
+      <DependentUpon>SeleccionarEmpleadosXFabrica.cs</DependentUpon>
+    </Compile>
+    <Compile Include="VistasAdmin\SeleccionarVehiculo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VistasAdmin\SeleccionarVehiculo.Designer.cs">
+      <DependentUpon>SeleccionarVehiculo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="VistasAdmin\SeleccionarVehiculosVendidos.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VistasAdmin\SeleccionarVehiculosVendidos.Designer.cs">
+      <DependentUpon>SeleccionarVehiculosVendidos.cs</DependentUpon>
+    </Compile>
+    <Compile Include="VistasAdmin\SeleccionarVehiculoXFabrica.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VistasAdmin\SeleccionarVehiculoXFabrica.Designer.cs">
+      <DependentUpon>SeleccionarVehiculoXFabrica.cs</DependentUpon>
+    </Compile>
+    <Compile Include="VistasCliente\DashboardCliente.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VistasCliente\DashboardCliente.Designer.cs">
+      <DependentUpon>DashboardCliente.cs</DependentUpon>
+    </Compile>
+    <Compile Include="VistasAdmin\DashbordAdmin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VistasAdmin\DashbordAdmin.Designer.cs">
+      <DependentUpon>DashbordAdmin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="VistasCliente\SeleccionarEmpleadosXSucursal.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VistasCliente\SeleccionarEmpleadosXSucursal.Designer.cs">
+      <DependentUpon>SeleccionarEmpleadosXSucursal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="VistasCliente\VehiculosComprados.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VistasCliente\VehiculosComprados.Designer.cs">
+      <DependentUpon>VehiculosComprados.cs</DependentUpon>
+    </Compile>
+    <Compile Include="VistasGenerales\Login.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VistasGenerales\Login.Designer.cs">
+      <DependentUpon>Login.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="VistasGenerales\RegistrarCliente.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VistasGenerales\RegistrarCliente.Designer.cs">
+      <DependentUpon>RegistrarCliente.cs</DependentUpon>
+    </Compile>
+    <Compile Include="VistasAdmin\RegistrarEmpleado.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VistasAdmin\RegistrarEmpleado.Designer.cs">
+      <DependentUpon>RegistrarEmpleado.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="VistasAdmin\CrearDescuentos.resx">
+      <DependentUpon>CrearDescuentos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VistasCliente\VerSucursal.resx">
+      <DependentUpon>VerSucursal.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VistasEmpleado\AprobarPedido.resx">
+      <DependentUpon>AprobarPedido.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VistasEmpleado\CrearPedido.resx">
+      <DependentUpon>CrearPedido.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VistasAdmin\CrearVehiculo.resx">
+      <DependentUpon>CrearVehiculo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VistasAdmin\DashboardAdminFabrica.resx">
+      <DependentUpon>DashboardAdminFabrica.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VistasAdmin\ModificarEmpleado.resx">
+      <DependentUpon>ModificarEmpleado.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VistasAdmin\ModificarVehiculo.resx">
+      <DependentUpon>ModificarVehiculo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VistasAdmin\ReporteVentas.resx">
+      <DependentUpon>ReporteVentas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VistasAdmin\ReporteVentasxTipoPago.resx">
+      <DependentUpon>ReporteVentasxTipoPago.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VistasAdmin\SeleccionarEmpleado.resx">
+      <DependentUpon>SeleccionarEmpleado.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VistasAdmin\SeleccionarEmpleadosXFabrica.resx">
+      <DependentUpon>SeleccionarEmpleadosXFabrica.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VistasAdmin\SeleccionarVehiculo.resx">
+      <DependentUpon>SeleccionarVehiculo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VistasAdmin\SeleccionarVehiculosVendidos.resx">
+      <DependentUpon>SeleccionarVehiculosVendidos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VistasAdmin\SeleccionarVehiculoXFabrica.resx">
+      <DependentUpon>SeleccionarVehiculoXFabrica.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VistasCliente\DashboardCliente.resx">
+      <DependentUpon>DashboardCliente.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VistasAdmin\DashbordAdmin.resx">
+      <DependentUpon>DashbordAdmin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VistasCliente\SeleccionarEmpleadosXSucursal.resx">
+      <DependentUpon>SeleccionarEmpleadosXSucursal.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VistasCliente\VehiculosComprados.resx">
+      <DependentUpon>VehiculosComprados.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VistasGenerales\Login.resx">
+      <DependentUpon>Login.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="VistasGenerales\RegistrarCliente.resx">
+      <DependentUpon>RegistrarCliente.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VistasAdmin\RegistrarEmpleado.resx">
+      <DependentUpon>RegistrarEmpleado.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
