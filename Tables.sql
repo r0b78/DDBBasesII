@@ -51,7 +51,7 @@ CREATE TABLE Vehiculo(
   IdCombustible                 INT,
   Marca                         VARCHAR(50),
   Modelo                        VARCHAR(50),
-  Precio                        INT
+  Precio                        INT,
   FOREIGN KEY (IdTipoVehiculo)  REFERENCES TipoVehiculo(IdTipoVehiculo),
   FOREIGN KEY (IdCombustible)   REFERENCES Combustible(IdCombustible)
 )
@@ -77,7 +77,7 @@ CREATE TABLE ExtraXVehiculo(
 CREATE TABLE CaracteristicaXVehiculo(
   IdCaracteristicaXVehiculo        INT PRIMARY KEY IDENTITY,
   IdCaracteristica                 INT,
-  IdVehiculo                       INT
+  IdVehiculo                       INT,
   FOREIGN KEY (IdCaracteristica)   REFERENCES Caracteristica(IdCaracteristica),
   FOREIGN KEY (IdVehiculo)         REFERENCES Vehiculo(IdVehiculo)
 )
@@ -86,13 +86,20 @@ CREATE TABLE Sucursal(
   IdSucursal                      INT PRIMARY KEY IDENTITY,
   Nombre                          VARCHAR(50),
   Descripcion                     VARCHAR(50),
-  IdUbicacion                     INT
+  IdUbicacion                     INT,
   FOREIGN KEY (IdUbicacion) REFERENCES Ubicacion(IdUbicacion)
 )
 
 CREATE TABLE PuestoEmpleado(
   IdPuestoEmpleado                INT PRIMARY KEY IDENTITY,
   Puesto                          VARCHAR(50)
+)
+
+CREATE TABLE Usuario(
+  IdUsuario  INT PRIMARY KEY IDENTITY,
+  Usuario   VARCHAR(50),
+  Pass      VARCHAR(50),
+  Privilegio VARCHAR(50)
 )
 
 CREATE TABLE Empleado(
@@ -104,9 +111,13 @@ CREATE TABLE Empleado(
   IdSupervisor                     INT,
   IdPuestoEmpleado                 INT,
   IdSucursal                       INT,
+  Cedula                           VARCHAR(50),
+  IdUsuario                        INT,
   FOREIGN KEY (IdSupervisor)       REFERENCES Empleado(IdEmpleado),
   FOREIGN KEY (IdPuestoEmpleado)   REFERENCES PuestoEmpleado(IdPuestoEmpleado),
-  FOREIGN KEY (IdSucursal)         REFERENCES Sucursal(IdSucursal)
+  FOREIGN KEY (IdSucursal)         REFERENCES Sucursal(IdSucursal),
+  FOREIGN KEY (IdUsuario)         REFERENCES Usuario(IdUsuario)
+
 )
 
 CREATE TABLE Cliente(
@@ -116,7 +127,10 @@ CREATE TABLE Cliente(
   Telefono VARCHAR(50),
   Correo VARCHAR(50),
   IdUbicacion INT,
-  FOREIGN KEY (IdUbicacion) REFERENCES Ubicacion(IdUbicacion)
+  Cedula      VARCHAR(50),
+  IdUsuario      INT,
+  FOREIGN KEY (IdUbicacion) REFERENCES Ubicacion(IdUbicacion),
+  FOREIGN KEY (IdUsuario)   REFERENCES Usuario(IdUsuario)
 )
 
 CREATE TABLE Descuento(
@@ -140,14 +154,23 @@ CREATE TABLE DetalleFactura(
   IdDetalleFactura          INT PRIMARY KEY IDENTITY,
   IdVendedor                INT,
   IdCliente                 INT,
+  IdSucursal                INT,
   SubTotal                  INT,
   Descuento                 INT, 
   Impuestos                 INT,
   IdTipoPago                INT,
+  IdTipoModalidad           INT,
   Comentario                VARCHAR(50),
   FOREIGN KEY (IdTipoPago) REFERENCES TipoPago(IdTipoPago),
   FOREIGN KEY (IdVendedor) REFERENCES Empleado(IdEmpleado),
-  FOREIGN KEY (IdCliente) REFERENCES Cliente(IdCliente)
+  FOREIGN KEY (IdCliente) REFERENCES Cliente(IdCliente),
+  FOREIGN KEY (IdSucursal) REFERENCES Sucursal(IdSucursal),
+  FOREIGN KEY (IdTipoModalidad) REFERENCES TipoModalidad(IdTipoModalidad)
+)
+
+CREATE TABLE TipoModalidad(
+  IdTipoModalidad       INT,
+  Nombre                VARCHAR(50)
 )
 
 CREATE TABLE Factura(
@@ -155,6 +178,7 @@ CREATE TABLE Factura(
   NumeroFactura             VARCHAR(50),
   IdDetalleFactura          INT,
   PrecioTotal               INT,
+  MontoPagado               INT,
   Fecha                     DATE
   FOREIGN KEY (IdDetalleFactura) REFERENCES DetalleFactura(IdDetalleFactura)
 )     
@@ -259,6 +283,14 @@ CREATE TABLE VehiculoFabricaXEmpleado(
   FOREIGN KEY (IdEmpleado) REFERENCES Empleado(IdEmpleado)
 )
 
+
+CREATE TABLE VehiculoXSucursal(
+  IdVehiculoXSucursal INT,
+  IdVehiculo            INT,
+  IdSucursal            INT,
+  FOREIGN KEY (IdVehiculo)   REFERENCES Vehiculo(IdVehiculo),
+  FOREIGN KEY (IdSucursal)   REFERENCES Inventario(IdSucursal)
+)
 
 
 

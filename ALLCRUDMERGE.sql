@@ -1,6 +1,3 @@
-USE Proyecto_BasesII;
-GO
-
 CREATE PROCEDURE InsertarCliente(@Nombre VARCHAR(50), @Apellido VARCHAR(50), @Telefono VARCHAR(50), @Correo VARCHAR(50), @IdUbicacion INT)
 AS
 	IF @Nombre IS NULL OR @Apellido IS NULL OR @Telefono IS NULL OR @Correo IS NULL OR @IdUbicacion IS NULL
@@ -32,8 +29,6 @@ AS
 		COMMIT TRANSACTION
 		RETURN @@IDENTITY;
 GO
-USE Proyecto_BasesII;
-GO
 
 CREATE PROCEDURE SeleccionarClientes(@Nombre VARCHAR(50), @Apellido VARCHAR(50), @Telefono VARCHAR(50), @Correo VARCHAR(50), @Provincia VARCHAR(50), @Pais VARCHAR(50))
 AS
@@ -51,8 +46,6 @@ AS
 			Correo = ISNULL(@Correo, Correo) AND
 			Provincia.Nombre = ISNULL(@Provincia, Provincia.Nombre) AND
 			Pais.Nombre = ISNULL(@Pais, Pais.Nombre);
-GO
-USE Proyecto_BasesII;
 GO
 
 CREATE PROCEDURE ActualizarCliente(@IdCliente INT, @Nombre VARCHAR(50), @Apellido VARCHAR(50), @Telefono VARCHAR(50), @Correo VARCHAR(50), @IdUbicacion INT)
@@ -95,8 +88,6 @@ AS
 	COMMIT TRANSACTION
 	RETURN @@IDENTITY;
 GO 
-USE Proyecto_BasesII;
-GO
 
 CREATE PROCEDURE SeleccionarComisiones(@IdComision INT, @ComisionInicial INT, @ComisionFinal INT, @FechaInicial DATE, @FechaFinal DATE)
 AS
@@ -109,8 +100,6 @@ AS
 	WHERE	IdComision = ISNULL(@IdComision, IdComision) AND
 			Comision.Comision BETWEEN ISNULL(@ComisionInicial, Comision.Comision) AND ISNULL(@ComisionFinal, Comision.Comision) AND
 			Factura.Fecha BETWEEN ISNULL(@FechaInicial, Fecha) AND ISNULL(@FechaFinal, Fecha)
-GO
-USE Proyecto_BasesII;
 GO
 
 CREATE PROCEDURE InsertarComision(@IdFactura INT, @IdEmpleado INT, @Comision INT)
@@ -134,8 +123,6 @@ AS
 		COMMIT TRANSACTION
 		RETURN @@IDENTITY;
 GO
-USE Proyecto_BasesII;
-GO
 
 CREATE PROCEDURE ActualizarComision(@IdComision INT, @IdFactura INT, @IdEmpleado INT, @Comision INT)
 AS
@@ -158,8 +145,6 @@ AS
 	COMMIT TRANSACTION
 	RETURN @@IDENTITY;
 GO
-USE Proyecto_BasesII;
-GO
 
 CREATE PROCEDURE InsertarDescuento(@Nombre VARCHAR(50), @Descuento INT)
 AS
@@ -171,8 +156,6 @@ AS
 			VALUES	(@Nombre, @Descuento);
 		COMMIT TRANSACTION
 		RETURN @@IDENTITY;
-GO
-USE Proyecto_BasesII;
 GO
 
 CREATE PROCEDURE SeleccionarDescuentos(@IdFactura INT)
@@ -186,8 +169,6 @@ AS
 	INNER JOIN Factura
 	ON Factura.IdDetalleFactura = DetalleFactura.IdDetalleFactura
 	WHERE IdFactura = @IdFactura
-GO
-USE Proyecto_BasesII;
 GO
 
 CREATE PROCEDURE ActualizarDescuento(@IdDescuento INT, @Nombre VARCHAR(50), @Descuento INT)
@@ -203,8 +184,6 @@ AS
 	COMMIT TRANSACTION
 	RETURN @@IDENTITY;
 GO 
-USE Proyecto_BasesII;
-GO
 
 CREATE PROCEDURE ActualizarDescuentoXDetalleFactura(@IdDescuentoXDetalleFactura INT, @IdDescuento INT, @IdDetalleFactura INT)
 AS
@@ -227,8 +206,6 @@ AS
 	COMMIT TRANSACTION
 	RETURN @@IDENTITY;
 GO
-USE Proyecto_BasesII;
-GO
 
 CREATE PROCEDURE InsertarDescuentoXDetalleFactura(@IdDescuento INT, @IdDetalleFactura INT)
 AS
@@ -249,8 +226,6 @@ AS
 		COMMIT TRANSACTION
 		RETURN @@IDENTITY;
 GO
-USE Proyecto_BasesII;
-GO
 
 CREATE PROCEDURE SeleccionarDescuentoXDetalleFactura(@IdDescuento INT, @IdDetalleFactura INT)
 AS
@@ -258,8 +233,6 @@ AS
 	FROM	DescuentoXDetalleFactura
 	WHERE	IdDescuento = ISNULL(@IdDescuento, IdDescuento) AND
 			IdDetalleFactura = ISNULL(@IdDetalleFactura, IdDetalleFactura)
-GO
-USE Proyecto_BasesII;
 GO
 
 CREATE PROCEDURE ObtenerDetalleFactura(@IdFactura INT)
@@ -273,8 +246,6 @@ AS
 	INNER JOIN Factura
 	ON Factura.IdDetalleFactura = DetalleFactura.IdDetalleFactura
 	WHERE IdFactura = @IdFactura
-GO
-USE Proyecto_BasesII;
 GO
 
 CREATE PROCEDURE InsertarDetalleFactura(@IdVendedor INT, @IdCliente INT, @SubTotal INT, @IdTipoPago INT, @Comentario VARCHAR(50))
@@ -299,8 +270,6 @@ AS
 			VALUES	(@IdVendedor, @IdCliente, @SubTotal, @IdTipoPago, @Comentario)
 		COMMIT TRANSACTION
 		RETURN @@IDENTITY;
-GO
-USE Proyecto_BasesII;
 GO
 
 CREATE PROCEDURE ActualizarDetalleFactura(@IdDetalleFactura INT, @IdVendedor INT, @IdCliente INT, @SubTotal INT, @IdTipoPago INT, @Comentario VARCHAR(50))
@@ -330,8 +299,6 @@ AS
 	COMMIT TRANSACTION
 	RETURN @@IDENTITY;
 GO
-USE Proyecto_BasesII;
-GO
 
 CREATE PROCEDURE ActualizarEntrega(@IdEntrega INT, @IdFactura INT, @IdUbicacionEntrega INT, @EstatusEntrega VARCHAR(50), @FechaEntrega DATE)
 AS
@@ -355,8 +322,6 @@ AS
 	COMMIT TRANSACTION
 	RETURN @@IDENTITY;
 GO
-USE Proyecto_BasesII;
-GO
 
 CREATE PROCEDURE InsertarEntrega(@IdFactura INT, @IdUbicacionEntrega INT, @EstatusEntrega VARCHAR(50), @FechaEntrega DATE)
 AS
@@ -377,8 +342,6 @@ AS
 		COMMIT TRANSACTION
 		RETURN @@IDENTITY;
 GO
-USE Proyecto_BasesII;
-GO
 
 CREATE PROCEDURE SeleccionarEntregas(@IdEntrega INT, @EstatusEntrega VARCHAR(50), @FechaInicial DATE, @FechaFinal DATE, @NumeroFactura VARCHAR(50))
 AS
@@ -390,8 +353,6 @@ AS
 				EstatusEntrega = ISNULL(@EstatusEntrega, EstatusEntrega) AND
 				Entrega.FechaEntrega BETWEEN ISNULL(@FechaInicial, Entrega.FechaEntrega) AND ISNULL(@FechaFinal, Entrega.FechaEntrega) AND
 				NumeroFactura = ISNULL(@NumeroFactura, NumeroFactura) 
-GO
-USE Proyecto_BasesII;
 GO
 
 CREATE PROCEDURE ActualizarFactura(@IdFactura INT, @NumeroFactura VARCHAR(50), @IdDetalleFactura INT, @PrecioTotal INT, @Fecha DATE)
@@ -409,8 +370,6 @@ AS
 			Fecha = ISNULL(@Fecha, Fecha)
 		WHERE IdFactura = @IdFactura
 GO
-USE Proyecto_BasesII;
-GO
 
 CREATE PROCEDURE InsertarFactura(@NumeroFactura VARCHAR(50), @IdDetalleFactura INT, @PrecioTotal INT, @Fecha DATE)
 AS
@@ -427,8 +386,6 @@ AS
 		COMMIT TRANSACTION
 		RETURN @@IDENTITY;
 GO
-USE Proyecto_BasesII;
-GO
 
 CREATE PROCEDURE SeleccionarFacturas(@IdFactura INT, @NumeroFactura VARCHAR(50), @IdDetalleFactura INT, @PrecioInicial INT, @PrecioFinal INT, @FechaInicial DATE, @FechaFinal DATE)
 AS
@@ -439,8 +396,6 @@ AS
 			IdDetalleFactura = ISNULL(@IdDetalleFactura, IdDetalleFactura) AND
 			PrecioTotal BETWEEN ISNULL(@PrecioInicial, PrecioTotal) AND ISNULL(@PrecioFinal, PrecioTotal) AND
 			Fecha BETWEEN ISNULL(@FechaInicial, Fecha) AND ISNULL(@FechaFinal, Fecha)
-GO
-USE Proyecto_BasesII;
 GO
 
 CREATE PROCEDURE ActualizarFacturaXVehiculo(@IdFacturaXVehiculo INT, @IdFactura INT, @IdVehiculo INT)
@@ -464,8 +419,6 @@ AS
 	COMMIT TRANSACTION
 	RETURN @@IDENTITY;
 GO
-USE Proyecto_BasesII;
-GO
 
 CREATE PROCEDURE InsertarFacturaXVehiculo(@IdFactura  INT, @IdVehiculo INT)
 AS
@@ -486,8 +439,6 @@ AS
 		COMMIT TRANSACTION
 		RETURN @@IDENTITY;
 GO
-USE Proyecto_BasesII;
-GO
 
 CREATE PROCEDURE SeleccionarFacturaXVehiculo(@IdFactura INT, @IdVehiculo INT)
 AS
@@ -495,8 +446,6 @@ AS
 	FROM	FacturaXVehiculo
 	WHERE	IdFactura = ISNULL(@IdFactura, IdFactura) AND
 			IdVehiculo = ISNULL(@IdVehiculo, IdVehiculo)
-GO
-USE Proyecto_BasesII;
 GO
 
 CREATE PROCEDURE ActualizarImpuesto(@IdImpuesto INT, @Nombre VARCHAR(50), @Impuesto INT)
@@ -512,8 +461,6 @@ AS
 	COMMIT TRANSACTION
 	RETURN @@IDENTITY;
 GO 
-USE Proyecto_BasesII;
-GO
 
 CREATE PROCEDURE InsertarImpuesto(@Nombre VARCHAR(50), @Impuesto INT)
 AS
@@ -525,8 +472,6 @@ AS
 			VALUES	(@Nombre, @Impuesto);
 		COMMIT TRANSACTION
 		RETURN @@IDENTITY;
-GO
-USE Proyecto_BasesII;
 GO
 
 CREATE PROCEDURE SeleccionarImpuestos(@IdFactura INT)
@@ -541,8 +486,6 @@ AS
 	ON Factura.IdDetalleFactura = DetalleFactura.IdDetalleFactura
 	WHERE IdFactura = @IdFactura
 GO
-USE Proyecto_BasesII;
-GO
 
 CREATE PROCEDURE SeleccionarImpuestoXDetalleFactura(@IdImpuesto INT, @IdDetalleFactura INT)
 AS
@@ -550,8 +493,6 @@ AS
 	FROM	ImpuestoXDetalleFactura
 	WHERE	IdImpuesto = ISNULL(@IdImpuesto, IdImpuesto) AND
 			IdDetalleFactura = ISNULL(@IdDetalleFactura, IdDetalleFactura)
-GO
-USE Proyecto_BasesII;
 GO
 
 CREATE PROCEDURE InsertarImpuestoXDetalleFactura(@IdImpuesto INT, @IdDetalleFactura INT)
@@ -572,8 +513,6 @@ AS
 			VALUES	(@IdImpuesto, @IdDetalleFactura)
 		COMMIT TRANSACTION
 		RETURN @@IDENTITY;
-GO
-USE Proyecto_BasesII;
 GO
 
 CREATE PROCEDURE ActualizarImpuestoXDetalleFactura(@IdImpuestoXDetalleFactura INT, @IdImpuesto INT, @IdDetalleFactura INT)
@@ -597,8 +536,6 @@ AS
 	COMMIT TRANSACTION
 	RETURN @@IDENTITY;
 GO
-USE Proyecto_BasesII;
-GO
 
 CREATE PROCEDURE ActualizarTipoPago(@IdTipoPago INT, @Pago VARCHAR(50))
 AS
@@ -613,8 +550,6 @@ AS
 	COMMIT TRANSACTION
 	RETURN @@IDENTITY;
 GO 
-USE Proyecto_BasesII;
-GO
 
 CREATE PROCEDURE InsertarTipoPago(@Pago VARCHAR(50))
 AS
@@ -626,8 +561,6 @@ AS
 			VALUES	(@Pago);
 		COMMIT TRANSACTION
 		RETURN @@IDENTITY;
-GO
-USE Proyecto_BasesII;
 GO
 
 CREATE PROCEDURE SeleccionarTipoPagos(@IdTipoPago INT)

@@ -4,7 +4,7 @@ create procedure insertarPais
 				  @Locacion geometry
 AS 
 BEGIN
-     declare @PaisRepetido varchar(50)
+   declare @PaisRepetido varchar(50)
 	 SELECT @PaisRepetido = Nombre
 	 FROM Pais
 	 WHERE Nombre = @Nombre
