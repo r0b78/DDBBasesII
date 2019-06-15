@@ -28,19 +28,30 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.listView1 = new System.Windows.Forms.ListView();
-            this.listView3 = new System.Windows.Forms.ListView();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
+            this.seleccionarEmpleadoBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.proyecto_BasesIIDataSet = new ProyectoBasesIICarroTec.Proyecto_BasesIIDataSet();
+            this.seleccionarVehiculoFabricaBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.seleccionarVehiculoFabricaTableAdapter = new ProyectoBasesIICarroTec.Proyecto_BasesIIDataSetTableAdapters.SeleccionarVehiculoFabricaTableAdapter();
+            this.tableAdapterManager = new ProyectoBasesIICarroTec.Proyecto_BasesIIDataSetTableAdapters.TableAdapterManager();
+            this.seleccionarEmpleadoTableAdapter = new ProyectoBasesIICarroTec.Proyecto_BasesIIDataSetTableAdapters.seleccionarEmpleadoTableAdapter();
+            this.proyecto_BasesIIDataSet1 = new ProyectoBasesIICarroTec.Proyecto_BasesIIDataSet();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.dataGridView2 = new System.Windows.Forms.DataGridView();
+            ((System.ComponentModel.ISupportInitialize)(this.seleccionarEmpleadoBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.proyecto_BasesIIDataSet)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.seleccionarVehiculoFabricaBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.proyecto_BasesIIDataSet1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(139, 31);
+            this.label1.Location = new System.Drawing.Point(130, 9);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(116, 13);
             this.label1.TabIndex = 0;
@@ -49,70 +60,113 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(565, 31);
+            this.label2.Location = new System.Drawing.Point(847, 9);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(110, 13);
             this.label2.TabIndex = 1;
             this.label2.Text = "Ver Vehiculos Fabrica";
             // 
-            // listView1
+            // seleccionarEmpleadoBindingSource
             // 
-            this.listView1.Location = new System.Drawing.Point(50, 58);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(273, 170);
-            this.listView1.TabIndex = 2;
-            this.listView1.UseCompatibleStateImageBehavior = false;
+            this.seleccionarEmpleadoBindingSource.DataMember = "seleccionarEmpleado";
+            this.seleccionarEmpleadoBindingSource.DataSource = this.proyecto_BasesIIDataSet;
             // 
-            // listView3
+            // proyecto_BasesIIDataSet
             // 
-            this.listView3.Location = new System.Drawing.Point(468, 58);
-            this.listView3.Name = "listView3";
-            this.listView3.Size = new System.Drawing.Size(273, 170);
-            this.listView3.TabIndex = 4;
-            this.listView3.UseCompatibleStateImageBehavior = false;
+            this.proyecto_BasesIIDataSet.DataSetName = "Proyecto_BasesIIDataSet";
+            this.proyecto_BasesIIDataSet.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
-            // button1
+            // seleccionarVehiculoFabricaBindingSource
             // 
-            this.button1.Location = new System.Drawing.Point(37, 256);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 5;
-            this.button1.Text = "Agregar";
-            this.button1.UseVisualStyleBackColor = true;
+            this.seleccionarVehiculoFabricaBindingSource.DataMember = "SeleccionarVehiculoFabrica";
+            this.seleccionarVehiculoFabricaBindingSource.DataSource = this.proyecto_BasesIIDataSet;
             // 
-            // button2
+            // seleccionarVehiculoFabricaTableAdapter
             // 
-            this.button2.Location = new System.Drawing.Point(142, 256);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(83, 23);
-            this.button2.TabIndex = 6;
-            this.button2.Text = "Modificar";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.seleccionarVehiculoFabricaTableAdapter.ClearBeforeFill = true;
             // 
-            // button3
+            // tableAdapterManager
             // 
-            this.button3.Location = new System.Drawing.Point(261, 256);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
-            this.button3.TabIndex = 7;
-            this.button3.Text = "Borrar";
-            this.button3.UseVisualStyleBackColor = true;
+            this.tableAdapterManager.BackupDataSetBeforeUpdate = false;
+            this.tableAdapterManager.CaracteristicaTableAdapter = null;
+            this.tableAdapterManager.CaracteristicaXVehiculoTableAdapter = null;
+            this.tableAdapterManager.ClienteTableAdapter = null;
+            this.tableAdapterManager.CombustibleTableAdapter = null;
+            this.tableAdapterManager.ComisionTableAdapter = null;
+            this.tableAdapterManager.Connection = null;
+            this.tableAdapterManager.DescuentoTableAdapter = null;
+            this.tableAdapterManager.DescuentoXDetalleFacturaTableAdapter = null;
+            this.tableAdapterManager.DetalleFacturaTableAdapter = null;
+            this.tableAdapterManager.EmpleadoTableAdapter = null;
+            this.tableAdapterManager.EntregaTableAdapter = null;
+            this.tableAdapterManager.ExtraTableAdapter = null;
+            this.tableAdapterManager.ExtraXVehiculoTableAdapter = null;
+            this.tableAdapterManager.FabricaTableAdapter = null;
+            this.tableAdapterManager.FacturaTableAdapter = null;
+            this.tableAdapterManager.FacturaXVehiculoTableAdapter = null;
+            this.tableAdapterManager.FotoVehiculoTableAdapter = null;
+            this.tableAdapterManager.ImpuestoTableAdapter = null;
+            this.tableAdapterManager.ImpuestoXDetalleFacturaTableAdapter = null;
+            this.tableAdapterManager.InventarioTableAdapter = null;
+            this.tableAdapterManager.PedidoTableAdapter = null;
+            this.tableAdapterManager.PedidoXVehiculoTableAdapter = null;
+            this.tableAdapterManager.PuestoEmpleadoTableAdapter = null;
+            this.tableAdapterManager.SucursalTableAdapter = null;
+            this.tableAdapterManager.TipoModalidadTableAdapter = null;
+            this.tableAdapterManager.TipoPagoTableAdapter = null;
+            this.tableAdapterManager.TipoVehiculoTableAdapter = null;
+            this.tableAdapterManager.UpdateOrder = ProyectoBasesIICarroTec.Proyecto_BasesIIDataSetTableAdapters.TableAdapterManager.UpdateOrderOption.InsertUpdateDelete;
+            this.tableAdapterManager.UsuarioTableAdapter = null;
+            this.tableAdapterManager.VehiculoFabricaTableAdapter = null;
+            this.tableAdapterManager.VehiculoFabricaXEmpleadoTableAdapter = null;
+            this.tableAdapterManager.VehiculoTableAdapter = null;
+            this.tableAdapterManager.VehiculoXSucursalTableAdapter = null;
+            // 
+            // seleccionarEmpleadoTableAdapter
+            // 
+            this.seleccionarEmpleadoTableAdapter.ClearBeforeFill = true;
+            // 
+            // proyecto_BasesIIDataSet1
+            // 
+            this.proyecto_BasesIIDataSet1.DataSetName = "Proyecto_BasesIIDataSet";
+            this.proyecto_BasesIIDataSet1.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Location = new System.Drawing.Point(49, 56);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.Size = new System.Drawing.Size(411, 266);
+            this.dataGridView1.TabIndex = 8;
+            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
+            // 
+            // dataGridView2
+            // 
+            this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView2.Location = new System.Drawing.Point(704, 56);
+            this.dataGridView2.Name = "dataGridView2";
+            this.dataGridView2.Size = new System.Drawing.Size(364, 273);
+            this.dataGridView2.TabIndex = 9;
+            this.dataGridView2.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView2_CellContentClick);
             // 
             // DashboardAdminFabrica
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.listView3);
-            this.Controls.Add(this.listView1);
+            this.ClientSize = new System.Drawing.Size(1090, 458);
+            this.Controls.Add(this.dataGridView2);
+            this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Name = "DashboardAdminFabrica";
             this.Text = "DashboardAdminFabrica";
+            this.Load += new System.EventHandler(this.DashboardAdminFabrica_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.seleccionarEmpleadoBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.proyecto_BasesIIDataSet)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.seleccionarVehiculoFabricaBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.proyecto_BasesIIDataSet1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -122,10 +176,14 @@
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ListView listView1;
-        private System.Windows.Forms.ListView listView3;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
+        private Proyecto_BasesIIDataSet proyecto_BasesIIDataSet;
+        private System.Windows.Forms.BindingSource seleccionarVehiculoFabricaBindingSource;
+        private Proyecto_BasesIIDataSetTableAdapters.SeleccionarVehiculoFabricaTableAdapter seleccionarVehiculoFabricaTableAdapter;
+        private Proyecto_BasesIIDataSetTableAdapters.TableAdapterManager tableAdapterManager;
+        private System.Windows.Forms.BindingSource seleccionarEmpleadoBindingSource;
+        private Proyecto_BasesIIDataSetTableAdapters.seleccionarEmpleadoTableAdapter seleccionarEmpleadoTableAdapter;
+        private Proyecto_BasesIIDataSet proyecto_BasesIIDataSet1;
+        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView dataGridView2;
     }
 }

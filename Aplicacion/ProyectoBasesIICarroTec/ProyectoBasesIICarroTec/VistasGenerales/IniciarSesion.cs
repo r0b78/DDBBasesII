@@ -61,10 +61,22 @@ namespace ProyectoBasesIICarroTec
         {
             ConexionBaseDeDatos conexion = new ConexionBaseDeDatos();
             conexion.OpenConection();
+         //   conexion.ExecuteQuery('SELECT * FROM ');
+
 
             RegistrarCliente reg = new RegistrarCliente();
             this.Hide();
             reg.Show();
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

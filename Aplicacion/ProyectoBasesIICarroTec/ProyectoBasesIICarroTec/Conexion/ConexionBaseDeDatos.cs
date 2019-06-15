@@ -13,11 +13,11 @@ namespace ProyectoBasesIICarroTec
     {
         private string ConnectionString = "Data Source=DESKTOP-DOJPP4E;Initial Catalog=Proyecto_BasesII;Integrated Security=True";
         SqlConnection con;
-
+        public ConexionBaseDeDatos() {
+            con = new SqlConnection(ConnectionString);
+        }
         public void OpenConection()
         {
-            MessageBox.Show("Dot Net Perls is awesome.");
-            con = new SqlConnection(ConnectionString);
             con.Open();
         }
         public void CloseConnection()

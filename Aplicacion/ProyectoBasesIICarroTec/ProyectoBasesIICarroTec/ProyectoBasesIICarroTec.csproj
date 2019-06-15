@@ -47,6 +47,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Conexion\ConexionBaseDeDatos.cs" />
+    <Compile Include="Proyecto_BasesIIDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Proyecto_BasesIIDataSet.xsd</DependentUpon>
+    </Compile>
     <Compile Include="VistasAdmin\CrearDescuentos.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -83,11 +88,11 @@
     <Compile Include="VistasAdmin\DashboardAdminFabrica.Designer.cs">
       <DependentUpon>DashboardAdminFabrica.cs</DependentUpon>
     </Compile>
-    <Compile Include="VistasAdmin\ModificarEmpleado.cs">
+    <Compile Include="VistasAdmin\CrearEmpleado.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="VistasAdmin\ModificarEmpleado.Designer.cs">
-      <DependentUpon>ModificarEmpleado.cs</DependentUpon>
+    <Compile Include="VistasAdmin\CrearEmpleado.Designer.cs">
+      <DependentUpon>CrearEmpleado.cs</DependentUpon>
     </Compile>
     <Compile Include="VistasAdmin\ModificarVehiculo.cs">
       <SubType>Form</SubType>
@@ -199,8 +204,8 @@
     <EmbeddedResource Include="VistasAdmin\DashboardAdminFabrica.resx">
       <DependentUpon>DashboardAdminFabrica.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="VistasAdmin\ModificarEmpleado.resx">
-      <DependentUpon>ModificarEmpleado.cs</DependentUpon>
+    <EmbeddedResource Include="VistasAdmin\CrearEmpleado.resx">
+      <DependentUpon>CrearEmpleado.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="VistasAdmin\ModificarVehiculo.resx">
       <DependentUpon>ModificarVehiculo.cs</DependentUpon>
@@ -265,6 +270,17 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="Proyecto_BasesIIDataSet.xsc">
+      <DependentUpon>Proyecto_BasesIIDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="Proyecto_BasesIIDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>Proyecto_BasesIIDataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Proyecto_BasesIIDataSet.xss">
+      <DependentUpon>Proyecto_BasesIIDataSet.xsd</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

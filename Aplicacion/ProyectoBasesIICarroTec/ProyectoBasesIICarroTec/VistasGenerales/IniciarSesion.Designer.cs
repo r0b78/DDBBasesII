@@ -91,6 +91,7 @@
             this.label2.Size = new System.Drawing.Size(48, 13);
             this.label2.TabIndex = 5;
             this.label2.Text = "Ususario";
+            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // label3
             // 
@@ -100,6 +101,7 @@
             this.label3.Size = new System.Drawing.Size(61, 13);
             this.label3.TabIndex = 6;
             this.label3.Text = "Contraseña";
+            this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
             // Login
             // 

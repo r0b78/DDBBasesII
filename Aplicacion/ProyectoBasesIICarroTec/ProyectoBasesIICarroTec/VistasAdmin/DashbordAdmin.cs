@@ -24,7 +24,9 @@ namespace ProyectoBasesIICarroTec
 
         private void button1_Click(object sender, EventArgs e)
         {
-
+           
+            CrearVehiculo cV = new CrearVehiculo();
+            cV.Show();
         }
 
         private void label3_Click(object sender, EventArgs e)
@@ -34,7 +36,27 @@ namespace ProyectoBasesIICarroTec
 
         private void button5_Click(object sender, EventArgs e)
         {
+            VistasAdmin.CrearEmpleado emp = new VistasAdmin.CrearEmpleado();
+            emp.Show();
+        }
 
+        private void button2_Click(object sender, EventArgs e)
+        {
+            ModificarVehiculo moV = new ModificarVehiculo();
+            moV.Show();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            VistasAdmin.ReporteVentas rep = new VistasAdmin.ReporteVentas();
+            rep.Show();
+            VistasAdmin.ReporteVentasxTipoPago rep2 = new VistasAdmin.ReporteVentasxTipoPago();
+            rep.Show();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            
         }
     }
 }
