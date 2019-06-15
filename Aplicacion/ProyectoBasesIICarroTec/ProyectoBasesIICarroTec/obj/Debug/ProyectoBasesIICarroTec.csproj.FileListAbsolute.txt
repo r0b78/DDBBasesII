@@ -29,3 +29,34 @@ C:\Users\Israel Padilla\Desktop\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\
 C:\Users\Israel Padilla\Desktop\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.exe
 C:\Users\Israel Padilla\Desktop\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.pdb
 C:\Users\Israel Padilla\Desktop\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.CrearVehiculo.resources
+C:\Users\rober\Documents\GitHub\DDBBasesII\Aplicacion\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\bin\Debug\ProyectoBasesIICarroTec.exe.config
+C:\Users\rober\Documents\GitHub\DDBBasesII\Aplicacion\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\bin\Debug\ProyectoBasesIICarroTec.exe
+C:\Users\rober\Documents\GitHub\DDBBasesII\Aplicacion\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\bin\Debug\ProyectoBasesIICarroTec.pdb
+C:\Users\rober\Documents\GitHub\DDBBasesII\Aplicacion\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.csprojAssemblyReference.cache
+C:\Users\rober\Documents\GitHub\DDBBasesII\Aplicacion\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.VistasAdmin.CrearDescuentos.resources
+C:\Users\rober\Documents\GitHub\DDBBasesII\Aplicacion\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.VistasCliente.VerSucursal.resources
+C:\Users\rober\Documents\GitHub\DDBBasesII\Aplicacion\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.VistasEmpleado.AprobarPedido.resources
+C:\Users\rober\Documents\GitHub\DDBBasesII\Aplicacion\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.CrearPedido.resources
+C:\Users\rober\Documents\GitHub\DDBBasesII\Aplicacion\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.CrearVehiculo.resources
+C:\Users\rober\Documents\GitHub\DDBBasesII\Aplicacion\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.VistasAdmin.DashboardAdminFabrica.resources
+C:\Users\rober\Documents\GitHub\DDBBasesII\Aplicacion\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.VistasAdmin.ModificarEmpleado.resources
+C:\Users\rober\Documents\GitHub\DDBBasesII\Aplicacion\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.ModificarVehiculo.resources
+C:\Users\rober\Documents\GitHub\DDBBasesII\Aplicacion\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.VistasAdmin.ReporteVentas.resources
+C:\Users\rober\Documents\GitHub\DDBBasesII\Aplicacion\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.VistasAdmin.ReporteVentasxTipoPago.resources
+C:\Users\rober\Documents\GitHub\DDBBasesII\Aplicacion\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.VistasAdmin.SeleccionarEmpleado.resources
+C:\Users\rober\Documents\GitHub\DDBBasesII\Aplicacion\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.VistasAdmin.SeleccionarEmpleadosXFabrica.resources
+C:\Users\rober\Documents\GitHub\DDBBasesII\Aplicacion\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.VistasAdmin.SeleccionarVehiculo.resources
+C:\Users\rober\Documents\GitHub\DDBBasesII\Aplicacion\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.VistasAdmin.SeleccionarVehiculosVendidos.resources
+C:\Users\rober\Documents\GitHub\DDBBasesII\Aplicacion\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.VistasAdmin.SeleccionarVehiculoXFabrica.resources
+C:\Users\rober\Documents\GitHub\DDBBasesII\Aplicacion\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.DashboardCliente.resources
+C:\Users\rober\Documents\GitHub\DDBBasesII\Aplicacion\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.DashbordAdmin.resources
+C:\Users\rober\Documents\GitHub\DDBBasesII\Aplicacion\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.VistasCliente.SeleccionarEmpleadosXSucursal.resources
+C:\Users\rober\Documents\GitHub\DDBBasesII\Aplicacion\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.VistasCliente.VehiculosComprados.resources
+C:\Users\rober\Documents\GitHub\DDBBasesII\Aplicacion\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.Login.resources
+C:\Users\rober\Documents\GitHub\DDBBasesII\Aplicacion\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.Properties.Resources.resources
+C:\Users\rober\Documents\GitHub\DDBBasesII\Aplicacion\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.RegistrarCliente.resources
+C:\Users\rober\Documents\GitHub\DDBBasesII\Aplicacion\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.RegistrarEmpleado.resources
+C:\Users\rober\Documents\GitHub\DDBBasesII\Aplicacion\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.csproj.GenerateResource.cache
+C:\Users\rober\Documents\GitHub\DDBBasesII\Aplicacion\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.csproj.CoreCompileInputs.cache
+C:\Users\rober\Documents\GitHub\DDBBasesII\Aplicacion\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.exe
+C:\Users\rober\Documents\GitHub\DDBBasesII\Aplicacion\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.pdb

@@ -16,7 +16,7 @@ namespace ProyectoBasesIICarroTec
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new CrearVehiculo());
+            Application.Run(new Login());
         }
     }
 }

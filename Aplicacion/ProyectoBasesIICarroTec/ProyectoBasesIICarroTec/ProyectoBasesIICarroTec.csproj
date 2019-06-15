@@ -46,7 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataBase.cs" />
+    <Compile Include="Conexion\ConexionBaseDeDatos.cs" />
     <Compile Include="VistasAdmin\CrearDescuentos.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -161,11 +161,11 @@
     <Compile Include="VistasCliente\VehiculosComprados.Designer.cs">
       <DependentUpon>VehiculosComprados.cs</DependentUpon>
     </Compile>
-    <Compile Include="VistasGenerales\Login.cs">
+    <Compile Include="VistasGenerales\IniciarSesion.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="VistasGenerales\Login.Designer.cs">
-      <DependentUpon>Login.cs</DependentUpon>
+    <Compile Include="VistasGenerales\IniciarSesion.Designer.cs">
+      <DependentUpon>IniciarSesion.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -238,8 +238,8 @@
     <EmbeddedResource Include="VistasCliente\VehiculosComprados.resx">
       <DependentUpon>VehiculosComprados.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="VistasGenerales\Login.resx">
-      <DependentUpon>Login.cs</DependentUpon>
+    <EmbeddedResource Include="VistasGenerales\IniciarSesion.resx">
+      <DependentUpon>IniciarSesion.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -53,7 +53,7 @@
             // 
             // textBox10
             // 
-            this.textBox10.Location = new System.Drawing.Point(115, 29);
+            this.textBox10.Location = new System.Drawing.Point(174, 35);
             this.textBox10.Name = "textBox10";
             this.textBox10.Size = new System.Drawing.Size(100, 20);
             this.textBox10.TabIndex = 40;
@@ -124,11 +124,11 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(45, 32);
+            this.label11.Location = new System.Drawing.Point(63, 38);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(39, 13);
+            this.label11.Size = new System.Drawing.Size(40, 13);
             this.label11.TabIndex = 30;
-            this.label11.Text = "cedula";
+            this.label11.Text = "Cedula";
             // 
             // label10
             // 
@@ -213,7 +213,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(265, 29);
+            this.button1.Location = new System.Drawing.Point(309, 33);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 41;
