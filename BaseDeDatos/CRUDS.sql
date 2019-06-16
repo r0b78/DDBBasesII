@@ -113,11 +113,12 @@ create or alter procedure seleccionarProvincia
 AS 
 BEGIN
 
-	 SELECT Provincia.Nombre,Provincia.IdProvincia,Provincia.LocacionProvincia,Provincia.IdPais
+	 SELECT Provincia.Nombre,Provincia.IdProvincia,Provincia.LocacionProvincia,Provincia.IdPais,Pais.Nombre
 	 FROM Pais inner join Provincia on Pais.IdPais = Provincia.IdPais
 	 WHERE Provincia.Nombre = isnull(@Nombre,Provincia.Nombre) AND Pais.Nombre = isnull(@Pais,Pais.Nombre)
 END
 GO
+
 
 create or alter procedure modificarProvincia
                   @Nombre varchar(50),
@@ -199,7 +200,7 @@ create or alter procedure seleccionarUbicacion
 AS 
 BEGIN
 
-	 SELECT Ubicacion.Descripcion,Ubicacion.IdProvincia,Ubicacion.LocacionExacta,Ubicacion.IdUbicacion
+	 SELECT Ubicacion.Descripcion,Ubicacion.IdProvincia,Ubicacion.LocacionExacta,Ubicacion.IdUbicacion,Provincia.Nombre
 	 FROM Provincia inner join Ubicacion on Provincia.IdProvincia = Ubicacion.IdUbicacion
 	 WHERE Ubicacion.Descripcion = isnull(@Descripcion,Ubicacion.Descripcion) AND Provincia.Nombre = isnull(@Provincia,Provincia.Nombre)
 END
@@ -671,9 +672,11 @@ create or alter procedure seleccionarFotoVehiculo
 AS 
 BEGIN
 
-	 SELECT IdFotoVehiculo,Foto,NombreFoto,Fecha,IdVehiculo
-	 FROM FotoVehiculo
-	 WHERE  NombreFoto = isnull(@Nombre,NombreFoto) AND Fecha between isnull(@fechaInicio,Fecha) AND isnull(@fechaFin,Fecha) AND IdVehiculo = isnull(@idVehiculo,IdVehiculo) 
+	 SELECT IdFotoVehiculo,Foto,NombreFoto,Fecha,FotoVehiculo.IdVehiculo,Vehiculo.Modelo,Vehiculo.Marca
+	 FROM FotoVehiculo inner join Vehiculo on FotoVehiculo.IdVehiculo = Vehiculo.IdVehiculo
+	 WHERE  FotoVehiculo.NombreFoto = isnull(@Nombre,FotoVehiculo.NombreFoto) AND 
+	        FotoVehiculo.Fecha between isnull(@fechaInicio,FotoVehiculo.Fecha) AND isnull(@fechaFin,FotoVehiculo.Fecha) AND 
+			FotoVehiculo.IdVehiculo = isnull(@idVehiculo,FotoVehiculo.IdVehiculo) 
 
 END
 GO
@@ -1259,7 +1262,7 @@ GO
 
 CREATE OR ALTER PROCEDURE SeleccionarClientes(@Nombre VARCHAR(50), @Apellido VARCHAR(50), @Telefono VARCHAR(50), @Correo VARCHAR(50), @Provincia VARCHAR(50), @Pais VARCHAR(50))
 AS
-	SELECT Cliente.Nombre, Apellido, Telefono, Correo
+	SELECT Cliente.Nombre, Apellido, Telefono, Correo,Ubicacion.Descripcion
 	FROM Cliente
 	INNER JOIN Ubicacion
 	ON Ubicacion.IdUbicacion = Cliente.IdUbicacion
@@ -1435,10 +1438,11 @@ GO
 
 CREATE OR ALTER PROCEDURE SeleccionarDescuentoXDetalleFactura(@IdDescuento INT, @IdDetalleFactura INT)
 AS
-	SELECT	IdDescuento, IdDetalleFactura
-	FROM	DescuentoXDetalleFactura
-	WHERE	IdDescuento = ISNULL(@IdDescuento, IdDescuento) AND
-			IdDetalleFactura = ISNULL(@IdDetalleFactura, IdDetalleFactura)
+	SELECT	DescuentoXDetalleFactura.IdDescuento, DescuentoXDetalleFactura.IdDetalleFactura,DetalleFactura.Comentario, DetalleFactura.SubTotal,Descuento.Descuento as Descuento
+	FROM	DescuentoXDetalleFactura inner join Descuento on DescuentoXDetalleFactura.IdDescuento = Descuento.IdDescuento
+	        inner join DetalleFactura on DescuentoXDetalleFactura.IdDetalleFactura = DetalleFactura.IdDetalleFactura
+	WHERE	DescuentoXDetalleFactura.IdDescuento = ISNULL(@IdDescuento, DescuentoXDetalleFactura.IdDescuento) AND
+			DescuentoXDetalleFactura.IdDetalleFactura = ISNULL(@IdDetalleFactura, DescuentoXDetalleFactura.IdDetalleFactura)
 GO
 
 USE Proyecto_BasesII;
@@ -1496,7 +1500,7 @@ GO
 
 CREATE OR ALTER PROCEDURE ObtenerDetalleFactura(@IdFactura INT)
 AS
-	SELECT SubTotal, Comentario, Cliente.Nombre AS NombreCliente, Empleado.Nombre AS EmpleadoNombre
+	SELECT SubTotal, Comentario, Cliente.Nombre AS NombreCliente, Empleado.Nombre AS EmpleadoNombre,TipoPago.Pago as TipoPago,Sucursal.Nombre as Sucursal
 	FROM DetalleFactura
 	INNER JOIN Cliente
 	ON Cliente.IdCliente = DetalleFactura.IdCliente
@@ -1504,6 +1508,10 @@ AS
 	ON Empleado.IdEmpleado = DetalleFactura.IdVendedor
 	INNER JOIN Factura
 	ON Factura.IdDetalleFactura = DetalleFactura.IdDetalleFactura
+	INNER JOIN TipoPago
+	ON DetalleFactura.IdTipoPago = TipoPago.IdTipoPago
+	INNER JOIN Sucursal
+	ON DetalleFactura.IdSucursal = Sucursal.IdSucursal
 	WHERE IdFactura = @IdFactura
 GO
 
@@ -1572,10 +1580,12 @@ GO
 
 CREATE OR ALTER PROCEDURE SeleccionarEntregas(@IdEntrega INT, @EstatusEntrega VARCHAR(50), @FechaInicial DATE, @FechaFinal DATE, @NumeroFactura VARCHAR(50))
 AS
-	SELECT		NumeroFactura, EstatusEntrega, Fecha, IdEntrega
+	SELECT		NumeroFactura, EstatusEntrega, Fecha, IdEntrega,Factura.PrecioTotal as Monto,Ubicacion.Descripcion
 	FROM		Entrega
 	INNER JOIN	Factura
 	ON			Factura.IdFactura = Entrega.IdFactura
+	INNER JOIN  Ubcacion
+	ON          Entrega.IdUbicacion = Ubicacion.IdUbicacion
 	WHERE		IdEntrega = ISNULL(@IdEntrega, IdEntrega) AND
 				EstatusEntrega = ISNULL(@EstatusEntrega, EstatusEntrega) AND
 				Entrega.FechaEntrega BETWEEN ISNULL(@FechaInicial, Entrega.FechaEntrega) AND ISNULL(@FechaFinal, Entrega.FechaEntrega) AND
@@ -1638,11 +1648,11 @@ GO
 
 CREATE OR ALTER PROCEDURE SeleccionarFacturas(@IdFactura INT, @NumeroFactura VARCHAR(50), @IdDetalleFactura INT, @PrecioInicial INT, @PrecioFinal INT, @FechaInicial DATE, @FechaFinal DATE)
 AS
-	SELECT	NumeroFactura, PrecioTotal, Fecha, IdDetalleFactura
-	FROM	Factura
+	SELECT	NumeroFactura, PrecioTotal, Fecha, Factura.IdDetalleFactura,DetalleFactura.Comentario
+	FROM	Factura inner join DetalleFactura on Factura.IdDetalleFactura = DetalleFactura.IdDetalleFactura
 	WHERE	IdFactura = ISNULL(@IdFactura, IdFactura) AND
 			NumeroFactura = ISNULL(@NumeroFactura, NumeroFactura) AND
-			IdDetalleFactura = ISNULL(@IdDetalleFactura, IdDetalleFactura) AND
+			Factura.IdDetalleFactura = ISNULL(@IdDetalleFactura, Factura.IdDetalleFactura) AND
 			PrecioTotal BETWEEN ISNULL(@PrecioInicial, PrecioTotal) AND ISNULL(@PrecioFinal, PrecioTotal) AND
 			Fecha BETWEEN ISNULL(@FechaInicial, Fecha) AND ISNULL(@FechaFinal, Fecha)
 GO
@@ -1696,10 +1706,11 @@ GO
 
 CREATE OR ALTER PROCEDURE SeleccionarFacturaXVehiculo(@IdFactura INT, @IdVehiculo INT)
 AS
-	SELECT	IdFactura, IdVehiculo
-	FROM	FacturaXVehiculo
-	WHERE	IdFactura = ISNULL(@IdFactura, IdFactura) AND
-			IdVehiculo = ISNULL(@IdVehiculo, IdVehiculo)
+	SELECT	FacturaXVehiculo.IdFactura, FacturaXVehiculo.IdVehiculo,Vehiculo.Marca,Vehiculo.Modelo,Factura.PrecioTotal
+	FROM	FacturaXVehiculo Inner join Vehiculo on FacturaXVehiculo.IdVehiculo = Vehiculo.IdVehiculo
+	        inner join Factura on FacturaXVehiculo.IdFactura = Factura.IdFactura
+	WHERE	FacturaXVehiculo.IdFactura = ISNULL(@IdFactura, FacturaXVehiculo.IdFactura) AND
+			FacturaXVehiculo.IdVehiculo = ISNULL(@IdVehiculo, FacturaXVehiculo.IdVehiculo)
 GO
 
 USE Proyecto_BasesII;
@@ -1807,10 +1818,11 @@ GO
 
 CREATE OR ALTER PROCEDURE SeleccionarImpuestoXDetalleFactura(@IdImpuesto INT, @IdDetalleFactura INT)
 AS
-	SELECT	IdImpuesto, IdDetalleFactura
-	FROM	ImpuestoXDetalleFactura
-	WHERE	IdImpuesto = ISNULL(@IdImpuesto, IdImpuesto) AND
-			IdDetalleFactura = ISNULL(@IdDetalleFactura, IdDetalleFactura)
+	SELECT	ImpuestoXDetalleFactura.IdImpuesto, ImpuestoXDetalleFactura.IdDetalleFactura,Impuesto.Impuesto,DetalleFactura.SubTotal
+	FROM	ImpuestoXDetalleFactura inner join Impuesto on ImpuestoXDetalleFactura.IdImpuesto = Impuesto.IdImpuesto
+	        inner join DetalleFactura on ImpuestoXDetalleFactura.IdDetalleFactura = DetalleFactura.IdDetalleFactura
+	WHERE	ImpuestoXDetalleFactura.IdImpuesto = ISNULL(@IdImpuesto, ImpuestoXDetalleFactura.IdImpuesto) AND
+			ImpuestoXDetalleFactura.IdDetalleFactura = ISNULL(@IdDetalleFactura, ImpuestoXDetalleFactura.IdDetalleFactura)
 GO
 
 USE Proyecto_BasesII;
@@ -1940,11 +1952,11 @@ CREATE OR ALTER PROCEDURE SeleccionarFabrica
                   @IdFabrica int, @IdSucursal int, @Descripcion Varchar(50)
 AS 
 BEGIN
-     SELECT IdFabrica,IdSucursal,Descripcion
-	 FROM Fabrica
+     SELECT IdFabrica,Fabrica.IdSucursal,Fabrica.Descripcion as Fabrica,Sucursal.Nombre as Sucursal
+	 FROM Fabrica inner join Sucursal on Fabrica.IdSucursal = Sucursal.IdSucursal
 	 WHERE	IdFabrica=isnull(@IdFabrica,IdFabrica) AND
-			IdSucursal = isnull(@IdSucursal,IdSucursal) AND
-			Descripcion = isnull(@Descripcion,Descripcion)      
+			Fabrica.IdSucursal = isnull(@IdSucursal,Fabrica.IdSucursal) AND
+			Fabrica.Descripcion = isnull(@Descripcion,Fabrica.Descripcion)      
 END
 go
 
@@ -1982,13 +1994,15 @@ CREATE OR ALTER PROCEDURE SeleccionarPedido
 	@IdPedido int, @EstatusPedido Varchar(50), @FechaPedido Date, @IdEmpleadoPedido int, @IdFabrica int
 AS 
 BEGIN
-     SELECT IdPedido,EstatusPedido,FechaPedido,IdEmpleadoPedido,IdFabrica
-	 FROM Pedido
-	 WHERE	IdPedido=isnull(@IdPedido,IdPedido) AND
-			EstatusPedido = isnull(@EstatusPedido,EstatusPedido) AND
-			FechaPedido = isnull(@FechaPedido,FechaPedido) AND
-			IdEmpleadoPedido=ISNULL(@IdEmpleadoPedido,IdEmpleadoPedido) AND
-			IdFabrica=ISNULL(@IdFabrica,IdFabrica)     
+     SELECT Pedido.IdPedido,Pedido.EstatusPedido,Pedido.FechaPedido,Pedido.IdEmpleadoPedido,Pedido.IdFabrica,Empleado.Nombre as NombreEmpleado,Empleado.Apellido as EmpleadoApellido,Empleado.Cedula as EmpleadoCedula,
+	        Fabrica.Descripcion as Fabrica
+	 FROM Pedido inner join Fabrica on Pedido.IdFabrica = Fabrica.IdFabrica 
+	      inner join Empleado on Pedido.IdEmpleadoPedido = Empleado.IdEmpleado
+	 WHERE	Pedido.IdPedido=isnull(@IdPedido,Pedido.IdPedido) AND
+			Pedido.EstatusPedido = isnull(@EstatusPedido,Pedido.EstatusPedido) AND
+			Pedido.FechaPedido = isnull(@FechaPedido,Pedido.FechaPedido) AND
+			Pedido.IdEmpleadoPedido=ISNULL(@IdEmpleadoPedido,Pedido.IdEmpleadoPedido) AND
+			Pedido.IdFabrica=ISNULL(@IdFabrica,Pedido.IdFabrica)     
 END
 go
 
@@ -2025,12 +2039,13 @@ CREATE OR ALTER PROCEDURE SeleccionarPedidoXVehiculo
 	@IdPedidoXVehiculo int, @IdPedido int, @IdVehiculo int, @FechaCompletado date
 AS 
 BEGIN
-     SELECT IdPedidoXVehiculo,IdPedido,IdVehiculo,FechaCompletado
-	 FROM PedidoXVehiculo
-	 WHERE	IdPedidoXVehiculo=ISNULL(@IdPedidoXVehiculo,IdPedidoXVehiculo) AND
-			IdPedido = isnull(@IdPedido,IdPedido) AND
-			IdVehiculo = isnull(@IdVehiculo,IdVehiculo) AND
-			FechaCompletado=ISNULL(@FechaCompletado,FechaCompletado)    
+     SELECT PedidoXVehiculo.IdPedidoXVehiculo,PedidoXVehiculo.IdPedido,PedidoXVehiculo.IdVehiculo,PedidoXVehiculo.FechaCompletado,Vehiculo.Marca as Marca,Vehiculo.Modelo as Modelo,Pedido.EstatusPedido as Estatus
+	 FROM PedidoXVehiculo inner join Vehiculo on PedidoXVehiculo.IdVehiculo = Vehiculo.IdVehiculo
+	      inner join Pedido on PedidoXVehiculo.IdPedido = Pedido.IdPedido
+	 WHERE	PedidoXVehiculo.IdPedidoXVehiculo=ISNULL(@IdPedidoXVehiculo,PedidoXVehiculo.IdPedidoXVehiculo) AND
+			PedidoXVehiculo.IdPedido = isnull(@IdPedido,PedidoXVehiculo.IdPedido) AND
+			PedidoXVehiculo.IdVehiculo = isnull(@IdVehiculo,PedidoXVehiculo.IdVehiculo) AND
+			PedidoXVehiculo.FechaCompletado=ISNULL(@FechaCompletado,PedidoXVehiculo.FechaCompletado)    
 END
 go
 
@@ -2067,12 +2082,12 @@ CREATE OR ALTER PROCEDURE SeleccionarInventario
 	@IdInventario int, @NombreInventario varchar(50), @Fecha date, @IdSucursal int
 AS 
 BEGIN
-     SELECT IdInventario,NombreInventario,Fecha,IdSucursal
-	 FROM Inventario
+     SELECT IdInventario,NombreInventario,Fecha,Inventario.IdSucursal,Sucursal.Nombre
+	 FROM Inventario inner join Sucursal on Inventario.IdSucursal = Sucursal.IdSucursal
 	 WHERE	IdInventario=ISNULL(@IdInventario,IdInventario) and
 			NombreInventario=ISNULL(@NombreInventario,NombreInventario) and
 			Fecha=ISNULL(@Fecha,Fecha) and
-			IdSucursal = isnull(@IdSucursal,IdSucursal)      
+			Inventario.IdSucursal = isnull(@IdSucursal,Inventario.IdSucursal)      
 END
 go
 
@@ -2110,13 +2125,16 @@ CREATE OR ALTER PROCEDURE SeleccionarVehiculoFabrica
 	@IdVehiculoFabrica int, @IdVehiculo int, @CostoVehiculo int, @IdInventario int, @IdFabrica int
 AS 
 BEGIN
-     SELECT IdVehiculoFabrica,IdVehiculo,CostoVehiculo,IdInventario,IdFabrica
-	 FROM VehiculoFabrica
-	 WHERE	IdVehiculoFabrica=ISNULL(@IdVehiculoFabrica,IdVehiculoFabrica) and
-			IdVehiculo=ISNULL(@IdVehiculo,IdVehiculo) and
-			CostoVehiculo=ISNULL(@CostoVehiculo,CostoVehiculo) and
-			IdInventario=Isnull(@IdInventario,IdInventario) and
-			IdFabrica = isnull(@IdFabrica,IdFabrica)      
+     SELECT VehiculoFabrica.IdVehiculoFabrica,VehiculoFabrica.IdVehiculo,VehiculoFabrica.CostoVehiculo,VehiculoFabrica.IdInventario,VehiculoFabrica.IdFabrica,Fabrica.Descripcion as Fabrica,
+	        Vehiculo.Modelo as Modelo,Vehiculo.Marca as Marca
+	 FROM VehiculoFabrica inner join Fabrica on VehiculoFabrica.IdFabrica = Fabrica.IdFabrica
+	      inner join Vehiculo on VehiculoFabrica.IdVehiculo = Vehiculo.IdVehiculo
+		  inner join Inventario on VehiculoFabrica.IdInventario = Inventario.IdInventario
+	 WHERE	VehiculoFabrica.IdVehiculoFabrica=ISNULL(@IdVehiculoFabrica,VehiculoFabrica.IdVehiculoFabrica) and
+			VehiculoFabrica.IdVehiculo=ISNULL(@IdVehiculo,VehiculoFabrica.IdVehiculo) and
+			VehiculoFabrica.CostoVehiculo=ISNULL(@CostoVehiculo,VehiculoFabrica.CostoVehiculo) and
+			VehiculoFabrica.IdInventario=Isnull(@IdInventario,VehiculoFabrica.IdInventario) and
+			VehiculoFabrica.IdFabrica = isnull(@IdFabrica,VehiculoFabrica.IdFabrica)      
 END
 go
 
@@ -2156,11 +2174,12 @@ CREATE OR ALTER PROCEDURE SeleccionarVehiculoFabricaXEmpleado
 	@IdVehiculoFabricaXEmpleado int,@IdVehiculoFabrica int, @IdEmpleado int, @Labor Varchar(50), @FechaInicio Date, @FechaFinal Date,@Estatus Varchar(50)
 AS 
 BEGIN
-     SELECT IdVehiculoFabricaXEmpleado,IdVehiculoFabrica,IdEmpleado,Labor,FechaInicio,FechaFinal,Estatus
-	 FROM VehiculoFabricaXEmpleado
+     SELECT IdVehiculoFabricaXEmpleado,IdVehiculoFabrica,VehiculoFabricaXEmpleado.IdEmpleado,Labor,FechaInicio,FechaFinal,Estatus,Empleado.Nombre as Nombre, Empleado.Apellido as Apellido,
+	        Empleado.Cedula as Cedula
+	 FROM VehiculoFabricaXEmpleado inner join Empleado on VehiculoFabricaXEmpleado.IdEmpleado = Empleado.IdEmpleado
 	 WHERE	IdVehiculoFabricaXEmpleado=ISNULL(@IdVehiculoFabricaXEmpleado,IdVehiculoFabricaXEmpleado) and
 			IdVehiculoFabrica=ISNULL(@IdVehiculoFabrica,IdVehiculoFabrica)and
-			IdEmpleado=ISNULL(@IdEmpleado,IdEmpleado)and
+			VehiculoFabricaXEmpleado.IdEmpleado=ISNULL(@IdEmpleado,VehiculoFabricaXEmpleado.IdEmpleado)and
 			Labor=Isnull(@Labor,Labor)and
 			FechaInicio=ISNULL(@FechaInicio,FechaInicio)and
 			FechaFinal=ISNULL(@FechaFinal,FechaFinal)and
