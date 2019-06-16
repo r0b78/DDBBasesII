@@ -1,12 +1,20 @@
-const sql = require("msnodesqlv8");
- 
+//const sql = require("msnodesqlv8");
 const connectionString = "server=DESKTOP-DOJPP4E;Database=Proyecto_BasesII;Trusted_Connection=Yes;Driver={SQL Server Native Client 11.0}"
+const sql = require('mssql/msnodesqlv8')
+var config = {
+  driver: 'msnodesqlv8',
+  connectionString: connectionString
+};
 
-// "server=.;Database=Master;Trusted_Connection=Yes;Driver={SQL Server Native Client 11.0}";
-exports.executeQeury = (query)=> {
-  
-  sql.query(connectionString, query, (err, rows) => {
-  console.log(rows);
-  });
+const poolPromise = new sql.ConnectionPool(config)
+  .connect()
+  .then(pool => {
+    console.log('Connected to MSSQL')
+    return pool
+  })
+  .catch(err => console.log('Database Connection Failed! Bad Config: ', err))
 
+module.exports = {
+  sql, poolPromise
 }
+      

@@ -1,5 +1,6 @@
 var json2html = require('node-json2html');
 var db = require('../database')
+const { poolPromise } = require('../database')
 var t = {'<>':'tr','html':'${title} ${year}'};
     
 var d = [
@@ -22,13 +23,16 @@ exports.login = function (req, res) {
 };
 
 exports.verCompras = async (req,res)=> {
-  var results = await db.executeQeury("SeleccionarFacturas NULL,NULL,NULL,NULL,NULL,NULL,NULL")
-  
-  res.html(results)
+  const pool = await poolPromise
+  const result = await pool.request().query('SeleccionarFacturas NULL,NULL,NULL,NULL,NULL,NULL,NULL') 
+  res.send(result)
 };
 
-exports.buscarVehiculos = (req,res)=> {
+exports.buscarVehiculos = async (req,res)=> {
+  const pool = await poolPromise
+  const result = await pool.request().query('SeleccionarFacturas NULL,NULL,NULL,NULL,NULL,NULL,NULL') 
 
+  res.json(result.recordset)
 };
 
 exports.verSucursales = (req,res)=> {
