@@ -12,7 +12,9 @@ app.get('/',function(req,res){
     res.redirect('/login');
 })
 app.get('/login', client.mainPage);
-
+app.get('/verCompras',client.verCompras)
+app.get('/buscarVehiculos',client.buscarVehiculos)
+app.get('/verSucursales',client.verSucursales)
 app.post('/login', client.login);
 
 
