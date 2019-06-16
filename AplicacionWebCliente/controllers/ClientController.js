@@ -13,27 +13,67 @@ var d = [
     
 var html = json2html.transform(d,t);
 
+function transformDataWith(data,noMostrar=[],headers=[]) {
+  var elems = []
+  var headersHtml=` <thead><tr>`
+  var headersHtmlEnd = `</tr> </thead><tbody>`
+  var endTbody = '</tbody>'
+  var t = {'<>':'tr','html':elems};
+  if(headers.length>0){
+    for(x in headers) {
+      elems.push({'<>':'td','html':'${'+x+'}'})
+      headersHtml+= '<th>'+x+'</th>';
+    }
+  }else{
+    for(x in data[0]) {
+
+      var noMuestra = noMostrar.includes(x)
+      if(!noMuestra){
+        elems.push({'<>':'td','html':'${'+x+'}'})
+        headersHtml+= '<th>'+x+'</th>';
+      } 
+    }  
+  }
+  
+  headersHtml+=headersHtmlEnd
+  var html = headersHtml 
+  html += json2html.transform(data,t);
+  html += endTbody
+  return html
+}
 
 exports.mainPage = function (req, res) {
   res.render('../views/login');;
 };
 
 exports.login = function (req, res) {
-  res.render('../views/dashboardCliente');;
+  if(req.body.name=="1"){
+    res.render('../views/dashboardCliente');
+
+  }
+  if(req.body.name=="2"){
+    res.render('../views/dashboardEmpleado');
+  }else {
+    res.render('../views/dashboardAdmin');
+  }
+  
 };
 
 exports.verCompras = async (req,res)=> {
   const pool = await poolPromise
   const result = await pool.request().query('SeleccionarFacturas NULL,NULL,NULL,NULL,NULL,NULL,NULL') 
-  res.send(result)
+  res.send(result.recordset)
 };
 
 exports.buscarVehiculos = async (req,res)=> {
   const pool = await poolPromise
-  const result = await pool.request().query('SeleccionarFacturas NULL,NULL,NULL,NULL,NULL,NULL,NULL') 
-
-  res.json(result.recordset)
+  const result = await pool.request().query('seleccionarVehiculo NULL,NULL,NULL,NULL,NULL,NULL') 
+  var html = transformDataWith(result.recordset,['IdVehiculo']);
+  res.render('../views/dashboardCliente.ejs',{
+                                                results:html
+});
 };
+
 
 exports.verSucursales = (req,res)=> {
 

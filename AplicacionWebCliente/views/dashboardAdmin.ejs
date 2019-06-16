@@ -23,6 +23,7 @@
 <script src="https://cdn.datatables.net/buttons/1.5.6/js/dataTables.buttons.min.js"></script>
 <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.5.6/css/buttons.dataTables.min.css">
 <link rel="stylesheet" href="/css/main.css">
+
 </head>
 
 
@@ -31,27 +32,53 @@
         <div class="nav-wrapper">
           <a href="/" class="brand-logo center">CarroTec</a>
           <ul id="nav-mobile" class="rigth hide-on-med-and-down">
-            <li><a href="/login">Cerrar Sesion</a></li>
+              <li><a href="/login">Cerrar Sesion</a></li>
           </ul>
+          <a href="" data-target="nav-mobile" class="top-nav sidenav-trigger full hide-on-large-only"><i class="material-icons">menu</i>
+          </a>
         </div>
     </nav>
 
     <ul id="nav-mobile" class="sidenav sidenav-fixed">
         <a id="logo-container" href="/" class="brand-logo">
          <img src="/images/imagenCarro.png" width="300" height="100">
-         <li></li>
-         <li>    
-            <h5 style="color: black">Dashboard Cliente</h5>
+        <li>
+            
+                <h5 style="color: black">Dasboard Administrador</h5>
+            
         </li>
         <li class="logo">
-         <a href="/verCompras">Ver Compras</a>
+         <a href="/CrarDescuento">CrarDescuento</a>
         </li>
         <li class="bold">
-          <a href="/buscarVehiculos">Buscar Vehiculo</a>
+          <a href="/crearEmpleado">Crear Empleado</a>
         </li>
         <li class="bold">
-          <a href="/verSucursales">Ver Sucursales y Empleados </a>
+          <a href="/crearVehiculo">Agregar Vehiculo </a>
         </li>
+        <li class="bold">
+          <a href="/crearVehiculo" >Modificar Vehiculo
+            (Ver vehi y modi) </a>
+        </li>
+        <li class="bold">
+          <a href="/crearVehiculo">Reportes Venta y Repor Tipo Pago </a>
+        </li>
+        <li class="bold">
+          <a href="/crearVehiculo">SeleccionarEmpleado</a>
+        </li>
+        <li class="bold">
+          <a href="/crearVehiculo">Seleccionar Vehiculos </a>
+        </li>
+        <li class="bold">
+          <a href="/crearVehiculo">Vehiculos Vendidos</a>
+        </li>
+        <li class="bold">
+          <a href="/crearVehiculo">Vehiculos Por Fabrica </a>
+        </li>
+        
+  
+  
+  
       </ul>
 </header>
 
@@ -93,9 +120,8 @@
 
   <script>
       document.addEventListener('DOMContentLoaded', function() {
-         var elems = document.querySelectorAll('.sidenav');
-         var instances = M.Sidenav.init(elems, {});
-         
+      
+         $('.sidenav').sidenav();
        });
        
      </script>
