@@ -39,7 +39,6 @@ C:\Users\rober\Documents\GitHub\DDBBasesII\Aplicacion\ProyectoBasesIICarroTec\Pr
 C:\Users\rober\Documents\GitHub\DDBBasesII\Aplicacion\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.CrearPedido.resources
 C:\Users\rober\Documents\GitHub\DDBBasesII\Aplicacion\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.CrearVehiculo.resources
 C:\Users\rober\Documents\GitHub\DDBBasesII\Aplicacion\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.VistasAdmin.DashboardAdminFabrica.resources
-C:\Users\rober\Documents\GitHub\DDBBasesII\Aplicacion\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.VistasAdmin.ModificarEmpleado.resources
 C:\Users\rober\Documents\GitHub\DDBBasesII\Aplicacion\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.ModificarVehiculo.resources
 C:\Users\rober\Documents\GitHub\DDBBasesII\Aplicacion\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.VistasAdmin.ReporteVentas.resources
 C:\Users\rober\Documents\GitHub\DDBBasesII\Aplicacion\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.VistasAdmin.ReporteVentasxTipoPago.resources
@@ -60,3 +59,4 @@ C:\Users\rober\Documents\GitHub\DDBBasesII\Aplicacion\ProyectoBasesIICarroTec\Pr
 C:\Users\rober\Documents\GitHub\DDBBasesII\Aplicacion\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.csproj.CoreCompileInputs.cache
 C:\Users\rober\Documents\GitHub\DDBBasesII\Aplicacion\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.exe
 C:\Users\rober\Documents\GitHub\DDBBasesII\Aplicacion\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.pdb
+C:\Users\rober\Documents\GitHub\DDBBasesII\Aplicacion\ProyectoBasesIICarroTec\ProyectoBasesIICarroTec\obj\Debug\ProyectoBasesIICarroTec.VistasAdmin.CrearEmpleado.resources

@@ -51,12 +51,13 @@ namespace ProyectoBasesIICarroTec
             VistasAdmin.ReporteVentas rep = new VistasAdmin.ReporteVentas();
             rep.Show();
             VistasAdmin.ReporteVentasxTipoPago rep2 = new VistasAdmin.ReporteVentasxTipoPago();
-            rep.Show();
+            rep2.Show();
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
-            
+            CrearPedido cPedido = new CrearPedido();
+            cPedido.Show();
         }
     }
 }
