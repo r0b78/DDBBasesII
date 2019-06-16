@@ -8,8 +8,10 @@ app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 
-
-app.get('/', client.mainPage);
+app.get('/',function(req,res){
+    res.redirect('/login');
+})
+app.get('/login', client.mainPage);
 
 app.post('/login', client.login);
 
