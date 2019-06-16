@@ -10,6 +10,3 @@ sql.query(connectionString, query, (err, rows) => {
 });
 
 }
-
-
-executeQeury("select * from Empleado")

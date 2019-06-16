@@ -1,5 +1,5 @@
 var json2html = require('node-json2html');
-
+var db = require('../database')
 var t = {'<>':'tr','html':'${title} ${year}'};
     
 var d = [
@@ -18,8 +18,20 @@ exports.mainPage = function (req, res) {
 };
 
 exports.login = function (req, res) {
-  
-  
-  
   res.render('../views/dashboardCliente');;
 };
+
+exports.verCompras = async (req,res)=> {
+  var results = await db.executeQeury("SeleccionarFacturas NULL,NULL,NULL,NULL,NULL,NULL,NULL")
+  
+  res.html(results)
+};
+
+exports.buscarVehiculos = (req,res)=> {
+
+};
+
+exports.verSucursales = (req,res)=> {
+
+};
+
