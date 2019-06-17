@@ -160,6 +160,49 @@ exports.modificarSucursal = async (req, res) => {
   }
 }
 
+//CRUD Fabrica
+
+exports.crearFabrica = async (req, res) => {
+  const body = req.body;
+  if(body.descripcion === undefined || body.provincia === undefined || body.locacion === undefined || body.senas === undefined) {
+    return res.json({status : -1, message : "Falta informacion"});
+  }
+  else {
+    const pool = await poolPromise;
+    const query = await pool.request.query('insertarUbicacion ' + body.senas + ',' + body.locacion + ',' + body.idProvincia);
+    var idUbicacion = query.recordset.idUbicacion;
+    const poolFabrica = await poolPromise;
+    const queryFabrica = await pool.request.query('InsertarFabrica ' +  body.descripcion + ',' + idUbicacion);
+    //TODO
+  }
+};
+
+exports.modificarFabrica = async (req, res) => {
+  const body = req.body;
+  if(body.idFabrica === undefined) {
+    return res.json({status : -1, message : "Falta informacion"});
+  }
+  else {
+    var descripcion = (body.descripcion !== undefined) ? body.descripcion : 'NULL';
+    var idUbicacion = (body.idUbicacion !== undefined) ? body.idUbicacion : 'NULL';
+    const pool = await poolPromise;
+    const query = await pool.request.query('ModificarFabrica ' + body.idFabrica + ',' + descripcion + ',' + idUbicacion);
+    //TODO
+  }
+};
+
+exports.seleccionarFabrica = async (req, res) => {
+  const body = req.body;
+  var idFabrica = (body.idFabrica !== undefined) ? body.idFabrica : 'NULL';
+  var descripcion = (body.descripcion !== undefined) ? body.descripcion : 'NULL';
+  var nombreProvincia = (body.nombreProvincia !== undefined) ? body.nombreProvincia : 'NULL';
+  var nombrePais = (body.nombrePais !== undefined) ? body.nombrePais : 'NULL';
+  var idUbicacion = (body.idUbicacion !== undefined) ? body.idUbicacion : 'NULL';
+  const pool = await poolPromise;
+  const query = await pool.request.query('SeleccionarFabrica ' + idFabrica + ',' + descripcion + ',' + nombreProvincia + ',' + nombrePais + ',' + idUbicacion);
+  //TODO
+};
+
 exports.reporteVentas = async (req, res) => {
   const body = req.body;
   var idFactura = (body.idFactura !== undefined) ? body.idFactura : 'NULL';
