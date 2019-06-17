@@ -48,7 +48,7 @@ exports.verSucursales = async (req, res) => {
   var provincia = (body.provincia !== undefined) ? body.provincia : 'NULL';
   var pais = (body.pais !== undefined) ? body.pais : 'NULL';
   const pool = await poolPromise;
-  const query = await pool.request.query('seleccionarSucursal ' + nombre + ',' + descripcion + ',' + provincia + ',' + pais);
+  const query = await pool.request().query('seleccionarSucursal ' + nombre + ',' + descripcion + ',' + provincia + ',' + pais);
   const results = query.recordset
   const html = transformDataWith(results)
   res.render('../views/dashboardAdmin.ejs',{results:html});
@@ -295,6 +295,7 @@ exports.insertarVehiculoSucursal = async (req, res) => {
     var idSucursal = (body.idSucursal !== undefined) ? body.idSucursal : 'NULL';
     const pool = await poolPromise;
     const query = await pool.request.query('insertarVehiculoXSucursal ' + body.idVehiculo + ',' + body.idSucursal);
+
     //TODO
   }
 };
