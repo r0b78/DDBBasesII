@@ -1,30 +1,39 @@
 var db = require('../database');
-const poolPromise = require('../database');
-
+const { poolPromise } = require('../database')
 //CRUD Sucursal
 
 exports.crearSucursal = async (req, res) => {
   const body = req.body;
-
+  console.log(body)
   if( body.descripcion === undefined ||
       body.locacion === undefined ||
       body.idProvincia === undefined ||
       body.nombre === undefined ||
       body.senas === undefined) {
-      return res.json({status : -1, message : "Faltan parametros"});
+      res.send({status : -1, message : "Faltan parametros"});
+      return
   }
   else {
+
+    var location = "'POINT("+body.locacion+")'"  
     const pool = await poolPromise;
-    const query = await pool.request.query('insertarUbicacion ' + body.senas + ',' + body.locacion + ',' + body.idProvincia);
-    var idUbicacion = query.recordset.idUbicacion;
+    const query = await pool.request().query('insertarUbicacion ' + 
+    body.senas + ',' + 
+    location + ',' + 
+    body.idProvincia);
+    var idUbicacion = query.recordset[0].IdUbicacion;    
     const poolSucursal = await poolPromise;
-    const querySucursal = await poolSucursal.request.query('insertarSucursal ' + body.nombre + ',' + body.descripcion + ','+ idUbicacion);
+    const querySucursal = await poolSucursal.request().query('insertarSucursal ' + 
+      body.nombre + ',' + 
+      body.descripcion + ','+ 
+      idUbicacion);
+    
     res.render('../views/dashboardAdmin',{ listo: 'Transaccion Existosa' });
   }
 };
 
 exports.vistaAgregarSucursal = (req,res) =>{
-  res.render('../views/dashboardAdmin.ejs',{vistaSucursal:{}});
+  res.render('../views/dashboardAdmin.ejs',{crearSucursal:{}});
 }
 
 exports.mostrarVistaSucursal = async(req,res) => {
@@ -40,7 +49,13 @@ exports.verSucursales = async (req, res) => {
   var pais = (body.pais !== undefined) ? body.pais : 'NULL';
   const pool = await poolPromise;
   const query = await pool.request.query('seleccionarSucursal ' + nombre + ',' + descripcion + ',' + provincia + ',' + pais);
-  //TODO
+  const results = query.recordset
+  const html = transformDataWith(results)
+  res.render('../views/dashboardAdmin.ejs',{results:html});
+  
+}
+exports.vistaModificarSucursal = async(req,res) => {
+  res.render('../views/dashboardAdmin.ejs',{vistaModificarSucursal:{}});
 }
 
 exports.modificarSucursal = async (req, res) => {
@@ -53,8 +68,12 @@ exports.modificarSucursal = async (req, res) => {
     var descripcion = (body.descripcion !== undefined) ? body.descripcion : 'NULL';
     var idUbicacion = (body.idUbicacion !== undefined) ? body.idUbicacion : 'NULL';
     const pool = await poolPromise;
-    const query = await pool.request.query('modificarSucursal ' + body.nombre + ',' + body.nuevoNombre + ',' + body.idUbicacion);
-    //TODO
+    const query = await pool.request.query('modificarSucursal ' + 
+    body.nombre + ',' + 
+    body.nuevoNombre + ',' + 
+    body.idUbicacion);
+    res.render('../views/dashboardAdmin',{ listo: 'Transaccion Existosa' });
+  
   }
 }
 
