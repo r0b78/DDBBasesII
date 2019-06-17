@@ -284,6 +284,55 @@ exports.vehiculoFabrica = async (req, res) => {
   //TODO
 };
 
+
+//CRUD Sucursal
+
+exports.crearSucursal = async (req, res) => {
+  const body = req.body;
+  if(body.descripcion === undefined || body.locacion === undefined || body.idProvincia === undefined || body.nombre === undefined || body.senas === undefined) {
+    return res.json({status : -1, message : "Faltan parametros"});
+  }
+  else {
+    const pool = await poolPromise;
+    const query = await pool.request.query('insertarUbicacion ' + body.senas + ',' + body.locacion + ',' + body.idProvincia);
+    var idUbicacion = query.recordset.idUbicacion;
+    const poolSucursal = await poolPromise;
+    const querySucursal = await poolSucursal.request.query('insertarSucursal ' + body.nombre + ',' + body.descripcion + ','+ idUbicacion);
+    //TODO
+  }
+};
+
+exports.mostrarVistaSucursal = async(req,res) => {
+
+  res.render('../views/dashboardAdmin', {vistaSucursal:{}});
+}
+
+exports.verSucursales = async (req, res) => {
+  const body = req.body;
+  var nombre = (body.nombre !== undefined) ? body.nombre : 'NULL';
+  var descripcion = (body.descripcion !== undefined) ? body.descripcion : 'NULL';
+  var provincia = (body.provincia !== undefined) ? body.provincia : 'NULL';
+  var pais = (body.pais !== undefined) ? body.pais : 'NULL';
+  const pool = await poolPromise;
+  const query = await pool.request.query('seleccionarSucursal ' + nombre + ',' + descripcion + ',' + provincia + ',' + pais);
+  //TODO
+}
+
+exports.modificarSucursal = async (req, res) => {
+  const body = req.body;
+  if(body.nombre === undefined) {
+    return res.json({status : -1, message : "Es necesario el nombre"});
+  }
+  else {
+    var nuevoNombre = (body.nuevoNombre !== undefined) ? body.nuevoNombre : 'NULL';
+    var descripcion = (body.descripcion !== undefined) ? body.descripcion : 'NULL';
+    var idUbicacion = (body.idUbicacion !== undefined) ? body.idUbicacion : 'NULL';
+    const pool = await poolPromise;
+    const query = await pool.request.query('modificarSucursal ' + body.nombre + ',' + body.nuevoNombre + ',' + body.idUbicacion);
+    //TODO
+  }
+}
+
 exports.reporteVentas = async (req, res) => {
   const body = req.body;
   var idFactura = (body.idFactura !== undefined) ? body.idFactura : 'NULL';
