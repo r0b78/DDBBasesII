@@ -241,7 +241,7 @@ exports.seleccionarCaracteristica = async (req, res) => {
   const pool = await poolPromise;
   const query = await pool.request().query('seleccionarCaracteristica ' + caracteristica + ',' + dato);
   //TODO
-}
+};
 
 exports.insertarCaracteristicaVehiculo = async (req, res) => {
   const body = req.body;
@@ -287,7 +287,7 @@ exports.seleccionarVehiculoSucursal = async (req, res) => {
   const pool = await poolPromise;
   const query = await pool.request().query('seleccionarVehiculoXSucursal ' + body.idVehiculo + ',' + body.idSucursal);
   //TODO
-}
+};
 
 exports.modificarVehiculoSucursal = async(req, res) => {
   const body = req.body;
@@ -330,7 +330,7 @@ exports.modificarConsignacion = async (req, res) => {
     const query = await pool.request().query('modificarConsignacion ' + body.idConsignacion + ',' + cedulaCliente + ',' + idVehiculo + ',' + ganancia);
     //TODO
   }
-}
+};
 
 exports.seleccionarConsignacion = async (req, res) => {
   const body = req.body;
@@ -375,7 +375,77 @@ exports.seleccionarComisiones = async (req, res) => {
 
 //CRUD Empleados
 
+exports.crearEmpleadoSucursal = async (req, res) => {
+  const body = req.body;
+  if(body.nombre === undefined || body.apellido === undefined || body.telefono ==== undefined || body.correo === undefined || body.supervisor ==== undefined || body.puesto === undefined || body.idSucursal === undefined || body.cedula === undefined || body.password ==== undefined) {
+    return res.json({status : -1, message : "Faltan parametros"});
+  }
+  else {
+    const pool = await poolPromise;
+    const query = await pool.request().query('insertarEmpleadoSucursal ' + body.nombre + ',' + body.apellido + ',' + body.telefono + ',' + body.correo + ',' + body.supervisor + ',' + body.puesto + ',' + body.idSucursal + ',' + body.cedula + ',' + body.password);
+    //TODO
+  }
+};
 
+exports.crearEmpleadoFabrica = async (req, res) => {
+  const body = req.body;
+  if(body.nombre === undefined || body.apellido === undefined || body.telefono ==== undefined || body.correo === undefined || body.supervisor ==== undefined || body.puesto === undefined || body.idFabrica === undefined || body.cedula === undefined || body.password ==== undefined) {
+    return res.json({status : -1, message : "Faltan parametros"});
+  }
+  else {
+    const pool = await poolPromise;
+    const query = await pool.request().query('insertarEmpleadoSucursal ' + body.nombre + ',' + body.apellido + ',' + body.telefono + ',' + body.correo + ',' + body.supervisor + ',' + body.puesto + ',' + body.idFabrica + ',' + body.cedula + ',' + body.password);
+    //TODO
+  }
+};
+
+exports.modificarEmpleado = async (req, res) => {
+  const body = req.body;
+  if(body.cedula === undefined) {
+    return res.json({status : -1, message : "Faltan parametros"});
+  }
+  else {
+    var nombre = (body.nombre !== undefined) ? body.nombre : 'NULL';
+    var apellido = (body.apellido !== undefined) ? body.apellido : 'NULL';
+    var telefono = (body.telefono !== undefined) ? body.telefono : 'NULL';
+    var correo = (body.correo !== undefined) ? body.correo : 'NULL';
+    var supervisor = (body.supervisor !== undefined) ? body.supervisor : 'NULL';
+    var puesto = (body.puesto !== undefined) ? body.puesto : 'NULL';
+    const pool = await poolPromise;
+    const query = await pool.request().query('modificarEmpleado ' + nombre + ',' + apellido + ',' + telefono + ',' + correo + ',' + supervisor + ',' + puesto + ',' body.cedula);
+    //TODO
+  }
+};
+
+exports.seleccionarEmpleadosFabrica = async (req, res) => {
+  const body = req.body;
+  var nombre = (body.nombre !== undefined) ? body.nombre : 'NULL';
+  var apellido = (body.apellido !== undefined) ? body.apellido : 'NULL';
+  var telefono = (body.telefono !== undefined) ? body.telefono : 'NULL';
+  var correo = (body.correo !== undefined) ? body.correo : 'NULL';
+  var supervisor = (body.supervisor !== undefined) ? body.supervisor : 'NULL';
+  var puesto = (body.puesto !== undefined) ? body.puesto : 'NULL';
+  var fabrica = (body.fabrica !== undefined) ? body.fabrica : 'NULL';
+  var cedula = (body.cedula !== undefined) ? body.cedula : 'NULL';
+  const pool = await poolPromise;
+  const query = await pool.request().query('SeleccionarEmpleadosFabrica ' + nombre + ',' + apellido + ',' + telefono + ',' + correo + ',' + supervisor + ',' + puesto + ',' + fabrica + ',' + cedula);
+  //TODO
+};
+
+exports.seleccionarEmpleadosSucursal = async (req, res) => {
+  const body = req.body;
+  var nombre = (body.nombre !== undefined) ? body.nombre : 'NULL';
+  var apellido = (body.apellido !== undefined) ? body.apellido : 'NULL';
+  var telefono = (body.telefono !== undefined) ? body.telefono : 'NULL';
+  var correo = (body.correo !== undefined) ? body.correo : 'NULL';
+  var supervisor = (body.supervisor !== undefined) ? body.supervisor : 'NULL';
+  var puesto = (body.puesto !== undefined) ? body.puesto : 'NULL';
+  var sucursal = (body.sucursal !== undefined) ? body.sucursal : 'NULL';
+  var cedula = (body.cedula !== undefined) ? body.cedula : 'NULL';
+  const pool = await poolPromise;
+  const query = await pool.request().query('SeleccionarEmpleadosSucursal ' + nombre + ',' + apellido + ',' + telefono + ',' + correo + ',' + supervisor + ',' + puesto + ',' + sucursal + ',' + cedula);
+  //TODO
+};
 
 //Aun no se que es
 
