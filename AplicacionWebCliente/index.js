@@ -25,7 +25,9 @@ app.post('/login', client.login);
 app.get('/verCompras',client.verCompras)
 
 app.get('/buscarVehiculos',client.buscarVehiculosVentana)
-app.post('/buscarVehiculos',client.verVehiculo)
+app.post('/buscarVehiculos',client.buscarVehiculo)
+app.get('/comprarVehiculo/:id',client.comprarVehiculo)
+
 
 app.get('/verSucursales',client.verSucursales)
 
