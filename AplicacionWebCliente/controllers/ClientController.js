@@ -61,19 +61,43 @@ exports.login = function (req, res) {
 
 exports.verCompras = async (req,res)=> {
   const pool = await poolPromise
-  const result = await pool.request().query('SeleccionarFacturas NULL,NULL,NULL,NULL,NULL,NULL,NULL') 
-  res.send(result.recordset)
-};
-
-exports.buscarVehiculos = async (req,res)=> {
-  const pool = await poolPromise
-  const result = await pool.request().query('seleccionarVehiculo NULL,NULL,NULL,NULL,NULL,NULL') 
-  var html = transformDataWith(result.recordset,['IdVehiculo']);
-  res.render('../views/dashboardCliente.ejs',{
-                                                results:html
+  const result = await pool.request().query('SeleccionarFacturas NULL,NULL,NULL,NULL,NULL,NULL,NULL')
+  console.log(result)
+  var html = transformDataWith(result.recordset);
+  res.render('../views/dashboardCliente',{
+    resultadoTabla:html
 });
 };
 
+exports.buscarVehiculosVentana = async (req,res)=> {
+ 
+  res.render('../views/dashboardCliente',{
+    buscarVehiculo:{}
+  });
+
+};
+
+
+exports.buscarVehiculo = async (req,res) => {
+  var body = req.body;
+  var modelo = body.modelo
+  var marca = body.marca
+  var precioL = body.precioL
+  var precioH = body.precioH
+  var combustible = body.combustible
+  var tipo =body.tipo
+
+  const pool = await poolPromise
+  const result = await pool.request().query(`seleccionarVehiculo NULL,NULL,NULL,NULL,NULL,NULL`)
+  console.log(result.recordset)
+  res.render('../views/dashboardCliente',{
+                                dataVehiculo:result.recordset
+  });
+}
+exports.comprarVehiculo = async (req,res) => {
+
+
+}
 
 exports.verSucursales = (req,res)=> {
 

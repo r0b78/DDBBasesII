@@ -23,7 +23,10 @@ app.post('/login', client.login);
 //Cliente
 
 app.get('/verCompras',client.verCompras)
-app.get('/buscarVehiculos',client.buscarVehiculos)
+
+app.get('/buscarVehiculos',client.buscarVehiculosVentana)
+app.post('/buscarVehiculos',client.verVehiculo)
+
 app.get('/verSucursales',client.verSucursales)
 
 //Admin
