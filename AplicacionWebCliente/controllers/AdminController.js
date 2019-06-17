@@ -1,30 +1,39 @@
 var db = require('../database');
-const poolPromise = require('../database');
-
+const { poolPromise } = require('../database')
 //CRUD Sucursal
 
 exports.crearSucursal = async (req, res) => {
   const body = req.body;
-
+  console.log(body)
   if( body.descripcion === undefined ||
       body.locacion === undefined ||
       body.idProvincia === undefined ||
       body.nombre === undefined ||
       body.senas === undefined) {
-      return res.json({status : -1, message : "Faltan parametros"});
+      res.send({status : -1, message : "Faltan parametros"});
+      return
   }
   else {
+
+    var location = "'POINT("+body.locacion+")'"
     const pool = await poolPromise;
-    const query = await pool.request().query('insertarUbicacion ' + body.senas + ',' + body.locacion + ',' + body.idProvincia);
-    var idUbicacion = query.recordset[0].idUbicacion;
+    const query = await pool.request().query('insertarUbicacion ' +
+    body.senas + ',' +
+    location + ',' +
+    body.idProvincia);
+    var idUbicacion = query.recordset[0].IdUbicacion;
     const poolSucursal = await poolPromise;
-    const querySucursal = await poolSucursal.request().query('insertarSucursal ' + body.nombre + ',' + body.descripcion + ','+ idUbicacion);
+    const querySucursal = await poolSucursal.request().query('insertarSucursal ' +
+      body.nombre + ',' +
+      body.descripcion + ','+
+      idUbicacion);
+
     res.render('../views/dashboardAdmin',{ listo: 'Transaccion Existosa' });
   }
 };
 
 exports.vistaAgregarSucursal = (req,res) =>{
-  res.render('../views/dashboardAdmin.ejs',{vistaSucursal:{}});
+  res.render('../views/dashboardAdmin.ejs',{crearSucursal:{}});
 }
 
 exports.mostrarVistaSucursal = async(req,res) => {
@@ -40,7 +49,13 @@ exports.verSucursales = async (req, res) => {
   var pais = (body.pais !== undefined) ? body.pais : 'NULL';
   const pool = await poolPromise;
   const query = await pool.request().query('seleccionarSucursal ' + nombre + ',' + descripcion + ',' + provincia + ',' + pais);
-  //TODO
+  const results = query.recordset
+  const html = transformDataWith(results)
+  res.render('../views/dashboardAdmin.ejs',{results:html});
+
+}
+exports.vistaModificarSucursal = async(req,res) => {
+  res.render('../views/dashboardAdmin.ejs',{vistaModificarSucursal:{}});
 }
 
 exports.modificarSucursal = async (req, res) => {
@@ -53,8 +68,12 @@ exports.modificarSucursal = async (req, res) => {
     var descripcion = (body.descripcion !== undefined) ? body.descripcion : 'NULL';
     var idUbicacion = (body.idUbicacion !== undefined) ? body.idUbicacion : 'NULL';
     const pool = await poolPromise;
-    const query = await pool.request().query('modificarSucursal ' + body.nombre + ',' + body.nuevoNombre + ',' + body.idUbicacion);
-    //TODO
+    const query = await pool.request.query('modificarSucursal ' +
+    body.nombre + ',' +
+    body.nuevoNombre + ',' +
+    body.idUbicacion);
+    res.render('../views/dashboardAdmin',{ listo: 'Transaccion Existosa' });
+
   }
 }
 
@@ -67,10 +86,10 @@ exports.crearFabrica = async (req, res) => {
   }
   else {
     const pool = await poolPromise;
-    const query = await pool.request().query('insertarUbicacion ' + body.senas + ',' + body.locacion + ',' + body.idProvincia);
-    var idUbicacion = query.recordset[0].idUbicacion;
+    const query = await pool.request.query('insertarUbicacion ' + body.senas + ',' + body.locacion + ',' + body.idProvincia);
+    var idUbicacion = query.recordset.idUbicacion;
     const poolFabrica = await poolPromise;
-    const queryFabrica = await pool.request().query('InsertarFabrica ' +  body.descripcion + ',' + idUbicacion);
+    const queryFabrica = await pool.request.query('InsertarFabrica ' +  body.descripcion + ',' + idUbicacion);
     //TODO
   }
 };
@@ -84,7 +103,7 @@ exports.modificarFabrica = async (req, res) => {
     var descripcion = (body.descripcion !== undefined) ? body.descripcion : 'NULL';
     var idUbicacion = (body.idUbicacion !== undefined) ? body.idUbicacion : 'NULL';
     const pool = await poolPromise;
-    const query = await pool.request().query('ModificarFabrica ' + body.idFabrica + ',' + descripcion + ',' + idUbicacion);
+    const query = await pool.request.query('ModificarFabrica ' + body.idFabrica + ',' + descripcion + ',' + idUbicacion);
     //TODO
   }
 };
@@ -97,7 +116,7 @@ exports.seleccionarFabrica = async (req, res) => {
   var nombrePais = (body.nombrePais !== undefined) ? body.nombrePais : 'NULL';
   var idUbicacion = (body.idUbicacion !== undefined) ? body.idUbicacion : 'NULL';
   const pool = await poolPromise;
-  const query = await pool.request().query('SeleccionarFabrica ' + idFabrica + ',' + descripcion + ',' + nombreProvincia + ',' + nombrePais + ',' + idUbicacion);
+  const query = await pool.request.query('SeleccionarFabrica ' + idFabrica + ',' + descripcion + ',' + nombreProvincia + ',' + nombrePais + ',' + idUbicacion);
   //TODO
 };
 
@@ -110,7 +129,7 @@ exports.crearVehiculo = async (req, res) => {
   }
   else {
     const pool = await poolPromise;
-    const query = await pool.request().query('insertarVehiculo ' + body.tipo + ',' + body.combustible + ',' + body.marca + ',' + body.modelo + ',' + body.precio + ',' + body.usado + ',' + body.puertas);
+    const query = await pool.request.query('insertarVehiculo ' + body.tipo + ',' + body.combustible + ',' + body.marca + ',' + body.modelo + ',' + body.precio + ',' + body.usado + ',' + body.puertas);
     //TODO
   }
 }
@@ -128,7 +147,7 @@ exports.modificarVehiculo = async (req, res) => {
     var precio = (body.precio !== undefined) ? body.precio : 'NULL';
     var puertas = (body.puertas !== undefined) ? body.puertas : 'NULL';
     const pool = await poolPromise;
-    const query = await pool.request().query('modificarVehiculo ' + tipo + ',' + combustible + ',' + marca + ',' + modelo + ',' + precio + ',' + puertas);
+    const query = await pool.request.query('modificarVehiculo ' + tipo + ',' + combustible + ',' + marca + ',' + modelo + ',' + precio + ',' + puertas);
     //TODO
   }
 };
@@ -144,7 +163,7 @@ exports.verVehiculos = async (req, res) => {
   var usado = (body.usado !== undefined) ? body.usado : 'NULL';
   var puertas = (body.puertas !== undefined) ? body.puertas : 'NULL';
   const pool = await poolPromise;
-  const query = await pool.request().query('seleccionarVehiculo ' + tipo + ',' + combustible + ',' + marca + ',' + modelo + ',' + precioLow + ',' + precioHigh + ',' + usado + ',' + puertas);
+  const query = await pool.request.query('seleccionarVehiculo ' + tipo + ',' + combustible + ',' + marca + ',' + modelo + ',' + precioLow + ',' + precioHigh + ',' + usado + ',' + puertas);
   //TODO
 };
 
@@ -157,7 +176,7 @@ exports.crearExtra = async (req, res) => {
   }
   else {
     const pool = await poolPromise;
-    const query = await pool.request().query('insertarExtra ' + body.nombre + ',' + body.descripcion + ',' + body.precio);
+    const query = await pool.request.query('insertarExtra ' + body.nombre + ',' + body.descripcion + ',' + body.precio);
     //TODO
   }
 };
@@ -169,7 +188,7 @@ exports.modificarExtra = async (req, res) => {
   var nuevoNombre = (body.nuevoNombre !== undefined) ? body.nuevoNombre : 'NULL';
   var precio = (body.precio !== undefined) ? body.precio : 'NULL';
   const pool = await poolPromise;
-  const query = await pool.request().query('modificarExtra ' + nombre + ',' + nuevoNombre + ',' + descripcion + ',' + precio);
+  const query = await pool.request.query('modificarExtra ' + nombre + ',' + nuevoNombre + ',' + descripcion + ',' + precio);
   //TODO
 };
 
@@ -179,7 +198,7 @@ exports.selecionarExtra = async (req, res) => {
   var descripcion = (body.descripcion !== undefined) ? body.descripcion : 'NULL';
   var precio = (body.precio !== undefined) ? body.precio : 'NULL';
   const pool = await poolPromise;
-  const query = await pool.request().query('modificarExtra ' + nombre + ',' + descripcion + ',' + precio);
+  const query = await pool.request.query('modificarExtra ' + nombre + ',' + descripcion + ',' + precio);
   //TODO
 };
 
@@ -190,7 +209,7 @@ exports.insertarExtraVehiculo = async (req, res) => {
   }
   else {
     const pool = await poolPromise;
-    const query = await pool.request().query('insertarExtraXVehiculo ' + body.idExtra + ',' + body.idVehiculo);
+    const query = await pool.request.query('insertarExtraXVehiculo ' + body.idExtra + ',' + body.idVehiculo);
     //TODO
   }
 };
@@ -202,7 +221,7 @@ exports.seleccionarExtraVehiculo = async (req, res) => {
   var precioLow = (body.precioLow !== undefined) ? body.precioLow : 'NULL';
   var precioHigh = (body.precioHigh !== undefined) ? body.precioHigh : 'NULL';
   const pool = await poolPromise;
-  const query = await pool.request().query('seleccionarExtraXVehiculo ' + idExtra + ',' + idVehiculo + ',' + precioLow + ',' + precioHigh);
+  const query = await pool.request.query('seleccionarExtraXVehiculo ' + idExtra + ',' + idVehiculo + ',' + precioLow + ',' + precioHigh);
   //TODO
 };
 
@@ -215,7 +234,7 @@ exports.crearCaracteristica = async (req, res) => {
   }
   else {
     const pool = await poolPromise;
-    const query = await pool.request().query('insertarCaracteristica ' + body.caracteristica + ',' + body.dato);
+    const query = await pool.request.query('insertarCaracteristica ' + body.caracteristica + ',' + body.dato);
     //TODO
   }
 };
@@ -229,7 +248,7 @@ exports.modificarCaracteristica = async (req, res) => {
     var nuevoDato = (body.nuevoDato !== undefined) ? body.nuevoDato : 'NULL';
     var caracteristica = (body.caracteristica !== undefined) ? body.caracteristica : 'NULL';
     const pool = await poolPromise;
-    const query = await pool.request().query('modificarCaracteristica ' + body.dato + ',' + body.nuevoDato + ',' + body.caracteristica);
+    const query = await pool.request.query('modificarCaracteristica ' + body.dato + ',' + body.nuevoDato + ',' + body.caracteristica);
     //TODO
   }
 };
@@ -239,7 +258,7 @@ exports.seleccionarCaracteristica = async (req, res) => {
   var caracteristica = (body.caracteristica !== undefined) ? body.caracteristica : 'NULL';
   var dato = (body.dato !== undefined) ? body.dato : 'NULL';
   const pool = await poolPromise;
-  const query = await pool.request().query('seleccionarCaracteristica ' + caracteristica + ',' + dato);
+  const query = await pool.request.query('seleccionarCaracteristica ' + caracteristica + ',' + dato);
   //TODO
 };
 
@@ -250,7 +269,7 @@ exports.insertarCaracteristicaVehiculo = async (req, res) => {
   }
   else {
     const pool = await poolPromise;
-    const query = await pool.request().query('insertarCaracteristicaXVehiculo ' + body.idCaracteristica + ',' + body.idVehiculo);
+    const query = await pool.request.query('insertarCaracteristicaXVehiculo ' + body.idCaracteristica + ',' + body.idVehiculo);
     //TODO
   }
 };
@@ -260,7 +279,7 @@ exports.seleccionarCaracteristicaVehiculo = async (req, res) => {
   var idCaracteristica = (body.idCaracteristica !== undefined) ? body.idCaracteristica : 'NULL';
   var idVehiculo = (body.idVehiculo !== undefined) ? body.idVehiculo : 'NULL';
   const pool = await poolPromise;
-  const query = await pool.request().query('seleccionarCaracteristicaXVehiculo ' + idCaracteristica + ',' + idVehiculo);
+  const query = await pool.request.query('seleccionarCaracteristicaXVehiculo ' + idCaracteristica + ',' + idVehiculo);
   //TODO
 };
 
@@ -275,7 +294,8 @@ exports.insertarVehiculoSucursal = async (req, res) => {
     var idVehiculo = (body.idVehiculo !== undefined) ? body.idVehiculo : 'NULL';
     var idSucursal = (body.idSucursal !== undefined) ? body.idSucursal : 'NULL';
     const pool = await poolPromise;
-    const query = await pool.request().query('insertarVehiculoXSucursal ' + body.idVehiculo + ',' + body.idSucursal);
+    const query = await pool.request.query('insertarVehiculoXSucursal ' + body.idVehiculo + ',' + body.idSucursal);
+
     //TODO
   }
 };
@@ -285,7 +305,7 @@ exports.seleccionarVehiculoSucursal = async (req, res) => {
   var idVehiculo = (body.idVehiculo !== undefined) ? body.idVehiculo : 'NULL';
   var idSucursal = (body.idSucursal !== undefined) ? body.idSucursal : 'NULL';
   const pool = await poolPromise;
-  const query = await pool.request().query('seleccionarVehiculoXSucursal ' + body.idVehiculo + ',' + body.idSucursal);
+  const query = await pool.request.query('seleccionarVehiculoXSucursal ' + body.idVehiculo + ',' + body.idSucursal);
   //TODO
 };
 
@@ -298,36 +318,7 @@ exports.modificarVehiculoSucursal = async(req, res) => {
     var idSucursal = (body.idSucursal !== undefined) ? body.idSucursal : 'NULL';
     var idVehiculo = (body.idVehiculo !== undefined) ? body.idVehiculo : 'NULL';
     const pool = await poolPromise;
-    const query = await pool.request().query('modificarVehiculoXSucursal ' + body.idVehiculoXSucursal + ',' + idSucursal + ',' + idVehiculo);
-    //TODO
-  }
-};
-
-//CRUD Consignacion
-
-exports.crearConsignacion = async (req, res) => {
-  const body = req.body;
-  if(body.cedulaCliente === undefined || body.idVehiculo === undefined || body.ganancia === undefined) {
-    return res.json({status : -1, message : "Faltan parametros"});
-  }
-  else {
-    const pool = await poolPromise;
-    const query = await pool.request().query('insertarConsignacion ' + body.cedulaCliente + ',' + body.idVehiculo + ',' + body.ganancia);
-    //TODO
-  }
-};
-
-exports.modificarConsignacion = async (req, res) => {
-  const body = req.body;
-  if(body.idConsignacion === undefined) {
-    return res.json({status : -1, message : "Faltan parametros"});
-  }
-  else {
-    var cedulaCliente = (body.cedulaCliente !== undefined) ? body.cedulaCliente : 'NULL';
-    var idVehiculo = (body.idVehiculo !== undefined) ? body.idVehiculo : 'NULL';
-    var ganancia = (body.ganancia !== undefined) ? body.ganancia : 'NULL';
-    const pool = await poolPromise;
-    const query = await pool.request().query('modificarConsignacion ' + body.idConsignacion + ',' + cedulaCliente + ',' + idVehiculo + ',' + ganancia);
+    const query = await pool.request.query('modificarVehiculoXSucursal ' + body.idVehiculoXSucursal + ',' + idSucursal + ',' + idVehiculo);
     //TODO
   }
 };
@@ -457,7 +448,7 @@ exports.crearDescuento = async (req, res) => {
   else {
     const pool = await poolPromise;
     try {
-      const query = await pool.request().query('InsertarDescuento ' + body.nombre + ',' + body.descuento);
+      const query = await pool.request.query('InsertarDescuento ' + body.nombre + ',' + body.descuento);
       //TODO
     }
     catch(error) {
@@ -477,7 +468,7 @@ exports.verEmpleados = async (req, res) => {
   var sucursal = (body.sucursal !== undefined) ? body.sucursal : 'NULL';
   var cedula = (body.cedula !== undefined) ? body.cedula : 'NULL';
   const pool = await poolPromise;
-  const query = await pool.request().query('seleccionarEmpleado ' + nombre + ',' + apellido + ',' + telefono + ',' + correo + ',' + supervisor + ',' + puesto + ',' + sucursal + ',' + cedula + ',');
+  const query = await pool.request.query('seleccionarEmpleado ' + nombre + ',' + apellido + ',' + telefono + ',' + correo + ',' + supervisor + ',' + puesto + ',' + sucursal + ',' + cedula + ',');
   //TODO
 };
 
@@ -490,7 +481,7 @@ exports.crearEmpleado = async (req, res) => {
   else {
     var supervisor = (body.supervisor !== undefined) ? body.supervisor : 'NULL';
     const pool = await poolPromise;
-    const query = await pool.request().query('insertarEmpleado ' + body.nombre + ',' + body.apellido + ',' + body.telefono + ',' + body.correo + ',' + supervisor + ',' + body.puesto + ',' + body.sucursal + ',' + body.cedula + ',' + body.idUsuario);
+    const query = await pool.request.query('insertarEmpleado ' + body.nombre + ',' + body.apellido + ',' + body.telefono + ',' + body.correo + ',' + supervisor + ',' + body.puesto + ',' + body.sucursal + ',' + body.cedula + ',' + body.idUsuario);
     //TODO
   }
 }
@@ -509,7 +500,7 @@ exports.modificarEmpleado = async (req, res) => {
     var puesto = (body.puesto !== undefined) ? body.puesto : 'NULL';
     var sucursal = (body.sucursal !== undefined) ? body.sucursal : 'NULL';
     const pool = await poolPromise;
-    const query = await pool.request().query('modificarEmpleado ' + body.nombre + ',' + body.apellido + ',' + body.telefono + ',' + body.correo + ',' + supervisor + ',' + body.puesto + ',' + body.sucursal + ',' + body.cedula);
+    const query = await pool.request.query('modificarEmpleado ' + body.nombre + ',' + body.apellido + ',' + body.telefono + ',' + body.correo + ',' + supervisor + ',' + body.puesto + ',' + body.sucursal + ',' + body.cedula);
     //TODO
   }
 };
@@ -523,7 +514,7 @@ exports.verVehiculosComprados = async (req, res) => {
   var precioLow = (body.precioLow !== undefined) ? body.precioLow : 'NULL';
   var precioHigh = (body.precioHigh !== undefined) ? body.precioHigh : 'NULL';
   const pool = await poolPromise;
-  const query = await pool.request().query('seleccionarVehiculoComprado ' + tipo + ',' + combustible + ',' + marca + ',' + modelo + ',' + precioLow + ',' + precioHigh + ',');
+  const query = await pool.request.query('seleccionarVehiculoComprado ' + tipo + ',' + combustible + ',' + marca + ',' + modelo + ',' + precioLow + ',' + precioHigh + ',');
   //TODO
 };
 
@@ -535,7 +526,7 @@ exports.vehiculoFabrica = async (req, res) => {
   var idInventario = (body.idInventario !== undefined) ? body.idInventario : 'NULL';
   var idFabrica = (body.idFabrica !== undefined) ? body.idFabrica : 'NULL';
   const pool = await poolPromise;
-  const query = await pool.request().query('SeleccionarVehiculoFabrica ' + idVehiculoFabrica + ',' + idVehiculo + ',' + costoVehiculo + ',' + idInventario + ',' + idFabrica);
+  const query = await pool.request.query('SeleccionarVehiculoFabrica ' + idVehiculoFabrica + ',' + idVehiculo + ',' + costoVehiculo + ',' + idInventario + ',' + idFabrica);
   //TODO
 };
 
@@ -549,7 +540,7 @@ exports.reporteVentas = async (req, res) => {
   var fechaFinal = (body.fechaFinal !== undefined) ? body.fechaFinal : 'NULL';
   var tipoPago = (body.tipoPago !== undefined) ? body.tipoPago : 'NULL';
   const pool = await poolPromise;
-  const query = await pool.request().query('SeleccionarFacturas ' + idFactura + ',' + numeroFactura + ',' + precioInicial + ';' + precioFinal + ',' + fechaInicial + ',' + fechaFinal + ',' + tipoPago)
+  const query = await pool.request.query('SeleccionarFacturas ' + idFactura + ',' + numeroFactura + ',' + precioInicial + ';' + precioFinal + ',' + fechaInicial + ',' + fechaFinal + ',' + tipoPago)
   //TODO
 };
 
@@ -564,6 +555,6 @@ exports.empleadosFabrica = async (req, res) => {
   var sucursal = (body.sucursal !== undefined) ? body.sucursal : 'NULL';
   var cedula = (body.cedula !== undefined) ? body.cedula : 'NULL';
   const pool = await poolPromise;
-  const query = await pool.request().query('seleccionarEmpleado ' + nombre + ',' + apellido + ',' + telefono + ',' + correo + ',' + supervisor + ',' + puesto + ',' + sucursal + ',' + cedula + ',');
+  const query = await pool.request.query('seleccionarEmpleado ' + nombre + ',' + apellido + ',' + telefono + ',' + correo + ',' + supervisor + ',' + puesto + ',' + sucursal + ',' + cedula + ',');
   //TODO
 };
