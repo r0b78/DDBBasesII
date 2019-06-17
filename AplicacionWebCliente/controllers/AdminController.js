@@ -192,6 +192,64 @@ exports.seleccionarExtraVehiculo = async (req, res) => {
   //TODO
 };
 
+//CRUD Caracteristicas
+
+exports.crearCaracteristica = async (req, res) => {
+  const body = req.body;
+  if(body.caracteristica === undefined || body.dato === undefined) {
+    return res.json({status : -1, message : "Informacion incompleta"});
+  }
+  else {
+    const pool = await poolPromise;
+    const query = await pool.request.query('insertarCaracteristica ' + body.caracteristica + ',' + body.dato);
+    //TODO
+  }
+};
+
+exports.modificarCaracteristica = async (req, res) => {
+  const body = req.body;
+  if(body.dato === undefined) {
+    return res.json({status : -1, message : "Informacion incompleta"});
+  }
+  else {
+    var nuevoDato = (body.nuevoDato !== undefined) ? body.nuevoDato : 'NULL';
+    var caracteristica = (body.caracteristica !== undefined) ? body.caracteristica : 'NULL';
+    const pool = await poolPromise;
+    const query = await pool.request.query('modificarCaracteristica ' + body.dato + ',' + body.nuevoDato + ',' + body.caracteristica);
+    //TODO
+  }
+};
+
+exports.seleccionarCaracteristica = async (req, res) => {
+  const body = req.body;
+  var caracteristica = (body.caracteristica !== undefined) ? body.caracteristica : 'NULL';
+  var dato = (body.dato !== undefined) ? body.dato : 'NULL';
+  const pool = await poolPromise;
+  const query = await pool.request.query('seleccionarCaracteristica ' + caracteristica + ',' + dato);
+  //TODO
+}
+
+exports.insertarCaracteristicaVehiculo = async (req, res) => {
+  const body = req.body;
+  if(body.idCaracteristica === undefined || body.idVehiculo === undefined) {
+    return res.json({status : -1, message : "Informacion incompleta"});
+  }
+  else {
+    const pool = await poolPromise;
+    const query = await pool.request.query('insertarCaracteristicaXVehiculo ' + idCaracteristica + ',' + idVehiculo);
+    //TODO
+  }
+};
+
+exports.seleccionarCaracteristicaVehiculo = async (req, res) => {
+  const body = req.body;
+  var idCaracteristica = (body.idCaracteristica !== undefined) ? body.idCaracteristica : 'NULL';
+  var idVehiculo = (body.idVehiculo !== undefined) ? body.idVehiculo : 'NULL';
+  const pool = await poolPromise;
+  const query = await pool.request.query('seleccionarCaracteristicaXVehiculo ' + idCaracteristica + ',' + idVehiculo);
+  //TODO
+};
+
 //Aun no se que es
 
 exports.crearDescuento = async (req, res) => {
