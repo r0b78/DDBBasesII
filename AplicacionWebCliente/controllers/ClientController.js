@@ -22,12 +22,12 @@ function transformDataWith(data,noMostrar=[],headers=[]) {
       if(!noMuestra){
         elems.push({'<>':'td','html':'${'+x+'}'})
         headersHtml+= '<th>'+x+'</th>';
-      } 
-    }  
+      }
+    }
   }
-  
+
   headersHtml+=headersHtmlEnd
-  var html = headersHtml 
+  var html = headersHtml
   html += json2html.transform(data,t);
   html += endTbody
   return html
@@ -64,7 +64,7 @@ exports.login = async(req, res)=> {
   }else {
     res.send('Usuario No Valido')
   }
-  
+
 };
 
 exports.verCompras = async (req,res)=> {
@@ -78,13 +78,12 @@ exports.verCompras = async (req,res)=> {
 };
 
 exports.buscarVehiculosVentana = async (req,res)=> {
- 
+
   res.render('../views/dashboardCliente',{
     buscarVehiculo:{}
   });
 
 };
-
 
 exports.buscarVehiculo = async (req,res) => {
   var body = req.body;
@@ -114,7 +113,18 @@ exports.comprarVehiculo = async (req,res) => {
 
 }
 
+exports.comprar = async(req, res) => {
+  const body = req.body;
+  if(body.idVehiculo === undefined || body.idCliente === undefined || body.comentario === undefined || body.impuesto === undefined || body.descuento === undefined || body.tipoPago === undefined || body.tipoModalidad === undefined) {
+    return res.json({status : -1, message : "Informacion incompleta"});
+  }
+  else {
+    const pool = await poolPromise;
+    const query = await pool.request.query('Comprar ' + body.idVehiculo + ',' + body.idCliente + ',' + body.comentario + ',' + body.impuesto + ',' + body.descuento + ',' + body.tipoPago + ',' + body.tipoModalidad);
+    //TODO
+  }
+}
+
 exports.verSucursales = (req,res)=> {
 
 };
-

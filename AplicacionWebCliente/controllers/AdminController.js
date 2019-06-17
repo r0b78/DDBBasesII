@@ -47,6 +47,25 @@ exports.crearEmpleado = async (req, res) => {
   }
 }
 
+exports.modificarEmpleado = async (req, res) => {
+  const body = req.body;
+  if(body.cedula === undefined) {
+    return res.json({status : -1, message : "Es necesaria la cedula"});
+  }
+  else {
+    var nombre = (body.nombre !== undefined) ? body.nombre : 'NULL';
+    var apellido = (body.apellido !== undefined) ? body.apellido : 'NULL';
+    var telefono = (body.telefono !== undefined) ? body.telefono : 'NULL';
+    var correo = (body.correo !== undefined) ? body.correo : 'NULL';
+    var supervisor = (body.supervisor !== undefined) ? body.supervisor : 'NULL';
+    var puesto = (body.puesto !== undefined) ? body.puesto : 'NULL';
+    var sucursal = (body.sucursal !== undefined) ? body.sucursal : 'NULL';
+    const pool = await poolPromise;
+    const query = await pool.request.query('modificarEmpleado ' + body.nombre + ',' + body.apellido + ',' + body.telefono + ',' + body.correo + ',' + supervisor + ',' + body.puesto + ',' + body.sucursal + ',' + body.cedula);
+    //TODO
+  }
+};
+
 exports.verVehiculos = async (req, res) => {
   const body = req.body;
   var tipo = (body.tipo !== undefined) ? body.tipo : 'NULL';
@@ -76,12 +95,12 @@ exports.verVehiculosComprado = async (req, res) => {
 
 exports.crearVehiculo = async (req, res) => {
   const body = req.body;
-  if(body.tipo === undefined || body.combustible === undefined || body.marca === undefined || body.modelo === undefined || body.precio === undefined) {
+  if(body.tipo === undefined || body.combustible === undefined || body.marca === undefined || body.modelo === undefined || body.precio === undefined || body.usado === undefined) {
     return res.json({status : -1, message : "Faltan parametros"});
   }
   else {
     const pool = await poolPromise;
-    const query = await pool.request.query('insertarVehiculo ' + body.tipo + ',' + body.combustible + ',' + body.marca + ',' + body.modelo + ',' + body.precio);
+    const query = await pool.request.query('insertarVehiculo ' + body.tipo + ',' + body.combustible + ',' + body.marca + ',' + body.modelo + ',' + body.precio + ',' + body.usado);
     //TODO
   }
 }
@@ -135,4 +154,21 @@ exports.empleadosFabrica = async (req, res) => {
   const pool = await poolPromise;
   const query = await pool.request.query('seleccionarEmpleado ' + nombre + ',' + apellido + ',' + telefono + ',' + correo + ',' + supervisor + ',' + puesto + ',' + sucursal + ',' + cedula + ',');
   //TODO
+};
+
+exports.modificarVehiculo = async (req, res) => {
+  const body = req.body;
+  if(body.idVehiculo === undefined) {
+    return res.json({status : -1, message : "Es necesario el ID"});
+  }
+  else {
+    var tipo = (body.tipo !== undefined) ? body.tipo : 'NULL';
+    var combustible = (body.combustible !== undefined) ? body.combustible : 'NULL';
+    var marca = (body.marca !== undefined) ? body.marca : 'NULL';
+    var modelo = (body.modelo !== undefined) ? body.modelo : 'NULL';
+    var precio = (body.precio !== undefined) ? body.precio : 'NULL';
+    const pool = await poolPromise;
+    const query = await pool.request.query('modificarVehiculo ' + tipo + ',' + combustible + ',' + marca + ',' + modelo + ',' + precio);
+    //TODO
+  }
 };
