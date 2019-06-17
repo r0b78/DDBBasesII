@@ -6,10 +6,10 @@ const poolPromise = require('../database');
 exports.crearSucursal = async (req, res) => {
   const body = req.body;
 
-  if( body.descripcion === undefined || 
-      body.locacion === undefined || 
-      body.idProvincia === undefined || 
-      body.nombre === undefined || 
+  if( body.descripcion === undefined ||
+      body.locacion === undefined ||
+      body.idProvincia === undefined ||
+      body.nombre === undefined ||
       body.senas === undefined) {
       return res.json({status : -1, message : "Faltan parametros"});
   }
@@ -289,6 +289,20 @@ exports.seleccionarVehiculoSucursal = async (req, res) => {
   //TODO
 }
 
+exports.modificarVehiculoSucursal = async(req, res) => {
+  const body = req.body;
+  if(body.idVehiculoXSucursal == undefined) {
+    return res.json({status : -1, message : "Faltan parametros"});
+  }
+  else {
+    var idSucursal = (body.idSucursal !== undefined) ? body.idSucursal : 'NULL';
+    var idVehiculo = (body.idVehiculo !== undefined) ? body.idVehiculo : 'NULL';
+    const pool = await poolPromise;
+    const query = await pool.request.query('modificarVehiculoXSucursal ' + body.idVehiculoXSucursal + ',' + idSucursal + ',' + idVehiculo);
+    //TODO
+  }
+};
+
 //Aun no se que es
 
 exports.crearDescuento = async (req, res) => {
@@ -380,52 +394,6 @@ exports.vehiculoFabrica = async (req, res) => {
   const query = await pool.request.query('SeleccionarVehiculoFabrica ' + idVehiculoFabrica + ',' + idVehiculo + ',' + costoVehiculo + ',' + idInventario + ',' + idFabrica);
   //TODO
 };
-
-
-//CRUD Sucursal
-
-exports.crearSucursal = async (req, res) => {
-  const body = req.body;
-  if(body.descripcion === undefined || body.locacion === undefined || body.idProvincia === undefined || body.nombre === undefined || body.senas === undefined) {
-    return res.json({status : -1, message : "Faltan parametros"});
-  }
-  else {
-    const pool = await poolPromise;
-    const query = await pool.request.query('insertarUbicacion ' + body.senas + ',' + body.locacion + ',' + body.idProvincia);
-    var idUbicacion = query.recordset.idUbicacion;
-    const poolSucursal = await poolPromise;
-    const querySucursal = await poolSucursal.request.query('insertarSucursal ' + body.nombre + ',' + body.descripcion + ','+ idUbicacion);
-    //TODO
-  }
-};
-
-
-
-exports.verSucursales = async (req, res) => {
-  const body = req.body;
-  var nombre = (body.nombre !== undefined) ? body.nombre : 'NULL';
-  var descripcion = (body.descripcion !== undefined) ? body.descripcion : 'NULL';
-  var provincia = (body.provincia !== undefined) ? body.provincia : 'NULL';
-  var pais = (body.pais !== undefined) ? body.pais : 'NULL';
-  const pool = await poolPromise;
-  const query = await pool.request.query('seleccionarSucursal ' + nombre + ',' + descripcion + ',' + provincia + ',' + pais);
-  //TODO
-}
-
-exports.modificarSucursal = async (req, res) => {
-  const body = req.body;
-  if(body.nombre === undefined) {
-    return res.json({status : -1, message : "Es necesario el nombre"});
-  }
-  else {
-    var nuevoNombre = (body.nuevoNombre !== undefined) ? body.nuevoNombre : 'NULL';
-    var descripcion = (body.descripcion !== undefined) ? body.descripcion : 'NULL';
-    var idUbicacion = (body.idUbicacion !== undefined) ? body.idUbicacion : 'NULL';
-    const pool = await poolPromise;
-    const query = await pool.request.query('modificarSucursal ' + body.nombre + ',' + body.nuevoNombre + ',' + body.idUbicacion);
-    //TODO
-  }
-}
 
 exports.reporteVentas = async (req, res) => {
   const body = req.body;
