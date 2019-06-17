@@ -16,7 +16,7 @@ exports.crearSucursal = async (req, res) => {
   else {
     const pool = await poolPromise;
     const query = await pool.request.query('insertarUbicacion ' + body.senas + ',' + body.locacion + ',' + body.idProvincia);
-    var idUbicacion = query.recordset.idUbicacion;
+    var idUbicacion = query.recordset[0].idUbicacion;
     const poolSucursal = await poolPromise;
     const querySucursal = await poolSucursal.request.query('insertarSucursal ' + body.nombre + ',' + body.descripcion + ','+ idUbicacion);
     res.render('../views/dashboardAdmin',{ listo: 'Transaccion Existosa' });
@@ -68,7 +68,7 @@ exports.crearFabrica = async (req, res) => {
   else {
     const pool = await poolPromise;
     const query = await pool.request.query('insertarUbicacion ' + body.senas + ',' + body.locacion + ',' + body.idProvincia);
-    var idUbicacion = query.recordset.idUbicacion;
+    var idUbicacion = query.recordset[0].idUbicacion;
     const poolFabrica = await poolPromise;
     const queryFabrica = await pool.request.query('InsertarFabrica ' +  body.descripcion + ',' + idUbicacion);
     //TODO
@@ -301,6 +301,76 @@ exports.modificarVehiculoSucursal = async(req, res) => {
     const query = await pool.request.query('modificarVehiculoXSucursal ' + body.idVehiculoXSucursal + ',' + idSucursal + ',' + idVehiculo);
     //TODO
   }
+};
+
+//CRUD Consignacion
+
+exports.crearConsignacion = async (req, res) => {
+  const body = req.body;
+  if(body.cedulaCliente === undefined || body.idVehiculo === undefined || body.ganancia === undefined) {
+    return res.json({status : -1, message : "Faltan parametros"});
+  }
+  else {
+    const pool = await poolPromise;
+    const query = await pool.request.query('insertarConsignacion ' + body.cedulaCliente + ',' + body.idVehiculo + ',' + body.ganancia);
+    //TODO
+  }
+};
+
+exports.modificarConsignacion = async (req, res) => {
+  const body = req.body;
+  if(body.idConsignacion === undefined) {
+    return res.json({status : -1, message : "Faltan parametros"});
+  }
+  else {
+    var cedulaCliente = (body.cedulaCliente !== undefined) ? body.cedulaCliente : 'NULL';
+    var idVehiculo = (body.idVehiculo !== undefined) ? body.idVehiculo : 'NULL';
+    var ganancia = (body.ganancia !== undefined) ? body.ganancia : 'NULL';
+    const pool = await poolPromise;
+    const query = await pool.request().query('modificarConsignacion ' + body.idConsignacion + ',' + cedulaCliente + ',' + idVehiculo + ',' + ganancia);
+    //TODO
+  }
+}
+
+exports.seleccionarConsignacion = async (req, res) => {
+  const body = req.body;
+  var idConsignacion = (body.idConsignacion !== undefined) ? body.idConsignacion : 'NULL';
+  var cedulaCliente = (body.cedulaCliente !== undefined) ? body.cedulaCliente : 'NULL';
+  var idVehiculo = (body.idVehiculo !== undefined) ? body.idVehiculo : 'NULL';
+  var gananciaLow = (body.gananciaLow !== undefined) ? body.gananciaLow : 'NULL';
+  var gananciaHigh = (body.gananciaHigh !== undefined) ? body.gananciaHigh : 'NULL';
+  const pool = await poolPromise;
+  const query = await pool.request().query('seleccionarConsignacion ' + idConsignacion + ',' + cedulaCliente + ',' + idVehiculo + ',' + gananciaLow + ',' + gananciaHigh);
+  //TODO
+};
+
+//CRUD Comision
+
+exports.modificarComision = async (req, res) => {
+  const body = req.body;
+  if(body.idComision === undefined) {
+    return res.json({status : -1, message : "Faltan parametros"});
+  }
+  else {
+    var idFactura = (body.idFactura !== undefined) ? body.idFactura : 'NULL';
+    var idEmpleado = (body.idEmpleado !== undefined) ? body.idEmpleado : 'NULL';
+    var comision = (body.comision !== undefined) ? body.comision : 'NULL';
+    const pool = await poolPromise;
+    const query = await pool.request().query('ActualizarComision ' + body.idComision + ',' + idFactura + ',' + idEmpleado + ',' + comision);
+    //TODO
+  }
+};
+
+exports.seleccionarComisiones = async (req, res) => {
+  const body = req.body;
+  var idComision = (body.idComision !== undefined) ? body.idComision : 'NULL';
+  var comisionInicial = (body.comisionInicial !== undefined) ? body.comisionInicial : 'NULL';
+  var comisionFinal = (body.comisionFinal !== undefined) ? body.comisionFinal : 'NULL';
+  var fechaInicial = (body.fechaInicial !== undefined) ? body.fechaInicial : 'NULL';
+  var fechaFinal = (body.fechaFinal !== undefined) ? body.fechaFinal : 'NULL';
+  const pool = await poolPromise;
+  const query = await pool.request().query('SeleccionarComisiones ' + idComision + ',' + comisionInicial + ',' + comisionFinal + ',' + fechaInicial + ',' + fechaFinal);
+  //TODO
 };
 
 //Aun no se que es
