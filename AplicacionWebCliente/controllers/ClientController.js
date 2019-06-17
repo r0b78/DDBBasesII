@@ -1,10 +1,10 @@
-var json2html = require('node-json2html');
 var db = require('../database')
 const { poolPromise } = require('../database')
 var cookieParser = require('cookie-parser');
 
 
 function transformDataWith(data,noMostrar=[],headers=[]) {
+  var json2html = require('node-json2html');
   var elems = []
   var headersHtml=` <thead><tr>`
   var headersHtmlEnd = `</tr> </thead><tbody>`
@@ -74,7 +74,8 @@ exports.verCompras = async (req,res)=> {
   var html = transformDataWith(result.recordset);
   res.render('../views/dashboardCliente',{
     resultadoTabla:html
-});
+  });
+
 };
 
 exports.buscarVehiculosVentana = async (req,res)=> {
@@ -82,7 +83,6 @@ exports.buscarVehiculosVentana = async (req,res)=> {
   res.render('../views/dashboardCliente',{
     buscarVehiculo:{}
   });
-
 };
 
 exports.buscarVehiculo = async (req,res) => {
