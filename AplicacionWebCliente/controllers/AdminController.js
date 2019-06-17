@@ -80,7 +80,7 @@ exports.verVehiculos = async (req, res) => {
   //TODO
 };
 
-exports.verVehiculosComprado = async (req, res) => {
+exports.verVehiculosComprados = async (req, res) => {
   const body = req.body;
   var tipo = (body.tipo !== undefined) ? body.tipo : 'NULL';
   var combustible = (body.combustible !== undefined) ? body.combustible : 'NULL';
@@ -117,14 +117,23 @@ exports.vehiculoFabrica = async (req, res) => {
   //TODO
 };
 
+exports.mostrarVistaSucursal = async (req,res) => {
+  
+  res.render('../views/dashboardAdmin',{verSucursal});
+
+}
+
+exports.vistaSucursales = async (req,res) => {
+
+}
+
 exports.verSucursales = async (req, res) => {
   const body = req.body;
   var nombre = (body.nombre !== undefined) ? body.nombre : 'NULL';
   var descripcion = (body.descripcion !== undefined) ? body.descripcion : 'NULL';
   var idUbicacion = (body.idUbicacion !== undefined) ? body.idUbicacion : 'NULL';
   const pool = await poolPromise;
-  const query = await pool.request.query('seleccionarSucursal ' + nombre + ',' + descripcion + ',' + idUbicacion);
-  //TODO
+  const query = await pool.request.query('seleccionarSucursal ' + nombre + ',' + descripcion + ',' + idUbicacion); 
 }
 
 exports.reporteVentas = async (req, res) => {

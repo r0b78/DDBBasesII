@@ -48,7 +48,7 @@
             
         </li>
         <li class="logo">
-         <a href="/CrarDescuento">CrarDescuento</a>
+         <a href="/crearDescuento">CrarDescuento</a>
         </li>
         <li class="bold">
           <a href="/crearEmpleado">Crear Empleado</a>
@@ -57,34 +57,36 @@
           <a href="/crearVehiculo">Agregar Vehiculo </a>
         </li>
         <li class="bold">
-          <a href="/crearVehiculo" >Modificar Vehiculo
+          <a href="/modificarVehiculo" >Modificar Vehiculo
             (Ver vehi y modi) </a>
         </li>
         <li class="bold">
-          <a href="/crearVehiculo">Reportes Venta y Repor Tipo Pago </a>
+          <a href="/Reporte">Reportes Venta y Repor Tipo Pago </a>
         </li>
         <li class="bold">
-          <a href="/crearVehiculo">SeleccionarEmpleado</a>
+          <a href="/VerEmpleados">SeleccionarEmpleado</a>
         </li>
         <li class="bold">
-          <a href="/crearVehiculo">Seleccionar Vehiculos </a>
+          <a href="/VerVehiculos">Seleccionar Vehiculos </a>
         </li>
         <li class="bold">
-          <a href="/crearVehiculo">Vehiculos Vendidos</a>
+          <a href="/verVehiculosVendidos">Vehiculos Vendidos</a>
         </li>
         <li class="bold">
-          <a href="/crearVehiculo">Vehiculos Por Fabrica </a>
+          <a href="/vehiculaFabrica">Vehiculos Por Fabrica </a>
         </li>
-        
-  
   
   
       </ul>
 </header>
 
 <body>
-   
-   
+    <% if (locals.listo) { %>      
+        <h5>
+          <%= listo.mensaje%>
+        </h5>
+    <% }  %>
+    
     <% if (locals.results) { %>      
       <div class="row">
           <div class="container">
