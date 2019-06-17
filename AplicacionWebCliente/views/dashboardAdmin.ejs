@@ -92,34 +92,100 @@
     
     <% if(locals.vistaSucursal) {%>
       <div>
-          <div class="row">
-              <div class="input-field col s6">
-                    <input disabled id="name" type="text"" name="name">      
-                    Nombre
+          <form action="/vistaSucursales" method="POST">
+              <div class="row">
+                  <div class="input-field col s6">
+                        <input id="name" type="text"" name="name">      
+                        <label class="active" for="name">
+                            Nombre
+                        </label> 
+                  </div>
               </div>
-          </div>
-          <div class="row">
-              <div class="input-field col s6">
-                    <input disabled id="name" type="text"" name="name">      
-                    Descripcion
+              <div class="row">
+                  <div class="input-field col s6">
+                        <input id="descripcion" type="text"" name="descripcion">      
+                        <label class="active" for="descripcion">
+                            Descripcion
+                        </label> 
+                  </div>
               </div>
-          </div>
-          <div class="row">
-              <div class="input-field col s6">
-                    <input disabled id="name" type="text"" name="name">      
-                    Provincia
+              <div class="row">
+                  <div class="input-field col s6">
+                        <input id="provincia" type="text"" name="idProvincia">      
+                        <label for="provincia">
+                            Provincia
+                        </label>
+                  </div>
               </div>
-          </div>
-          <div class="row">
-              <div class="input-field col s6">
-                    <input disabled id="name" type="text"" name="name">      
-                    Pais
+              <div class="row">
+                  <div class="input-field col s6">
+                        <input id="senas" type="text"" name="senas">      
+                        <label for="senas">
+                            Descripcion Ubicacion
+                        </label>
+                  </div>
               </div>
-          </div>
+              <div class="row">
+                  <div class="input-field col s6">
+                        <input id="pais" type="text"" name="pais">      
+                        <label class="active" for="pais" >
+                          Pais
+                        </label>
+                  </div>
+              </div>
+              <button type="submit" class="btn">
+                Buscar Sucursal
+              </button>
+          </form>
       </div>
 
     <% }  %>
   
+    <% if(locals.crearSucursal) {%>
+      <div>
+          <form action="">
+              <div class="row">
+                  <div class="input-field col s6">
+                        <input id="name" type="text"" name="name">      
+                        <label class="active" for="name">
+                            Nombre
+                        </label> 
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="input-field col s6">
+                        <input id="descripcion" type="text"" name="descripcion">      
+                        <label class="active" for="descripcion">
+                            Descripcion
+                        </label> 
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="input-field col s6">
+                        <input id="provincia" type="text"" name="provincia">      
+                        <label for="provincia">
+                            Provincia
+                        </label>
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="input-field col s6">
+                        <input id="pais" type="text"" name="pais">      
+                        <label class="active" for="pais" >
+                          Pais
+                        </label>
+                  </div>
+              </div>
+              <button type="submit" class="btn">
+                Agregar Sucursal
+              </button>
+          </form>
+      </div>
+
+    <% }  %>
+  
+
+
 
     <% if (locals.results) { %>      
       <div class="row">

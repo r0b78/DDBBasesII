@@ -52,10 +52,12 @@ app.post('/crearVehiculo',admin.crearVehiculo)
 
 app.post('/vehiculoFabrica',admin.vehiculoFabrica)
 
+// Sucursal
 app.get('/mostrarVistaSucursal',admin.mostrarVistaSucursal)
 app.post('/vistaSucursales', admin.verSucursales);
 
-
+app.get('/agregarSucursal',admin.vistaAgregarSucursal)
+app.post('/agregarSucursal',admin.crearSucursal);
 
 
 

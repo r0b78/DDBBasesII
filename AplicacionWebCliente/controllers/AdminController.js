@@ -5,8 +5,13 @@ const poolPromise = require('../database');
 
 exports.crearSucursal = async (req, res) => {
   const body = req.body;
-  if(body.descripcion === undefined || body.locacion === undefined || body.idProvincia === undefined || body.nombre === undefined || body.senas === undefined) {
-    return res.json({status : -1, message : "Faltan parametros"});
+
+  if( body.descripcion === undefined || 
+      body.locacion === undefined || 
+      body.idProvincia === undefined || 
+      body.nombre === undefined || 
+      body.senas === undefined) {
+      return res.json({status : -1, message : "Faltan parametros"});
   }
   else {
     const pool = await poolPromise;
@@ -14,9 +19,18 @@ exports.crearSucursal = async (req, res) => {
     var idUbicacion = query.recordset.idUbicacion;
     const poolSucursal = await poolPromise;
     const querySucursal = await poolSucursal.request.query('insertarSucursal ' + body.nombre + ',' + body.descripcion + ','+ idUbicacion);
-    //TODO
+    res.render('../views/dashboardAdmin',{ listo: 'Transaccion Existosa' });
   }
 };
+
+exports.vistaAgregarSucursal = (req,res) =>{
+  res.render('../views/dashboardAdmin.ejs',{vistaSucursal:{}});
+}
+
+exports.mostrarVistaSucursal = async(req,res) => {
+
+  res.render('../views/dashboardAdmin', {vistaSucursal:{}});
+}
 
 exports.verSucursales = async (req, res) => {
   const body = req.body;
@@ -246,10 +260,7 @@ exports.crearSucursal = async (req, res) => {
   }
 };
 
-exports.mostrarVistaSucursal = async(req,res) => {
 
-  res.render('../views/dashboardAdmin', {vistaSucursal:{}});
-}
 
 exports.verSucursales = async (req, res) => {
   const body = req.body;
