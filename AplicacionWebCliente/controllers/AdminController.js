@@ -1,6 +1,143 @@
 var db = require('../database');
 const poolPromise = require('../database');
 
+//CRUD Sucursal
+
+exports.crearSucursal = async (req, res) => {
+  const body = req.body;
+  if(body.descripcion === undefined || body.locacion === undefined || body.idProvincia === undefined || body.nombre === undefined || body.senas === undefined) {
+    return res.json({status : -1, message : "Faltan parametros"});
+  }
+  else {
+    const pool = await poolPromise;
+    const query = await pool.request.query('insertarUbicacion ' + body.senas + ',' + body.locacion + ',' + body.idProvincia);
+    var idUbicacion = query.recordset.idUbicacion;
+    const poolSucursal = await poolPromise;
+    const querySucursal = await poolSucursal.request.query('insertarSucursal ' + body.nombre + ',' + body.descripcion + ','+ idUbicacion);
+    //TODO
+  }
+};
+
+exports.verSucursales = async (req, res) => {
+  const body = req.body;
+  var nombre = (body.nombre !== undefined) ? body.nombre : 'NULL';
+  var descripcion = (body.descripcion !== undefined) ? body.descripcion : 'NULL';
+  var provincia = (body.provincia !== undefined) ? body.provincia : 'NULL';
+  var pais = (body.pais !== undefined) ? body.pais : 'NULL';
+  const pool = await poolPromise;
+  const query = await pool.request.query('seleccionarSucursal ' + nombre + ',' + descripcion + ',' + provincia + ',' + pais);
+  //TODO
+}
+
+exports.modificarSucursal = async (req, res) => {
+  const body = req.body;
+  if(body.nombre === undefined) {
+    return res.json({status : -1, message : "Es necesario el nombre"});
+  }
+  else {
+    var nuevoNombre = (body.nuevoNombre !== undefined) ? body.nuevoNombre : 'NULL';
+    var descripcion = (body.descripcion !== undefined) ? body.descripcion : 'NULL';
+    var idUbicacion = (body.idUbicacion !== undefined) ? body.idUbicacion : 'NULL';
+    const pool = await poolPromise;
+    const query = await pool.request.query('modificarSucursal ' + body.nombre + ',' + body.nuevoNombre + ',' + body.idUbicacion);
+    //TODO
+  }
+}
+
+//CRUD Fabrica
+
+exports.crearFabrica = async (req, res) => {
+  const body = req.body;
+  if(body.descripcion === undefined || body.provincia === undefined || body.locacion === undefined || body.senas === undefined) {
+    return res.json({status : -1, message : "Falta informacion"});
+  }
+  else {
+    const pool = await poolPromise;
+    const query = await pool.request.query('insertarUbicacion ' + body.senas + ',' + body.locacion + ',' + body.idProvincia);
+    var idUbicacion = query.recordset.idUbicacion;
+    const poolFabrica = await poolPromise;
+    const queryFabrica = await pool.request.query('InsertarFabrica ' +  body.descripcion + ',' + idUbicacion);
+    //TODO
+  }
+};
+
+exports.modificarFabrica = async (req, res) => {
+  const body = req.body;
+  if(body.idFabrica === undefined) {
+    return res.json({status : -1, message : "Falta informacion"});
+  }
+  else {
+    var descripcion = (body.descripcion !== undefined) ? body.descripcion : 'NULL';
+    var idUbicacion = (body.idUbicacion !== undefined) ? body.idUbicacion : 'NULL';
+    const pool = await poolPromise;
+    const query = await pool.request.query('ModificarFabrica ' + body.idFabrica + ',' + descripcion + ',' + idUbicacion);
+    //TODO
+  }
+};
+
+exports.seleccionarFabrica = async (req, res) => {
+  const body = req.body;
+  var idFabrica = (body.idFabrica !== undefined) ? body.idFabrica : 'NULL';
+  var descripcion = (body.descripcion !== undefined) ? body.descripcion : 'NULL';
+  var nombreProvincia = (body.nombreProvincia !== undefined) ? body.nombreProvincia : 'NULL';
+  var nombrePais = (body.nombrePais !== undefined) ? body.nombrePais : 'NULL';
+  var idUbicacion = (body.idUbicacion !== undefined) ? body.idUbicacion : 'NULL';
+  const pool = await poolPromise;
+  const query = await pool.request.query('SeleccionarFabrica ' + idFabrica + ',' + descripcion + ',' + nombreProvincia + ',' + nombrePais + ',' + idUbicacion);
+  //TODO
+};
+
+//CRUD vehiculo
+
+exports.crearVehiculo = async (req, res) => {
+  const body = req.body;
+  if(body.tipo === undefined || body.combustible === undefined || body.marca === undefined || body.modelo === undefined || body.precio === undefined || body.usado === undefined || body.puertas === undefined) {
+    return res.json({status : -1, message : "Faltan parametros"});
+  }
+  else {
+    const pool = await poolPromise;
+    const query = await pool.request.query('insertarVehiculo ' + body.tipo + ',' + body.combustible + ',' + body.marca + ',' + body.modelo + ',' + body.precio + ',' + body.usado + ',' + body.puertas);
+    //TODO
+  }
+}
+
+exports.modificarVehiculo = async (req, res) => {
+  const body = req.body;
+  if(body.idVehiculo === undefined) {
+    return res.json({status : -1, message : "Es necesario el ID"});
+  }
+  else {
+    var tipo = (body.tipo !== undefined) ? body.tipo : 'NULL';
+    var combustible = (body.combustible !== undefined) ? body.combustible : 'NULL';
+    var marca = (body.marca !== undefined) ? body.marca : 'NULL';
+    var modelo = (body.modelo !== undefined) ? body.modelo : 'NULL';
+    var precio = (body.precio !== undefined) ? body.precio : 'NULL';
+    var puertas = (body.puertas !== undefined) ? body.puertas : 'NULL';
+    const pool = await poolPromise;
+    const query = await pool.request.query('modificarVehiculo ' + tipo + ',' + combustible + ',' + marca + ',' + modelo + ',' + precio + ',' + puertas);
+    //TODO
+  }
+};
+
+exports.verVehiculos = async (req, res) => {
+  const body = req.body;
+  var tipo = (body.tipo !== undefined) ? body.tipo : 'NULL';
+  var combustible = (body.combustible !== undefined) ? body.combustible : 'NULL';
+  var marca = (body.marca !== undefined) ? body.marca : 'NULL';
+  var modelo = (body.modelo !== undefined) ? body.modelo : 'NULL';
+  var precioLow = (body.precioLow !== undefined) ? body.precioLow : 'NULL';
+  var precioHigh = (body.precioHigh !== undefined) ? body.precioHigh : 'NULL';
+  var usado = (body.usado !== undefined) ? body.usado : 'NULL';
+  var puertas = (body.puertas !== undefined) ? body.puertas : 'NULL';
+  const pool = await poolPromise;
+  const query = await pool.request.query('seleccionarVehiculo ' + tipo + ',' + combustible + ',' + marca + ',' + modelo + ',' + precioLow + ',' + precioHigh + ',' + usado + ',' + puertas);
+  //TODO
+};
+
+//CRUD Extras
+
+//Aun no se que es
+
 exports.crearDescuento = async (req, res) => {
   const body = req.body;
   if(body.nombre === undefined || body.descuento === undefined) {
@@ -66,20 +203,6 @@ exports.modificarEmpleado = async (req, res) => {
   }
 };
 
-exports.verVehiculos = async (req, res) => {
-  const body = req.body;
-  var tipo = (body.tipo !== undefined) ? body.tipo : 'NULL';
-  var combustible = (body.combustible !== undefined) ? body.combustible : 'NULL';
-  var marca = (body.marca !== undefined) ? body.marca : 'NULL';
-  var modelo = (body.modelo !== undefined) ? body.modelo : 'NULL';
-  var precioLow = (body.precioLow !== undefined) ? body.precioLow : 'NULL';
-  var precioHigh = (body.precioHigh !== undefined) ? body.precioHigh : 'NULL';
-  var usado = (body.usado !== undefined) ? body.usado : 'NULL';
-  const pool = await poolPromise;
-  const query = await pool.request.query('seleccionarVehiculo ' + tipo + ',' + combustible + ',' + marca + ',' + modelo + ',' + precioLow + ',' + precioHigh + ',' + usado);
-  //TODO
-};
-
 exports.verVehiculosComprados = async (req, res) => {
   const body = req.body;
   var tipo = (body.tipo !== undefined) ? body.tipo : 'NULL';
@@ -93,18 +216,6 @@ exports.verVehiculosComprados = async (req, res) => {
   //TODO
 };
 
-exports.crearVehiculo = async (req, res) => {
-  const body = req.body;
-  if(body.tipo === undefined || body.combustible === undefined || body.marca === undefined || body.modelo === undefined || body.precio === undefined || body.usado === undefined) {
-    return res.json({status : -1, message : "Faltan parametros"});
-  }
-  else {
-    const pool = await poolPromise;
-    const query = await pool.request.query('insertarVehiculo ' + body.tipo + ',' + body.combustible + ',' + body.marca + ',' + body.modelo + ',' + body.precio + ',' + body.usado);
-    //TODO
-  }
-}
-
 exports.vehiculoFabrica = async (req, res) => {
   const body = req.body;
   var idVehiculoFabrica = (body.idVehiculoFabrica !== undefined) ? body.idVehiculoFabrica : 'NULL';
@@ -116,6 +227,7 @@ exports.vehiculoFabrica = async (req, res) => {
   const query = await pool.request.query('SeleccionarVehiculoFabrica ' + idVehiculoFabrica + ',' + idVehiculo + ',' + costoVehiculo + ',' + idInventario + ',' + idFabrica);
   //TODO
 };
+
 
 //CRUD Sucursal
 
@@ -133,6 +245,11 @@ exports.crearSucursal = async (req, res) => {
     //TODO
   }
 };
+
+exports.mostrarVistaSucursal = async(req,res) => {
+
+  res.render('../views/dashboardAdmin', {vistaSucursal:{}});
+}
 
 exports.verSucursales = async (req, res) => {
   const body = req.body;
@@ -187,21 +304,4 @@ exports.empleadosFabrica = async (req, res) => {
   const pool = await poolPromise;
   const query = await pool.request.query('seleccionarEmpleado ' + nombre + ',' + apellido + ',' + telefono + ',' + correo + ',' + supervisor + ',' + puesto + ',' + sucursal + ',' + cedula + ',');
   //TODO
-};
-
-exports.modificarVehiculo = async (req, res) => {
-  const body = req.body;
-  if(body.idVehiculo === undefined) {
-    return res.json({status : -1, message : "Es necesario el ID"});
-  }
-  else {
-    var tipo = (body.tipo !== undefined) ? body.tipo : 'NULL';
-    var combustible = (body.combustible !== undefined) ? body.combustible : 'NULL';
-    var marca = (body.marca !== undefined) ? body.marca : 'NULL';
-    var modelo = (body.modelo !== undefined) ? body.modelo : 'NULL';
-    var precio = (body.precio !== undefined) ? body.precio : 'NULL';
-    const pool = await poolPromise;
-    const query = await pool.request.query('modificarVehiculo ' + tipo + ',' + combustible + ',' + marca + ',' + modelo + ',' + precio);
-    //TODO
-  }
 };

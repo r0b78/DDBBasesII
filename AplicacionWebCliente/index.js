@@ -42,7 +42,7 @@ app.post('/crearEmpleado',admin.crearEmpleado)
 
 app.post('/verEmpleados',admin.verEmpleados)
 
-app.post('/modificarEmpleado',admin.modificarEmpleado)
+app.post('/modificarEmpleado',admin.modificarVehiculo)
 
 app.post('/verVehiculos', admin.verVehiculos)
 
@@ -53,7 +53,7 @@ app.post('/crearVehiculo',admin.crearVehiculo)
 app.post('/vehiculoFabrica',admin.vehiculoFabrica)
 
 app.get('/mostrarVistaSucursal',admin.mostrarVistaSucursal)
-app.post('/vistaSucursales', admin.vistaSucursales);
+app.post('/vistaSucursales', admin.verSucursales);
 
 
 

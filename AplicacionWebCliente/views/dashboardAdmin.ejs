@@ -57,11 +57,13 @@
           <a href="/crearVehiculo">Agregar Vehiculo </a>
         </li>
         <li class="bold">
-          <a href="/modificarVehiculo" >Modificar Vehiculo
-            (Ver vehi y modi) </a>
+            <a href="/mostrarVistaSucursal">Ver Sucursales </a>
+          </li>
+        <li class="bold">
+          <a href="/modificarVehiculo" >Modificar Vehiculo </a>
         </li>
         <li class="bold">
-          <a href="/Reporte">Reportes Venta y Repor Tipo Pago </a>
+          <a href="/Reporte">Repor Venta y Rep Tipo Pago </a>
         </li>
         <li class="bold">
           <a href="/VerEmpleados">SeleccionarEmpleado</a>
@@ -81,12 +83,44 @@
 </header>
 
 <body>
+
     <% if (locals.listo) { %>      
         <h5>
           <%= listo.mensaje%>
         </h5>
     <% }  %>
     
+    <% if(locals.vistaSucursal) {%>
+      <div>
+          <div class="row">
+              <div class="input-field col s6">
+                    <input disabled id="name" type="text"" name="name">      
+                    Nombre
+              </div>
+          </div>
+          <div class="row">
+              <div class="input-field col s6">
+                    <input disabled id="name" type="text"" name="name">      
+                    Descripcion
+              </div>
+          </div>
+          <div class="row">
+              <div class="input-field col s6">
+                    <input disabled id="name" type="text"" name="name">      
+                    Provincia
+              </div>
+          </div>
+          <div class="row">
+              <div class="input-field col s6">
+                    <input disabled id="name" type="text"" name="name">      
+                    Pais
+              </div>
+          </div>
+      </div>
+
+    <% }  %>
+  
+
     <% if (locals.results) { %>      
       <div class="row">
           <div class="container">
