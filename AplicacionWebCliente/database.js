@@ -1,8 +1,12 @@
 const sql = require('mssql/msnodesqlv8')
 const connectionString = "server=DESKTOP-DOJPP4E;Database=Proyecto_BasesII;Trusted_Connection=Yes;Driver={SQL Server Native Client 11.0}"
 var config = {
-  driver: 'msnodesqlv8',
-  connectionString: connectionString
+  //driver: 'msnodesqlv8',
+  //connectionString: connectionString
+  user: 'rb',
+  password: '1234',
+  server: 'MY-PC\\MSSQLSERVER1',
+  database: 'Proyecto_BasesII'
 };
 
 const poolPromise = new sql.ConnectionPool(config)
