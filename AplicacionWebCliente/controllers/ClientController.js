@@ -102,9 +102,20 @@ exports.buscarVehiculo = async (req,res) => {
                                 dataVehiculo:result.recordset
   });
 }
+exports.verCompraVehiculo = async(req,res) => {
+  var IDVehiculo = req.params.id
+  const pool = await poolPromise
+  const result = await pool.request().query('seleccionarVehiculo2 '+IDVehiculo)
+  res.render('../views/dashboardCliente',{
+    compraVehiculo:result.recordset
+  });
+}
+
+
+
 exports.comprarVehiculo = async (req,res) => {
   var IDVehiculo = req.params.id
-  var IDCliente
+  var IDCliente = ""
   var comentario =  ""
   var subtotal = ""
   var impuesto = ""
