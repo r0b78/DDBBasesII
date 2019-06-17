@@ -167,7 +167,7 @@ exports.modificarExtra = async (req, res) => {
   var nombre = (body.nombre !== undefined) ? body.nombre : 'NULL';
   var descripcion = (body.descripcion !== undefined) ? body.descripcion : 'NULL';
   var nuevoNombre = (body.nuevoNombre !== undefined) ? body.nuevoNombre : 'NULL';
-  var precio = (body.precio !== undefined) ? body.´precio : 'NULL';
+  var precio = (body.precio !== undefined) ? body.precio : 'NULL';
   const pool = await poolPromise;
   const query = await pool.request.query('modificarExtra ' + nombre + ',' + nuevoNombre + ',' + descripcion + ',' + precio);
   //TODO
@@ -177,7 +177,7 @@ exports.selecionarExtra = async (req, res) => {
   const body = req.body;
   var nombre = (body.nombre !== undefined) ? body.nombre : 'NULL';
   var descripcion = (body.descripcion !== undefined) ? body.descripcion : 'NULL';
-  var precio = (body.precio !== undefined) ? body.´precio : 'NULL';
+  var precio = (body.precio !== undefined) ? body.precio : 'NULL';
   const pool = await poolPromise;
   const query = await pool.request.query('modificarExtra ' + nombre + ',' + descripcion + ',' + precio);
   //TODO
