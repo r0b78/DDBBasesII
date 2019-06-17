@@ -131,7 +131,7 @@
                 </li> 
               </ul>  
             </div>
-            <form action=<%= '/solicitarVehiculo/'+dataVehiculo[i].IdVehiculo %>>
+            <form method="POST" action= <%= '/comprarVehiculo/'+dataVehiculo[i].IdVehiculo %>>
             <div class="card-action">
               <button class="btn" type="submit">
                 Comprar

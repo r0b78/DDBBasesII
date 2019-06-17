@@ -1,17 +1,8 @@
 var json2html = require('node-json2html');
 var db = require('../database')
 const { poolPromise } = require('../database')
-var t = {'<>':'tr','html':'${title} ${year}'};
-    
-var d = [
-    {"title":"Heat","year":"1995"},
-    {"title":"Snatch","year":"2000"},
-    {"title":"Up","year":"2009"},
-    {"title":"Unforgiven","year":"1992"},
-    {"title":"Amadeus","year":"1984"}
-];
-    
-var html = json2html.transform(d,t);
+var cookieParser = require('cookie-parser');
+
 
 function transformDataWith(data,noMostrar=[],headers=[]) {
   var elems = []
@@ -46,15 +37,32 @@ exports.mainPage = function (req, res) {
   res.render('../views/login');;
 };
 
-exports.login = function (req, res) {
-  if(req.body.name=="1"){
-    res.render('../views/dashboardCliente');
+exports.login = async(req, res)=> {
+  var name = req.body.name
+  var password = req.body.password
+  console.log(name)
+  console.log(password)
+  const pool = await poolPromise
+  const result = await pool.request().query('loginUsuario '+name+','+password)
+  const objectoCliente= result.recordset
+  console.log(objectoCliente)
 
+  if(objectoCliente[0].Privilegio === 'Cliente') {
+    res.cookie('IdUsuario' ,''+objectoCliente.IdUsuario );
+    res.render('../views/dashboardCliente');
+    return
   }
-  if(req.body.name=="2"){
-    res.render('../views/dashboardEmpleado');
-  }else {
+  if(objectoCliente[0].Privilegio === 'Administrador') {
+    res.cookie('IdUsuario' ,''+objectoCliente.IdUsuario );
     res.render('../views/dashboardAdmin');
+    return
+  }
+  if(objectoCliente[0].Privilegio === 'Empleado'){
+    res.cookie('IdUsuario' ,''+objectoCliente.IdUsuario );
+    res.render('../views/dashboardEmpleado');
+    return
+  }else {
+    res.send('Usuario No Valido')
   }
   
 };
@@ -95,7 +103,14 @@ exports.buscarVehiculo = async (req,res) => {
   });
 }
 exports.comprarVehiculo = async (req,res) => {
-
+  var IDVehiculo = req.params.id
+  var IDCliente
+  var comentario =  ""
+  var subtotal = ""
+  var impuesto = ""
+  var descuento = ""
+  var tipoPago = ""
+  var modalidad = ""
 
 }
 
