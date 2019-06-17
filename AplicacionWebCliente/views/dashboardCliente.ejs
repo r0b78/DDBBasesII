@@ -111,7 +111,8 @@
           <% for(var i=0; i < dataVehiculo.length; i++) { %>
           <div class="card">
             <div class="card-image">
-              
+              <img src= <%= dataVehiculo[i].Foto %> height=200 width=100>
+
               <span class="card-title"></span>
             </div>
             <div class="card-content">
@@ -141,9 +142,34 @@
           </div>
           <% } %>
         </div>
+        <script>
+          
+        </script>
       </div>
   <% } %>           
  
+  <% if (locals.verVehiculoCompra) { %>     
+    <form action= <%= '/comprarVehiculo/'+ locals.verVehiculo.id %> >
+      <div class="row">
+        <div class="input-field col s6">
+            <input disabled id="name" type="text"" name="name">
+            
+          </div>
+      </div>
+      <div class="row">
+          <div class="input-field col s6">
+              <input disabled id="name" type="text"" name="name">
+              
+          </div>
+      </div>
+      <button class="btn" type="submit">
+        Comprar
+      </button>
+      
+    
+    </form>
+  <% } %>   
+
 
     <% if (locals.resultadoTabla) { %>      
       <div class="row">

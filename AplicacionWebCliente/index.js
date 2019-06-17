@@ -5,10 +5,12 @@ var client = require('./controllers/ClientController')
 var admin = require('./controllers/AdminController')
 var empleado = require('./controllers/EmpleadoController')
 var bodyParser=require('body-parser')
+var cookieParser = require('cookie-parser');
+
+app.use(cookieParser());
 app.set("view engine","ejs")
 
 app.use(express.static('public'));
-
 app.use(bodyParser.urlencoded({
   extended: true
 }));
@@ -26,6 +28,8 @@ app.get('/verCompras',client.verCompras)
 
 app.get('/buscarVehiculos',client.buscarVehiculosVentana)
 app.post('/buscarVehiculos',client.buscarVehiculo)
+
+app.get('/comprarVehiculo/:id',client.verCompraVehiculo)
 app.post('/comprarVehiculo/:id',client.comprarVehiculo)
 
 
