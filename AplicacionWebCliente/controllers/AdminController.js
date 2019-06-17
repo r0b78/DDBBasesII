@@ -136,6 +136,62 @@ exports.verVehiculos = async (req, res) => {
 
 //CRUD Extras
 
+exports.crearExtra = async (req, res) => {
+  const body = req.body;
+  if(body.descripcion === undefined || body.nombre === undefined || body.precio === undefined) {
+    return res.json({status : -1, message : "Informacion incompleta"});
+  }
+  else {
+    const pool = await poolPromise;
+    const query = await pool.request.query('insertarExtra ' + body.nombre + ',' + body.descripcion + ',' + body.precio);
+    //TODO
+  }
+};
+
+exports.modificarExtra = async (req, res) => {
+  const body = req.body;
+  var nombre = (body.nombre !== undefined) ? body.nombre : 'NULL';
+  var descripcion = (body.descripcion !== undefined) ? body.descripcion : 'NULL';
+  var nuevoNombre = (body.nuevoNombre !== undefined) ? body.nuevoNombre : 'NULL';
+  var precio = (body.precio !== undefined) ? body.´precio : 'NULL';
+  const pool = await poolPromise;
+  const query = await pool.request.query('modificarExtra ' + nombre + ',' + nuevoNombre + ',' + descripcion + ',' + precio);
+  //TODO
+};
+
+exports.selecionarExtra = async (req, res) => {
+  const body = req.body;
+  var nombre = (body.nombre !== undefined) ? body.nombre : 'NULL';
+  var descripcion = (body.descripcion !== undefined) ? body.descripcion : 'NULL';
+  var precio = (body.precio !== undefined) ? body.´precio : 'NULL';
+  const pool = await poolPromise;
+  const query = await pool.request.query('modificarExtra ' + nombre + ',' + descripcion + ',' + precio);
+  //TODO
+};
+
+exports.insertarExtraVehiculo = async (req, res) => {
+  const body = req.body;
+  if(body.idExtra === undefined || body.idVehiculo === undefined) {
+    return res.json({status : -1, message : "Informacion incompleta"});
+  }
+  else {
+    const pool = await poolPromise;
+    const query = await pool.request.query('insertarExtraXVehiculo ' + body.idExtra + ',' + body.idVehiculo);
+    //TODO
+  }
+};
+
+exports.seleccionarExtraVehiculo = async (req, res) => {
+  const body = req.body;
+  var idExtra = (body.idExtra !== undefined) ? body.idExtra : 'NULL';
+  var idVehiculo = (body.idVehiculo !== undefined) ? body.idVehiculo : 'NULL';
+  var precioLow = (body.precioLow !== undefined) ? body.precioLow : 'NULL';
+  var precioHigh = (body.precioHigh !== undefined) ? body.precioHigh : 'NULL';
+  const pool = await poolPromise;
+  const query = await pool.request.query('seleccionarExtraXVehiculo ' + idExtra + ',' + idVehiculo + ',' + precioLow + ',' + precioHigh);
+  //TODO
+};
+
 //Aun no se que es
 
 exports.crearDescuento = async (req, res) => {
