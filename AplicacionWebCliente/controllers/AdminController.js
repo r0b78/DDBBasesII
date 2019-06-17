@@ -236,7 +236,7 @@ exports.insertarCaracteristicaVehiculo = async (req, res) => {
   }
   else {
     const pool = await poolPromise;
-    const query = await pool.request.query('insertarCaracteristicaXVehiculo ' + idCaracteristica + ',' + idVehiculo);
+    const query = await pool.request.query('insertarCaracteristicaXVehiculo ' + body.idCaracteristica + ',' + body.idVehiculo);
     //TODO
   }
 };
@@ -249,6 +249,31 @@ exports.seleccionarCaracteristicaVehiculo = async (req, res) => {
   const query = await pool.request.query('seleccionarCaracteristicaXVehiculo ' + idCaracteristica + ',' + idVehiculo);
   //TODO
 };
+
+//Inventario Sucursal
+
+exports.insertarVehiculoSucursal = async (req, res) => {
+  const body = req.body;
+  if(body.idVehiculo === undefined || body.idSucursal === undefined) {
+    return res.json({status : -1, message : "Faltan parametros"});
+  }
+  else {
+    var idVehiculo = (body.idVehiculo !== undefined) ? body.idVehiculo : 'NULL';
+    var idSucursal = (body.idSucursal !== undefined) ? body.idSucursal : 'NULL';
+    const pool = await poolPromise;
+    const query = await pool.request.query('insertarVehiculoXSucursal ' + body.idVehiculo + ',' + body.idSucursal);
+    //TODO
+  }
+};
+
+exports.seleccionarVehiculoSucursal = async (req, res) => {
+  const body = req.body;
+  var idVehiculo = (body.idVehiculo !== undefined) ? body.idVehiculo : 'NULL';
+  var idSucursal = (body.idSucursal !== undefined) ? body.idSucursal : 'NULL';
+  const pool = await poolPromise;
+  const query = await pool.request.query('seleccionarVehiculoXSucursal ' + body.idVehiculo + ',' + body.idSucursal);
+  //TODO
+}
 
 //Aun no se que es
 
