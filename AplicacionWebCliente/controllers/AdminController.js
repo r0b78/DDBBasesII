@@ -80,7 +80,7 @@ exports.verVehiculos = async (req, res) => {
   //TODO
 };
 
-exports.verVehiculosComprado = async (req, res) => {
+exports.verVehiculosComprados = async (req, res) => {
   const body = req.body;
   var tipo = (body.tipo !== undefined) ? body.tipo : 'NULL';
   var combustible = (body.combustible !== undefined) ? body.combustible : 'NULL';
@@ -129,7 +129,7 @@ exports.crearSucursal = async (req, res) => {
     const query = await pool.request.query('insertarUbicacion ' + body.senas + ',' + body.locacion + ',' + body.idProvincia);
     var idUbicacion = query.recordset.idUbicacion;
     const poolSucursal = await poolPromise;
-    const querySucursal = await poolSucursal.request.query('insertarSucursal ' + body.nombre + ',' + body.descripcion + ',' idUbicacion);
+    const querySucursal = await poolSucursal.request.query('insertarSucursal ' + body.nombre + ',' + body.descripcion + ','+ idUbicacion);
     //TODO
   }
 };

@@ -32,10 +32,28 @@ app.post('/buscarVehiculos',client.buscarVehiculo)
 app.get('/comprarVehiculo/:id',client.verCompraVehiculo)
 app.post('/comprarVehiculo/:id',client.comprarVehiculo)
 
-
 app.get('/verSucursales',client.verSucursales)
 
 //Admin
+
+app.post('/crearDescuento',admin.crearDescuento);
+
+app.post('/crearEmpleado',admin.crearEmpleado)
+
+app.post('/verEmpleados',admin.verEmpleados)
+
+app.post('/modificarEmpleado',admin.modificarEmpleado)
+
+app.post('/verVehiculos', admin.verVehiculos)
+
+app.post('/verVehiculosComprados',admin.verVehiculosComprados)
+
+app.post('/crearVehiculo',admin.crearVehiculo)
+
+app.post('/vehiculoFabrica',admin.vehiculoFabrica)
+
+app.get('/mostrarVistaSucursal',admin.mostrarVistaSucursal)
+app.post('/vistaSucursales', admin.vistaSucursales);
 
 
 
