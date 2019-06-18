@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Login</title>
+<!-- Compiled and minified CSS -->
+<script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  
+  crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+<!-- Compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<link rel="stylesheet" type="text/css" href="https://cdn.dataVehiculotables.net/1.10.19/css/jquery.dataVehiculoTables.css">
+  
+<script type="text/javascript" charset="utf8" src="https://cdn.dataVehiculotables.net/1.10.19/js/jquery.dataVehiculoTables.js"></script>
+<link rel="stylesheet" href="https://cdn.dataVehiculotables.net/select/1.3.0/css/select.dataVehiculoTables.min.css">
+<script src="https://cdn.dataVehiculotables.net/select/1.3.0/js/dataVehiculoTables.select.min.js"></script>
+<script src="https://cdn.dataVehiculotables.net/buttons/1.5.6/js/dataVehiculoTables.buttons.min.js"></script>
+<link rel="stylesheet" href="https://cdn.dataVehiculotables.net/buttons/1.5.6/css/buttons.dataVehiculoTables.min.css">
+<link rel="stylesheet" href="/css/main.css">
+</head>
+
+
+<header>
+    <nav>
+        <div class="nav-wrapper">
+          <a href="/" class="brand-logo center">CarroTec</a>
+          <ul id="nav-mobile" class="rigth hide-on-med-and-down">
+            <li><a href="/login">Cerrar Sesion</a></li>
+          </ul>
+        </div>
+    </nav>
+
+    <ul id="nav-mobile" class="sidenav sidenav-fixed">
+        <a id="logo-container" href="/" class="brand-logo">
+         <img src="/images/imagenCarro.png" width="300" height="100">
+         <li></li>
+         <li>    
+            <h5 style="color: black">Dashboard Cliente</h5>
+        </li>
+        <li class="logo">
+         <a href="/verCompras">Ver Compras</a>
+        </li>
+        <li class="bold">
+          <a href="/buscarVehiculos">Buscar Vehiculo</a>
+        </li>
+        <li class="bold">
+          <a href="/verSucursales">Ver Sucursales y Empleados </a>
+        </li>
+      </ul>
+</header>
+
+<body>
+  
+  <% if (locals.buscarVehiculo) { %>    
+    <div class="row" style="margin-top:100px">
+      <form class="col s6 offset-s3" action="/buscarVehiculos" method="post">
+        <div class="row">
+            <div class="input-field col s6">
+                <input id="marca" type="text"" name="marca">
+                <label for="marca">Marcar</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s6">
+                <input id="modelo" type="text" name="modelo">
+                <label for="modelo">Modelo</label>
+            </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s6">
+              <input id="precioL" type="text" name="precioL">
+              <label for="precioL">Precio Minimo</label>
+          </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s6">
+            <input id="precioH" type="text" name="precioH">
+            <label for="precioH">Precio Maximo</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s6">
+            <input id="combustible" type="text" name="combustible">
+            <label for="combustible">Combustible</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s6">
+            <input id="tipo" type="text" name="tipo">
+            <label for="tipo">Tipo</label>
+        </div>
+      </div>
+        <button class="btn" type="submit">
+          Buscar
+        </button>
+      </form>
+    </div>
+  
+  <% } %>
+  
+  
+  <% if (locals.dataVehiculo) { %>      
+      <div class="row">
+        <div class="col s12 m7">
+          <% for(var i=0; i < dataVehiculo.length; i++) { %>
+          <div class="card">
+            <div class="card-image">
+              <img src= <%= dataVehiculo[i].Foto %> height=200 width=100>
+
+              <span class="card-title"></span>
+            </div>
+            <div class="card-content">
+              <ul>
+                <li>
+                  Marca : <%= dataVehiculo[i].Marca %>
+                </li>
+                <li>
+                  Modelo: <%= dataVehiculo[i].Modelo %>
+                </li>
+                <li>
+                  Precio: <%= dataVehiculo[i].Precio %>
+                </li>
+                  Combustible: <%= dataVehiculo[i].Combustible %> 
+                <li>
+                  Tipo de Carro <%= dataVehiculo[i].Tipo %>
+                </li> 
+              </ul>  
+            </div>
+            <form method="POST" action= <%= '/comprarVehiculo/'+dataVehiculo[i].IdVehiculo %>>
+            <div class="card-action">
+              <button class="btn" type="submit">
+                Comprar
+              </button>
+            </div>
+          </form>
+          </div>
+          <% } %>
+        </div>
+        <script>
+          
+        </script>
+      </div>
+  <% } %>           
+ 
+  <% if (locals.verVehiculoCompra) { %>     
+    <form action= <%= '/comprarVehiculo/'+ locals.verVehiculo.id %> >
+      <div class="row">
+        <div class="input-field col s6">
+            <input disabled id="name" type="text"" name="name">
+            
+          </div>
+      </div>
+      <div class="row">
+          <div class="input-field col s6">
+              <input disabled id="name" type="text"" name="name">
+              
+          </div>
+      </div>
+      <button class="btn" type="submit">
+        Comprar
+      </button>
+      
+    
+    </form>
+  <% } %>   
+
+
+    <% if (locals.resultadoTabla) { %>      
+      <div class="row">
+          <div class="container">
+              <table id="table1" class="display">
+                  <%- resultadoTabla %>
+              </table>            
+          </div>
+      </div>
+
+      <script>
+        $(document).ready( function () {  
+          
+            var table = $('#table1').DataVehiculoTable( {
+                dom: 'Bfrtip',
+                select: true,
+                buttons: [
+                    {
+                        text: 'Get selected dataVehiculo',
+                        action: function () {
+                          var ids = $.map(table.rows('.selected').dataVehiculo(), function (item) {
+                              return item[0]
+                          });
+                        console.log(ids)
+                        alert(table.rows('.selected').dataVehiculo().length + ' row(s) selected');
+                          
+                        }
+                    }
+                ]
+            } );
+        } );
+      </script>
+    <% } %>
+
+  <script>
+      document.addEventListener('DOMContentLoaded', function() {
+         var elems = document.querySelectorAll('.sidenav');
+         var instances = M.Sidenav.init(elems, {});
+         
+       });
+       
+     </script>
+</body>
+
+
+
+
+</html>

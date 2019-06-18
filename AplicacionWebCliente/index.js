@@ -36,7 +36,7 @@ app.get('/verSucursales',client.verSucursales)
 
 //Admin
 
-app.post('/crearDescuento',admin.crearDescuento);
+//app.post('/crearDescuento',admin.crearDescuento);
 
 //app.post('/crearEmpleado',admin.crearEmpleado)
 
@@ -46,7 +46,7 @@ app.post('/crearDescuento',admin.crearDescuento);
 
 app.post('/verVehiculos', admin.verVehiculos)
 
-app.post('/verVehiculosComprados',admin.verVehiculosComprados)
+//app.post('/verVehiculosComprados',admin.verVehiculosComprados)
 
 app.post('/crearVehiculo',admin.crearVehiculo)
 
