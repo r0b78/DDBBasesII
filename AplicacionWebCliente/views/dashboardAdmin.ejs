@@ -44,27 +44,44 @@
          <img src="/images/imagenCarro.png" width="300" height="100">
         <li>
             
-                <h5 style="color: black">Dasboard Administrador</h5>
+                <h5 style="color: black">Dashboard Administrador</h5>
             
         </li>
+        <li class="bold">
+            <a href="/agregarSucursal">Agregar Sucursales </a>
+        </li>
+        <li class="bold">
+            <a href="/mostrarVistaSucursal">Ver Sucursales </a>
+        </li>
+        <li class="bold">
+            <a href="/modificarSucursal">Modificar Sucursales </a>
+        </li>
+
+        <li class="bold">
+            <a href="/crearFabrica">Crear Fabrica </a>
+        </li>
+        <li class="bold">
+            <a href="/modificarFabrica">Modificar Fabrica</a>
+        </li>
+        <li class="bold">
+            <a href="/verFabrica">Ver Fabrica</a>
+        </li>
+
+
+        <li class="bold">
+          <a href="/crearVehiculo">Agregar Vehiculo </a>
+        </li>
+        <li class="bold">
+          <a href="/modificarVehiculo" >Modificar Vehiculo </a>
+        </li>
+        <li class="bold">
+          <a href="/verVehiculo" >Ver Vehiculo </a>
+        </li>     
         <li class="logo">
          <a href="/crearDescuento">CrarDescuento</a>
         </li>
         <li class="bold">
           <a href="/crearEmpleado">Crear Empleado</a>
-        </li>
-        <li class="bold">
-          <a href="/crearVehiculo">Agregar Vehiculo </a>
-        </li>
-        <li class="bold">
-            <a href="/mostrarVistaSucursal">Ver Sucursales </a>
-        </li>
-        
-        <li class="bold">
-            <a href="/agregarSucursal">Agregar Sucursales </a>
-        </li>
-        <li class="bold">
-          <a href="/modificarVehiculo" >Modificar Vehiculo </a>
         </li>
         <li class="bold">
           <a href="/Reporte">Repor Venta y Rep Tipo Pago </a>
@@ -99,7 +116,7 @@
           <form action="/vistaSucursales" method="POST">
               <div class="row">
                   <div class="input-field col s6">
-                        <input id="name" type="text"" name="name">      
+                        <input id="name" type="text"" name="nombre">      
                         <label class="active" for="name">
                             Nombre
                         </label> 
@@ -115,7 +132,7 @@
               </div>
               <div class="row">
                   <div class="input-field col s6">
-                        <input id="provincia" type="text"" name="idProvincia">      
+                        <input id="provincia" type="text"" name="provincia">      
                         <label for="provincia">
                             Provincia
                         </label>
@@ -244,6 +261,310 @@
           </form>
       </div>
     <% }  %>
+    
+    <% if(locals.vistaCrearFabrica) {%>
+      <div>
+          <form action="/crearFabrica" method="POST">
+          
+              <div class="row">
+                  <div class="input-field col s6">
+                        <input id="descripcion" type="text"" name="descripcion">      
+                        <label class="active" for="descripcion">
+                            Descripcion
+                        </label> 
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="input-field col s6">
+                        <input id="provincia" type="text"" name="provincia">      
+                        <label for="provincia">
+                            Provincia
+                        </label>
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="input-field col s6">
+                        <input id="pais" type="text" name="locacion">      
+                        <label class="active" for="pais">
+                          Locacion
+                        </label>
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="input-field col s6">
+                        <input id="senas" type="text"" name="senas">      
+                        <label for="senas">
+                            Descripcion Ubicacion
+                        </label>
+                  </div>
+              </div>
+              <button type="submit" class="btn">
+                Agregar Fabrica
+              </button>
+          </form>
+      </div>
+    <% }  %>
+    <% if(locals.vistaModificarFabrica) {%>
+      <div>
+          <form action="/crearFabrica" method="POST">
+          
+              <div class="row">
+                  <div class="input-field col s6">
+                        <input id="descripcion" type="text"" name="descripcion">      
+                        <label class="active" for="descripcion">
+                            Descripcion
+                        </label> 
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="input-field col s6">
+                        <input id="provincia" type="text"" name="provincia">      
+                        <label for="provincia">
+                            Provincia
+                        </label>
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="input-field col s6">
+                        <input id="pais" type="text" name="locacion">      
+                        <label class="active" for="pais">
+                          Locacion
+                        </label>
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="input-field col s6">
+                        <input id="senas" type="text"" name="senas">      
+                        <label for="senas">
+                            Descripcion Ubicacion
+                        </label>
+                  </div>
+              </div>
+              <button type="submit" class="btn">
+                Agregar Fabrica
+              </button>
+          </form>
+      </div>
+    <% }  %>
+    
+    <% if(locals.vistaCrearVehiculo) {%>
+      <div class="col s12 container">
+        <form action="/crearVehiculo" method="POST">
+              <div class="row">
+                  <div class="input-field col s6">
+                        <input id="descripcion" type="text"" name="tipo">      
+                        <label class="active" for="descripcion">
+                            Tipo Vehiculo
+                        </label> 
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="input-field col s6">
+                        <input id="provincia" type="text"" name="combustible">      
+                        <label for="provincia">
+                           Combustible
+                        </label>
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="input-field col s6">
+                        <input id="pais" type="text" name="marca">      
+                        <label class="active" for="pais">
+                          Marca
+                        </label>
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="input-field col s6">
+                        <input id="pais" type="text" name="modelo">      
+                        <label class="active" for="pais">
+                          Modelo
+                        </label>
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="input-field col s6">
+                        <input id="pais" type="text" name="precio">      
+                        <label class="active" for="pais">
+                          Precio
+                        </label>
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="input-field col s6">
+                        <input id="senas" type="text"" name="usado">      
+                        <label for="senas">
+                            Usado o No Usado
+                        </label>
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="input-field col s6">
+                        <input id="senas" type="text"" name="puertas">      
+                        <label for="senas">
+                            Puertas
+                        </label>
+                  </div>
+              </div>
+
+              <button type="submit" class="btn">
+                Agregar Vehiculo
+              </button>
+        </form>
+      </div>
+    <% }  %>
+
+    <% if(locals.vistaModificarVehiculo) {%>
+      <div class="col s12 container">
+        <form action="/crearVehiculo" method="POST">
+          <div class="row">
+              <div class="input-field col s6">
+                    <input id="descripcion" type="text"" name="idVehiculo">      
+                    <label class="active" for="descripcion">
+                        IdVehiculo
+                    </label> 
+              </div>
+          </div>    
+          <div class="row">
+                  <div class="input-field col s6">
+                        <input id="descripcion" type="text"" name="tipo">      
+                        <label class="active" for="descripcion">
+                            Tipo Vehiculo
+                        </label> 
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="input-field col s6">
+                        <input id="provincia" type="text"" name="combustible">      
+                        <label for="provincia">
+                           Combustible
+                        </label>
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="input-field col s6">
+                        <input id="pais" type="text" name="marca">      
+                        <label class="active" for="pais">
+                          Marca
+                        </label>
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="input-field col s6">
+                        <input id="pais" type="text" name="modelo">      
+                        <label class="active" for="pais">
+                          Modelo
+                        </label>
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="input-field col s6">
+                        <input id="pais" type="text" name="precio">      
+                        <label class="active" for="pais">
+                          Precio
+                        </label>
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="input-field col s6">
+                        <input id="senas" type="text"" name="usado">      
+                        <label for="senas">
+                            Usado o No Usado
+                        </label>
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="input-field col s6">
+                        <input id="senas" type="text"" name="puertas">      
+                        <label for="senas">
+                            Puertas
+                        </label>
+                  </div>
+              </div>
+
+              <button type="submit" class="btn">
+                Agregar Vehiculo
+              </button>
+        </form>
+      </div>
+    <% }  %>
+
+    <% if(locals.vistaVerVehiculo) {%>
+      <div class="col s12 container">
+        <form action="/verVehiculo" method="POST">
+          <div class="row">
+                  <div class="input-field col s6">
+                        <input id="descripcion" type="text"" name="tipo">      
+                        <label class="active" for="descripcion">
+                            Tipo Vehiculo
+                        </label> 
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="input-field col s6">
+                        <input id="provincia" type="text"" name="combustible">      
+                        <label for="provincia">
+                           Combustible
+                        </label>
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="input-field col s6">
+                        <input id="pais" type="text" name="marca">      
+                        <label class="active" for="pais">
+                          Marca
+                        </label>
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="input-field col s6">
+                        <input id="pais" type="text" name="modelo">      
+                        <label class="active" for="pais">
+                          Modelo
+                        </label>
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="input-field col s6">
+                        <input id="pais" type="text" name="precioLow">      
+                        <label class="active" for="pais">
+                          Precio
+                        </label>
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="input-field col s6">
+                        <input id="pais" type="text" name="precioHigh">      
+                        <label class="active" for="pais">
+                          Precio
+                        </label>
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="input-field col s6">
+                        <input id="senas" type="text"" name="usado">      
+                        <label for="senas">
+                            Usado o No Usado
+                        </label>
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="input-field col s6">
+                        <input id="senas" type="text"" name="puertas">      
+                        <label for="senas">
+                            Puertas
+                        </label>
+                  </div>
+              </div>
+
+              <button type="submit" class="btn">
+                Ver Vehiculo
+              </button>
+        </form>
+      </div>
+    <% }  %>
+    
+
 
 
     <% if (locals.results) { %>      
@@ -253,31 +574,31 @@
                   <%- results %>
               </table>            
           </div>
-        </div>
-        <script>
-        $(document).ready( function () {
-            
-          
-            var table = $('#table1').DataTable( {
-                dom: 'Bfrtip',
-                select: true,
-                buttons: [
+          <script>
+              $(document).ready( function () {          
+                  var table = $('#table1').DataTable( 
                     {
-                        text: 'Get selected data',
-                        action: function () {
-                          var ids = $.map(table.rows('.selected').data(), function (item) {
-                              return item[0]
-                          });
-                        console.log(ids)
-                        alert(table.rows('.selected').data().length + ' row(s) selected');
-                          
-                        }
-                    }
-                ]
-            } );
-        } );
-        </script>
-      <% } %>
+                      dom: 'Bfrtip',
+                      select: true,
+                      buttons: [
+                          {
+                              text: 'Get Selected',
+                              action: function () {
+                                var ids = $.map(table.rows('.selected').data(), function (item) {
+                                    return item[0]
+                                });
+                              console.log(ids)
+                              alert(table.rows('.selected').data().length + ' row(s) selected');
+                                
+                              }
+                          }
+                      ]
+                       } );
+              } 
+              );
+              </script>      
+      </div>
+        <% } %>
 
   <script>
       document.addEventListener('DOMContentLoaded', function() {

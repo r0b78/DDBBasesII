@@ -1,5 +1,6 @@
 var db = require('../database');
 const { poolPromise } = require('../database')
+var t = require('../controllers/utils')
 //CRUD Sucursal
 
 exports.crearSucursal = async (req, res) => {
@@ -43,17 +44,23 @@ exports.mostrarVistaSucursal = async(req,res) => {
 
 exports.verSucursales = async (req, res) => {
   const body = req.body;
-  var nombre = (body.nombre !== undefined) ? body.nombre : 'NULL';
-  var descripcion = (body.descripcion !== undefined) ? body.descripcion : 'NULL';
-  var provincia = (body.provincia !== undefined) ? body.provincia : 'NULL';
-  var pais = (body.pais !== undefined) ? body.pais : 'NULL';
+  var nombre = (body.nombre !== '') ? body.nombre : 'NULL';
+  var descripcion = (body.descripcion !== '') ? body.descripcion : 'NULL';
+  var provincia = (body.provincia !== '') ? body.provincia : 'NULL';
+  var pais = (body.pais !== '') ? body.pais : 'NULL';
   const pool = await poolPromise;
-  const query = await pool.request().query('seleccionarSucursal ' + nombre + ',' + descripcion + ',' + provincia + ',' + pais);
+  console.log(body)
+  console.log(nombre + ',' + descripcion + ',' + provincia + ',' + pais)
+  const query = await pool.request().query('seleccionarSucursal ' 
+                                + nombre + ',' 
+                                + descripcion + ',' 
+                                + provincia + ',' 
+                                + pais);
   const results = query.recordset
-  const html = transformDataWith(results)
-  res.render('../views/dashboardAdmin.ejs',{results:html});
-  
+  const html = t.transformDataWith(results)
+  res.render('../views/dashboardAdmin.ejs',{results:html});  
 }
+
 exports.vistaModificarSucursal = async(req,res) => {
   res.render('../views/dashboardAdmin.ejs',{vistaModificarSucursal:{}});
 }
@@ -78,19 +85,32 @@ exports.modificarSucursal = async (req, res) => {
 }
 
 //CRUD Fabrica
+exports.vistaCrearFabrica = async(req,res) => {
+  res.render('../views/dashboardAdmin.ejs',{vistaCrearFabrica:{}});
+}
+exports.vistaModificarFabrica = async(req,res) => {
+  res.render('../views/dashboardAdmin.ejs',{vistaModificarFabrica:{}});
+}
+
+
 
 exports.crearFabrica = async (req, res) => {
   const body = req.body;
-  if(body.descripcion === undefined || body.provincia === undefined || body.locacion === undefined || body.senas === undefined) {
+  if(body.descripcion === undefined ||
+     body.provincia === undefined || 
+     body.locacion === undefined || 
+     body.senas === undefined) {
     return res.json({status : -1, message : "Falta informacion"});
   }
   else {
     const pool = await poolPromise;
-    const query = await pool.request.query('insertarUbicacion ' + body.senas + ',' + body.locacion + ',' + body.idProvincia);
-    var idUbicacion = query.recordset.idUbicacion;
+    var location = "'POINT("+body.locacion+")'"  
+    const query = await pool.request().query('insertarUbicacion ' + body.senas + ',' + body.locacion + ',' + body.idProvincia);
+    var idUbicacion = query.recordset[0].idUbicacion;
     const poolFabrica = await poolPromise;
     const queryFabrica = await pool.request.query('InsertarFabrica ' +  body.descripcion + ',' + idUbicacion);
-    //TODO
+    res.render('../views/dashboardAdmin',{ listo: 'Transaccion Existosa' });
+
   }
 };
 
@@ -116,21 +136,61 @@ exports.seleccionarFabrica = async (req, res) => {
   var nombrePais = (body.nombrePais !== undefined) ? body.nombrePais : 'NULL';
   var idUbicacion = (body.idUbicacion !== undefined) ? body.idUbicacion : 'NULL';
   const pool = await poolPromise;
-  const query = await pool.request.query('SeleccionarFabrica ' + idFabrica + ',' + descripcion + ',' + nombreProvincia + ',' + nombrePais + ',' + idUbicacion);
-  //TODO
+  const query = await pool.request().query('SeleccionarFabrica ' + idFabrica + ',' + descripcion + ',' + nombreProvincia + ',' + nombrePais + ',' + idUbicacion);
+  const results = query.recordset
+  const html = t.transformDataWith(results)
+  res.render('../views/dashboardAdmin.ejs',{results:html});  
+
 };
 
 //CRUD vehiculo
+exports.vistaCrearVehiculo = (req,res) => {
+  res.render('../views/dashboardAdmin.ejs',{vistaCrearVehiculo:{}});
+}
+
+exports.vistaModificarVehiculo = (req,res) => {
+  res.render('../views/dashboardAdmin.ejs',{vistaModificarVehiculo:{}});
+}
+exports.vistaVerVehiculo = (req,res) => {
+  res.render('../views/dashboardAdmin.ejs',{vistaVerVehiculo:{}});
+}
 
 exports.crearVehiculo = async (req, res) => {
   const body = req.body;
-  if(body.tipo === undefined || body.combustible === undefined || body.marca === undefined || body.modelo === undefined || body.precio === undefined || body.usado === undefined || body.puertas === undefined) {
+  if(body.tipo === undefined || 
+    body.combustible === undefined || 
+    body.marca === undefined || 
+    body.modelo === undefined ||
+     body.precio === undefined || 
+     body.usado === undefined || 
+     body.puertas === undefined) {
     return res.json({status : -1, message : "Faltan parametros"});
   }
   else {
+    var bit = 'false';
+    if(body.usado == 'Usado'){
+      bit= 'true'
+    }
+    console.log(body)
+  
     const pool = await poolPromise;
-    const query = await pool.request.query('insertarVehiculo ' + body.tipo + ',' + body.combustible + ',' + body.marca + ',' + body.modelo + ',' + body.precio + ',' + body.usado + ',' + body.puertas);
-    //TODO
+    const query = await pool.request().query('insertarVehiculo ' 
+        + body.tipo + ',' 
+        + body.combustible + ',' 
+        + body.marca + ',' 
+        + body.modelo + ',' 
+        + body.precio + ',' 
+        + bit + ',' 
+        + body.puertas);
+        console.log(query.recordset.length)
+      if(query.recordset.length==1){
+          res.render('../views/dashboardAdmin.ejs',{listo:query.recordset[0].Error});
+      }
+      else {
+        res.render('../views/dashboardAdmin',{ listo: 'Transaccion Existosa' });
+ 
+      }
+
   }
 }
 
@@ -148,7 +208,7 @@ exports.modificarVehiculo = async (req, res) => {
     var puertas = (body.puertas !== undefined) ? body.puertas : 'NULL';
     const pool = await poolPromise;
     const query = await pool.request.query('modificarVehiculo ' + tipo + ',' + combustible + ',' + marca + ',' + modelo + ',' + precio + ',' + puertas);
-    //TODO
+
   }
 };
 
@@ -163,8 +223,11 @@ exports.verVehiculos = async (req, res) => {
   var usado = (body.usado !== undefined) ? body.usado : 'NULL';
   var puertas = (body.puertas !== undefined) ? body.puertas : 'NULL';
   const pool = await poolPromise;
-  const query = await pool.request.query('seleccionarVehiculo ' + tipo + ',' + combustible + ',' + marca + ',' + modelo + ',' + precioLow + ',' + precioHigh + ',' + usado + ',' + puertas);
-  //TODO
+  const query = await pool.request().query('seleccionarVehiculo ' + tipo + ',' + combustible + ',' + marca + ',' + modelo + ',' + precioLow + ',' + precioHigh + ',' + usado + ',' + puertas);
+  const results = query.recordset
+  const html = t.transformDataWith(results)
+  res.render('../views/dashboardAdmin.ejs',{results:html});  
+
 };
 
 //CRUD Extras
@@ -280,7 +343,8 @@ exports.seleccionarCaracteristicaVehiculo = async (req, res) => {
   var idVehiculo = (body.idVehiculo !== undefined) ? body.idVehiculo : 'NULL';
   const pool = await poolPromise;
   const query = await pool.request.query('seleccionarCaracteristicaXVehiculo ' + idCaracteristica + ',' + idVehiculo);
-  //TODO
+
+
 };
 
 //Inventario Sucursal
