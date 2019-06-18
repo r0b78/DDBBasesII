@@ -511,6 +511,41 @@ exports.seleccionarDespacho = async (req, res) => {
   //TODO
 };
 
+//Reporte Ventas
+
+exports.reporteVentas = async (req, res) => {
+  const body = req.body;
+  var idFactura = (body.idFactura !== undefined) ? body.idFactura : 'NULL';
+  var numeroFactura = (body.numeroFactura !== undefined) ? body.numeroFactura : 'NULL';
+  var precioInicial = (body.precioInicial !== undefined) ? body.precioInicial : 'NULL';
+  var precioFinal = (body.precioFinal !== undefined) ? body.precioFinal : 'NULL';
+  var fechaInicial = (body.fechaInicial !== undefined) ? body.fechaInicial : 'NULL';
+  var fechaFinal = (body.fechaFinal !== undefined) ? body.fechaFinal : 'NULL';
+  var tipoPago = (body.tipoPago !== undefined) ? body.tipoPago : 'NULL';
+  var pais = (body.pais !== undefined) ? body.pais : 'NULL';
+  var tipoVehiculo = (body.tipoVehiculo !== undefined) ? body.tipoVehiculo : 'NULL';
+  var sucursal = (body.sucursal !== undefined) ? body.sucursal : 'NULL';
+  const pool = await poolPromise;
+  const query = await pool.request.query('SeleccionarFacturas ' + idFactura + ',' + numeroFactura + ',' + precioInicial + ';' + precioFinal + ',' + fechaInicial + ',' + fechaFinal + ',' + tipoPago + ',' + pais + ',' + tipoVehiculo + ',' + sucursal);
+  //TODO
+};
+
+//Reporte Vehiculos
+
+exports.reporteTopVehiculos = async (req, res) => {
+  const body = req.body;
+  var tipo = (body.tipo !== undefined) ? body.tipo : 'NULL';
+  var combustible = (body.combustible !== undefined) ? body.combustible : 'NULL';
+  var marca = (body.marca !== undefined) ? body.marca : 'NULL';
+  var modelo = (body.modelo !== undefined) ? body.modelo : 'NULL';
+  var precioLow = (body.precioLow !== undefined) ? body.precioLow : 'NULL';
+  var precioHigh = (body.precioHigh !== undefined) ? body.precioHigh : 'NULL';
+  var idSucursal = (body.idSucursal !== undefined) ? body.idSucursal : 'NULL';
+  const pool = await poolPromise;
+  const query = await pool.request().query('seleccionarTopVehiculos ' + tipo + ',' + combustible + ',' + marca + ',' + modelo + ',' + precioLow + ',' + precioHigh + ',' + idSucursal);
+  //TODO
+};
+
 //Aun no se que es
 
 exports.crearDescuento = async (req, res) => {
@@ -552,19 +587,5 @@ exports.vehiculoFabrica = async (req, res) => {
   var idFabrica = (body.idFabrica !== undefined) ? body.idFabrica : 'NULL';
   const pool = await poolPromise;
   const query = await pool.request.query('SeleccionarVehiculoFabrica ' + idVehiculoFabrica + ',' + idVehiculo + ',' + costoVehiculo + ',' + idInventario + ',' + idFabrica);
-  //TODO
-};
-
-exports.reporteVentas = async (req, res) => {
-  const body = req.body;
-  var idFactura = (body.idFactura !== undefined) ? body.idFactura : 'NULL';
-  var numeroFactura = (body.numeroFactura !== undefined) ? body.numeroFactura : 'NULL';
-  var precioInicial = (body.precioInicial !== undefined) ? body.precioInicial : 'NULL';
-  var precioFinal = (body.precioFinal !== undefined) ? body.precioFinal : 'NULL';
-  var fechaInicial = (body.fechaInicial !== undefined) ? body.fechaInicial : 'NULL';
-  var fechaFinal = (body.fechaFinal !== undefined) ? body.fechaFinal : 'NULL';
-  var tipoPago = (body.tipoPago !== undefined) ? body.tipoPago : 'NULL';
-  const pool = await poolPromise;
-  const query = await pool.request.query('SeleccionarFacturas ' + idFactura + ',' + numeroFactura + ',' + precioInicial + ';' + precioFinal + ',' + fechaInicial + ',' + fechaFinal + ',' + tipoPago)
   //TODO
 };
