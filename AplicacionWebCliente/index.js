@@ -59,6 +59,22 @@ app.post('/vistaSucursales', admin.verSucursales);
 app.get('/agregarSucursal',admin.vistaAgregarSucursal)
 app.post('/agregarSucursal',admin.crearSucursal);
 
+app.get('/modificarSucursal', admin.vistaModificarSucursal)
+app.post('/modificarSucursal',admin.modificarSucursal);
+//Fabrica
+app.get('/crearFabrica', admin.vistaCrearFabrica);
+app.post('/crearFabrica', admin.crearFabrica);
+
+app.get('/verFabrica', admin.seleccionarFabrica)
+//Vehiculo
+app.get('/crearVehiculo', admin.vistaCrearVehiculo);
+app.post('/crearVehiculo',admin.crearVehiculo)
+
+app.get('/modificarVehiculo',admin.vistaModificarVehiculo)
+app.post('/modificarVehiculo', admin.modificarVehiculo)
+
+app.get('/verVehiculo',admin.vistaVerVehiculo)
+app.post('/verVehiculo', admin.verVehiculos)
 
 
 app.listen(3000, function () {
