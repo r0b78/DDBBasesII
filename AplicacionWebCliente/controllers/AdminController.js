@@ -482,7 +482,11 @@ exports.crearEmpleadoSucursal = async (req, res) => {
 
 exports.crearEmpleadoFabrica = async (req, res) => {
   const body = req.body;
-  if(body.nombre === undefined || body.apellido === undefined || body.telefono ==== undefined || body.correo === undefined || body.supervisor ==== undefined || body.puesto === undefined || body.idFabrica === undefined || body.cedula === undefined || body.password ==== undefined) {
+  if(body.nombre === undefined || body.apellido === undefined || 
+    body.telefono === undefined || body.correo === undefined ||
+     body.supervisor === undefined || body.puesto === undefined ||
+      body.idFabrica === undefined || body.cedula === undefined ||
+       body.password === undefined) {
     return res.json({status : -1, message : "Faltan parametros"});
   }
   else {
@@ -505,7 +509,8 @@ exports.modificarEmpleado = async (req, res) => {
     var supervisor = (body.supervisor !== undefined) ? body.supervisor : 'NULL';
     var puesto = (body.puesto !== undefined) ? body.puesto : 'NULL';
     const pool = await poolPromise;
-    const query = await pool.request().query('modificarEmpleado ' + nombre + ',' + apellido + ',' + telefono + ',' + correo + ',' + supervisor + ',' + puesto + ',' body.cedula);
+    const query = await pool.request().query('modificarEmpleado ' + nombre + ',' + apellido + ',' + 
+                telefono + ',' + correo + ',' + supervisor + ',' + puesto + ','+ body.cedula);
     //TODO
   }
 };
