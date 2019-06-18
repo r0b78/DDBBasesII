@@ -38,11 +38,11 @@ app.get('/verSucursales',client.verSucursales)
 
 app.post('/crearDescuento',admin.crearDescuento);
 
-app.post('/crearEmpleado',admin.crearEmpleado)
+//app.post('/crearEmpleado',admin.crearEmpleado)
 
-app.post('/verEmpleados',admin.verEmpleados)
+//app.post('/verEmpleados',admin.verEmpleados)
 
-app.post('/modificarEmpleado',admin.modificarVehiculo)
+//app.post('/modificarEmpleado',admin.modificarVehiculo)
 
 app.post('/verVehiculos', admin.verVehiculos)
 
@@ -76,6 +76,40 @@ app.post('/modificarVehiculo', admin.modificarVehiculo)
 app.get('/verVehiculo',admin.vistaVerVehiculo)
 app.post('/verVehiculo', admin.verVehiculos)
 
+//Extra
+app.get('/crearExtra', admin.vistaCrearExtra)
+app.post('/crearExtra', admin.crearExtra)
+
+app.get('/modificarExtra', admin.vistaModificarExtra)
+app.post('/modificarExtra', admin.modificarExtra);
+
+app.get('/modificarExtra', admin.vistaModificarExtra)
+app.post('/modificarExtra', admin.modificarExtra);
+
+app.get('/verExtra', admin.verExtra);
+
+app.get('/asignarExtraAutomovil', admin.vistaExtraAutomovil)
+app.post('/asignarExtraAutomovil', admin.insertarExtraVehiculo)
+
+//Empleado
+
+app.get('/crearEmpleadoSucursal',admin.vistaCrearEmpleadoSucursal)
+app.post('/crearEmpleadoSucursal',admin.crearEmpleadoSucursal)
+
+app.get('/crearEmpleadoFabrica', admin.vistaCrearEmpleadoFabrica)
+app.post('/crearEmpleadoFabrica',admin.crearEmpleadoFabrica)
+
+app.get('/modificarEmpleadoFabrica', admin.vistaCrearEmpleadoFabrica)
+app.post('/modificarEmpleadoFabrica',admin.crearEmpleadoFabrica)
+
+app.get('/seleccionarEmpleadoSucursal',admin.vistaVerEmpleadoSucursal)
+app.post('/seleccionarEmpleadoSucursal',admin.seleccionarEmpleadosSucursal)
+
+app.get('/seleccionarEmpleadoFabrica',admin.vistaVerEmpleadoFabrica)
+app.post('/seleccionarEmpleadoFabrica',admin.seleccionarEmpleadosFabrica)
+
+app.get('/consultaVentas',admin.vistaReporteVentas );
+app.post('/consultaVentas',admin.reporteVentas);
 
 app.listen(3000, function () {
   console.log('Servidor iniciado');

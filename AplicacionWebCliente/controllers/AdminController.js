@@ -214,14 +214,14 @@ exports.modificarVehiculo = async (req, res) => {
 
 exports.verVehiculos = async (req, res) => {
   const body = req.body;
-  var tipo = (body.tipo !== undefined) ? body.tipo : 'NULL';
-  var combustible = (body.combustible !== undefined) ? body.combustible : 'NULL';
-  var marca = (body.marca !== undefined) ? body.marca : 'NULL';
-  var modelo = (body.modelo !== undefined) ? body.modelo : 'NULL';
-  var precioLow = (body.precioLow !== undefined) ? body.precioLow : 'NULL';
-  var precioHigh = (body.precioHigh !== undefined) ? body.precioHigh : 'NULL';
-  var usado = (body.usado !== undefined) ? body.usado : 'NULL';
-  var puertas = (body.puertas !== undefined) ? body.puertas : 'NULL';
+  var tipo = (body.tipo !== '') ? body.tipo : 'NULL';
+  var combustible = (body.combustible !== '') ? body.combustible : 'NULL';
+  var marca = (body.marca !== '') ? body.marca : 'NULL';
+  var modelo = (body.modelo !== '') ? body.modelo : 'NULL';
+  var precioLow = (body.precioLow !== '') ? body.precioLow : 'NULL';
+  var precioHigh = (body.precioHigh !== '') ? body.precioHigh : 'NULL';
+  var usado = (body.usado !== '') ? body.usado : 'NULL';
+  var puertas = (body.puertas !== '') ? body.puertas : 'NULL';
   const pool = await poolPromise;
   const query = await pool.request().query('seleccionarVehiculo ' + tipo + ',' + combustible + ',' + marca + ',' + modelo + ',' + precioLow + ',' + precioHigh + ',' + usado + ',' + puertas);
   const results = query.recordset
@@ -232,50 +232,78 @@ exports.verVehiculos = async (req, res) => {
 
 //CRUD Extras
 
+exports.vistaCrearExtra = async (req,res) => {
+  res.render('../views/dashboardAdmin.ejs',{vistaCrearExtra:{}});
+} 
+
 exports.crearExtra = async (req, res) => {
   const body = req.body;
-  if(body.descripcion === undefined || body.nombre === undefined || body.precio === undefined) {
+  console.log(body)
+  if(body.descripcion === '' || 
+    body.nombre === '' || 
+    body.precio === '') {
     return res.json({status : -1, message : "Informacion incompleta"});
   }
   else {
     const pool = await poolPromise;
-    const query = await pool.request.query('insertarExtra ' + body.nombre + ',' + body.descripcion + ',' + body.precio);
-    //TODO
+    const query = await pool.request().query('insertarExtra ' + body.nombre + ',' + body.descripcion + ',' + body.precio);
+    if(query.recordset.length==1){
+      res.render('../views/dashboardAdmin.ejs',{listo:query.recordset[0].Error});
+    }
+    else {
+      res.render('../views/dashboardAdmin',{ listo: 'Transaccion Existosa' });
+
+    }
   }
 };
 
+exports.vistaModificarExtra = (req,res) => {
+  res.render('../views/dashboardAdmin.ejs',{vistaModificarExtra:{}});
+}
 exports.modificarExtra = async (req, res) => {
   const body = req.body;
-  var nombre = (body.nombre !== undefined) ? body.nombre : 'NULL';
-  var descripcion = (body.descripcion !== undefined) ? body.descripcion : 'NULL';
-  var nuevoNombre = (body.nuevoNombre !== undefined) ? body.nuevoNombre : 'NULL';
-  var precio = (body.precio !== undefined) ? body.precio : 'NULL';
+  console.log(body)
+  var nombre = (body.nombre !== '') ? body.nombre : 'NULL';
+  var descripcion = (body.descripcion !== '') ? body.descripcion : 'NULL';
+  var nuevoNombre = (body.nuevoNombre !== '') ? body.nuevoNombre : 'NULL';
+  var precio = (body.precio !== '') ? body.precio : 'NULL';
+  
   const pool = await poolPromise;
-  const query = await pool.request.query('modificarExtra ' + nombre + ',' + nuevoNombre + ',' + descripcion + ',' + precio);
-  //TODO
+  const query = await pool.request().query('modificarExtra ' + nombre + ',' + nuevoNombre + ',' + descripcion + ',' + precio);
+  if(query.recordset.length==1){
+    res.render('../views/dashboardAdmin.ejs',{listo:query.recordset[0].Error});
+  }
+  else {
+    res.render('../views/dashboardAdmin',{ listo: 'Transaccion Existosa' });
+  }
 };
 
-exports.selecionarExtra = async (req, res) => {
-  const body = req.body;
-  var nombre = (body.nombre !== undefined) ? body.nombre : 'NULL';
-  var descripcion = (body.descripcion !== undefined) ? body.descripcion : 'NULL';
-  var precio = (body.precio !== undefined) ? body.precio : 'NULL';
+exports.verExtra = async (req, res) => {
   const pool = await poolPromise;
-  const query = await pool.request.query('modificarExtra ' + nombre + ',' + descripcion + ',' + precio);
-  //TODO
+  const query = await pool.request().query('seleccionarExtra ' + 'NULL,NULL'+ ',NULL');
+  const results = query.recordset
+  const html = t.transformDataWith(results)
+  res.render('../views/dashboardAdmin.ejs',{results:html});  
 };
+
+exports.vistaExtraAutomovil = async (req,res) => {
+  res.render('../views/dashboardAdmin.ejs',{vistaExtraVehiculo:{}
+                                         
+});
+}
 
 exports.insertarExtraVehiculo = async (req, res) => {
   const body = req.body;
-  if(body.idExtra === undefined || body.idVehiculo === undefined) {
+  if(body.idExtra === '' || body.idVehiculo === '') {
     return res.json({status : -1, message : "Informacion incompleta"});
   }
   else {
     const pool = await poolPromise;
     const query = await pool.request.query('insertarExtraXVehiculo ' + body.idExtra + ',' + body.idVehiculo);
-    //TODO
+    res.send('Todo bien')
   }
 };
+//Aca Termina
 
 exports.seleccionarExtraVehiculo = async (req, res) => {
   const body = req.body;
@@ -459,40 +487,64 @@ exports.seleccionarComisiones = async (req, res) => {
 
 //CRUD Empleados
 
+exports.vistaCrearEmpleadoSucursal = async (req,res) => {
+
+  res.render('../views/dashboardAdmin',{vistaEmpleadoSucursal:{}})
+}
+
+exports.vistaCrearEmpleadoFabrica = async (req,res) => {
+  res.render('../views/dashboardAdmin',{vistaEmpleadoFabrica:{}}) 
+}
+
 exports.crearEmpleadoSucursal = async (req, res) => {
   const body = req.body;
-  if(body.nombre === undefined 
-    || body.apellido === undefined 
-    || body.telefono === undefined 
-    || body.correo === undefined 
-    || body.supervisor === undefined 
-    || body.puesto === undefined 
-    || body.idSucursal === undefined 
-    || body.cedula === undefined 
-    || body.password === undefined) {
+  if(body.nombre ===''
+    || body.apellido ==='' 
+    || body.telefono === ''
+    || body.correo === '' 
+    || body.supervisor === '' 
+    || body.puesto === '' 
+    || body.idSucursal === '' 
+    || body.cedula === '' 
+    || body.password === '') {
     res.json({status : -1, message : "Faltan parametros"});
     return
   }
   else {
     const pool = await poolPromise;
-    const query = await pool.request().query('insertarEmpleadoSucursal ' + body.nombre + ',' + body.apellido + ',' + body.telefono + ',' + body.correo + ',' + body.supervisor + ',' + body.puesto + ',' + body.idSucursal + ',' + body.cedula + ',' + body.password);
-    //TODO
+    const query = await pool.request().query('insertarEmpleadoSucursal ' 
+    + body.nombre + ',' + body.apellido + ',' + body.telefono + ',' 
+    + body.correo + ',' + body.supervisor + ',' + body.puesto + ',' 
+    + body.idSucursal + ',' + body.cedula + ',' + body.password);
+    if(query.recordset.length==1){
+      res.render('../views/dashboardAdmin.ejs',{listo:query.recordset[0].Error});
+    }
+    else {
+      res.render('../views/dashboardAdmin',{ listo: 'Transaccion Existosa' });
+
+    }
   }
 };
 
 exports.crearEmpleadoFabrica = async (req, res) => {
   const body = req.body;
-  if(body.nombre === undefined || body.apellido === undefined || 
-    body.telefono === undefined || body.correo === undefined ||
-     body.supervisor === undefined || body.puesto === undefined ||
-      body.idFabrica === undefined || body.cedula === undefined ||
-       body.password === undefined) {
+  if(body.nombre ===  ''|| body.apellido === undefined || 
+    body.telefono === '' || body.correo === undefined ||
+     body.supervisor === '' || body.puesto === undefined ||
+      body.idFabrica === '' || body.cedula === undefined ||
+       body.password === '') {
     return res.json({status : -1, message : "Faltan parametros"});
   }
   else {
     const pool = await poolPromise;
     const query = await pool.request().query('insertarEmpleadoSucursal ' + body.nombre + ',' + body.apellido + ',' + body.telefono + ',' + body.correo + ',' + body.supervisor + ',' + body.puesto + ',' + body.idFabrica + ',' + body.cedula + ',' + body.password);
-    //TODO
+    if(query.recordset.length==1){
+      res.render('../views/dashboardAdmin.ejs',{listo:query.recordset[0].Error});
+    }
+    else {
+      res.render('../views/dashboardAdmin',{ listo: 'Transaccion Existosa' });
+
+    }
   }
 };
 
@@ -515,34 +567,53 @@ exports.modificarEmpleado = async (req, res) => {
   }
 };
 
+
+exports.vistaVerEmpleadoFabrica = async (req,res) => {
+  res.render('../views/dashboardAdmin',{vistaVerEmpleadoFabrica:{}}) 
+}
+exports.vistaVerEmpleadoSucursal = async (req,res) => {
+  res.render('../views/dashboardAdmin',
+  {vistaVerEmpleadosSucursal:{}}) 
+}
+
 exports.seleccionarEmpleadosFabrica = async (req, res) => {
   const body = req.body;
-  var nombre = (body.nombre !== undefined) ? body.nombre : 'NULL';
-  var apellido = (body.apellido !== undefined) ? body.apellido : 'NULL';
-  var telefono = (body.telefono !== undefined) ? body.telefono : 'NULL';
-  var correo = (body.correo !== undefined) ? body.correo : 'NULL';
-  var supervisor = (body.supervisor !== undefined) ? body.supervisor : 'NULL';
-  var puesto = (body.puesto !== undefined) ? body.puesto : 'NULL';
-  var fabrica = (body.fabrica !== undefined) ? body.fabrica : 'NULL';
-  var cedula = (body.cedula !== undefined) ? body.cedula : 'NULL';
+  var nombre = (body.nombre !== '') ? body.nombre : 'NULL';
+  var apellido = (body.apellido !== '') ? body.apellido : 'NULL';
+  var telefono = (body.telefono !== '') ? body.telefono : 'NULL';
+  var correo = (body.correo !== '') ? body.correo : 'NULL';
+  var supervisor = (body.supervisor !== '') ? body.supervisor : 'NULL';
+  var puesto = (body.puesto !== '') ? body.puesto : 'NULL';
+  var fabrica = (body.fabrica !== '') ? body.fabrica : 'NULL';
+  var cedula = (body.cedula !== '') ? body.cedula : 'NULL';
   const pool = await poolPromise;
+  console.log(nombre + ',' + apellido + ',' + telefono + ',' + correo + ',' + supervisor + ',' + puesto + ',' + fabrica + ',' + cedula)
   const query = await pool.request().query('SeleccionarEmpleadosFabrica ' + nombre + ',' + apellido + ',' + telefono + ',' + correo + ',' + supervisor + ',' + puesto + ',' + fabrica + ',' + cedula);
-  //TODO
+  const results = query.recordset
+  console.log(results)
+  const html = t.transformDataWith(results)
+  res.render('../views/dashboardAdmin.ejs',{results:html});  
+
 };
 
 exports.seleccionarEmpleadosSucursal = async (req, res) => {
   const body = req.body;
-  var nombre = (body.nombre !== undefined) ? body.nombre : 'NULL';
-  var apellido = (body.apellido !== undefined) ? body.apellido : 'NULL';
-  var telefono = (body.telefono !== undefined) ? body.telefono : 'NULL';
-  var correo = (body.correo !== undefined) ? body.correo : 'NULL';
-  var supervisor = (body.supervisor !== undefined) ? body.supervisor : 'NULL';
-  var puesto = (body.puesto !== undefined) ? body.puesto : 'NULL';
-  var sucursal = (body.sucursal !== undefined) ? body.sucursal : 'NULL';
-  var cedula = (body.cedula !== undefined) ? body.cedula : 'NULL';
+  console.log(body)
+  var nombre = (body.nombre !== '') ? body.nombre : 'NULL';
+  var apellido = (body.apellido !== '') ? body.apellido : 'NULL';
+  var telefono = (body.telefono !== '') ? body.telefono : 'NULL';
+  var correo = (body.correo !== '') ? body.correo : 'NULL';
+  var supervisor = (body.supervisor !== '') ? body.supervisor : 'NULL';
+  var puesto = (body.puesto !== '') ? body.puesto : 'NULL';
+  var sucursal = (body.sucursal !== '') ? body.sucursal : 'NULL';
+  var cedula = (body.cedula !== '') ? body.cedula : 'NULL';
   const pool = await poolPromise;
+  console.log(nombre + ',' + apellido + ',' + telefono + ',' + correo + ',' + supervisor + ',' + puesto + ',' + sucursal + ',' + cedula)
   const query = await pool.request().query('SeleccionarEmpleadosSucursal ' + nombre + ',' + apellido + ',' + telefono + ',' + correo + ',' + supervisor + ',' + puesto + ',' + sucursal + ',' + cedula);
-  //TODO
+  const results = query.recordset
+  const html = t.transformDataWith(results)
+  res.render('../views/dashboardAdmin.ejs',{results:html});  
+
 };
 
 //Pedidos
@@ -633,16 +704,30 @@ exports.vehiculoFabrica = async (req, res) => {
   //TODO
 };
 
+exports.vistaReporteVentas = async (req,res) => {
+
+  res.render('../views/dashboardAdmin.ejs',
+  {vistaReporte:{}});
+}
+
+
 exports.reporteVentas = async (req, res) => {
   const body = req.body;
   var idFactura = (body.idFactura !== undefined) ? body.idFactura : 'NULL';
   var numeroFactura = (body.numeroFactura !== undefined) ? body.numeroFactura : 'NULL';
-  var precioInicial = (body.precioInicial !== undefined) ? body.precioInicial : 'NULL';
-  var precioFinal = (body.precioFinal !== undefined) ? body.precioFinal : 'NULL';
-  var fechaInicial = (body.fechaInicial !== undefined) ? body.fechaInicial : 'NULL';
-  var fechaFinal = (body.fechaFinal !== undefined) ? body.fechaFinal : 'NULL';
-  var tipoPago = (body.tipoPago !== undefined) ? body.tipoPago : 'NULL';
+  var precioInicial = (body.precioInicial !== '') ? body.precioInicial : 'NULL';
+  var precioFinal = (body.precioFinal !== '') ? body.precioFinal : 'NULL';
+  var fechaInicial = (body.fechaInicial !== '') ? body.fechaInicial : 'NULL';
+  var fechaFinal = (body.fechaFinal !== '') ? body.fechaFinal : 'NULL';
+  var tipoPago = (body.tipoPago !== '') ? body.tipoPago : 'NULL';
+  var pais = (body.pais !== '') ? body.pais : 'NULL';
+  var tipoVehiculo = (body.tipoVehiculo !== '') ? body.tipoVehiculo : 'NULL';
+  var idSucursal = (body.idSucursal !== '') ? body.idSucursal : 'NULL';
   const pool = await poolPromise;
-  const query = await pool.request.query('SeleccionarFacturas ' + idFactura + ',' + numeroFactura + ',' + precioInicial + ';' + precioFinal + ',' + fechaInicial + ',' + fechaFinal + ',' + tipoPago)
-  //TODO
+  const query = await pool.request().query('SeleccionarFacturas ' + idFactura + ',' + numeroFactura + ',' + precioInicial + ',' + precioFinal + ',' + fechaInicial + ',' + fechaFinal + ',' + tipoPago+','+pais+','+tipoVehiculo+','+idSucursal)
+  const results = query.recordset
+  console.log(results)
+  const html = t.transformDataWith(results)
+  res.render('../views/dashboardAdmin.ejs',{results:html});  
+
 };

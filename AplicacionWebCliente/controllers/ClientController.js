@@ -69,7 +69,7 @@ exports.login = async(req, res)=> {
 
 exports.verCompras = async (req,res)=> {
   const pool = await poolPromise
-  const result = await pool.request().query('SeleccionarFacturas NULL,NULL,NULL,NULL,NULL,NULL,NULL')
+  const result = await pool.request().query('SeleccionarFacturas NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL')
   console.log(result)
   var html = transformDataWith(result.recordset);
   res.render('../views/dashboardCliente',{
@@ -95,7 +95,7 @@ exports.buscarVehiculo = async (req,res) => {
   var tipo =body.tipo
 
   const pool = await poolPromise
-  const result = await pool.request().query(`seleccionarVehiculo NULL,NULL,NULL,NULL,NULL,NULL`)
+  const result = await pool.request().query(`seleccionarVehiculo NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL`)
   console.log(result.recordset)
   res.render('../views/dashboardCliente',{
                                 dataVehiculo:result.recordset

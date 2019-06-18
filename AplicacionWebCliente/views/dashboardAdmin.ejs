@@ -56,7 +56,6 @@
         <li class="bold">
             <a href="/modificarSucursal">Modificar Sucursales </a>
         </li>
-
         <li class="bold">
             <a href="/crearFabrica">Crear Fabrica </a>
         </li>
@@ -67,7 +66,6 @@
             <a href="/verFabrica">Ver Fabrica</a>
         </li>
 
-
         <li class="bold">
           <a href="/crearVehiculo">Agregar Vehiculo </a>
         </li>
@@ -76,12 +74,43 @@
         </li>
         <li class="bold">
           <a href="/verVehiculo" >Ver Vehiculo </a>
-        </li>     
+        </li>
+
         <li class="logo">
-         <a href="/crearDescuento">CrarDescuento</a>
+          <a href="/crearExtra">Crear Extra</a>
+        </li>
+        <li class="logo">
+          <a href="/modificarExtra">Modificar Extra</a>
+        </li>
+        <li class="logo">
+            <a href="/verExtra">Ver Extra</a>
+          </li>
+          
+        <li class="logo">
+          <a href="/asignarExtraAutomovil">Asignar Extra a Automovil</a>
+        </li>
+  
+        <li class="bold">
+            <a href="/crearEmpleadoSucursal">Crear Empleado Sucursal</a>
         </li>
         <li class="bold">
-          <a href="/crearEmpleado">Crear Empleado</a>
+            <a href="/crearEmpleadoFabrica">Crear Empleado Fabrica</a>
+        </li>
+       
+        <li class="bold">
+           <a href="/modificarEmpleado">Modificar Empleado</a>
+        </li>
+        <li class="bold">
+            <a href="/seleccionarEmpleadoSucursal">Empleado Sucursal</a>
+         </li>
+             
+         <li class="bold">
+            <a href="/seleccionarEmpleadoFabrica">Empleado Fabrica</a>
+         </li>
+
+
+        <li class="logo">
+         <a href="/crearDescuento">Crear Descuento</a>
         </li>
         <li class="bold">
           <a href="/Reporte">Repor Venta y Rep Tipo Pago </a>
@@ -98,8 +127,13 @@
         <li class="bold">
           <a href="/vehiculaFabrica">Vehiculos Por Fabrica </a>
         </li>
-  
-  
+        <li class="bold">
+            <a href="/vehiculaFabrica">Vehiculos Por Fabrica </a>
+        </li>
+        <li class="bold">
+            <a href="/consultaVentas">Reporte Venta </a>
+        </li>
+        
       </ul>
 </header>
 
@@ -563,7 +597,466 @@
         </form>
       </div>
     <% }  %>
+    <% if(locals.vistaCrearExtra) {%>
+      <div class="container">
+          <form action="/crearExtra" method="POST">
+          
+              <div class="row">
+                  <div class="input-field col s6">
+                        <input id="descripcion" type="text"" name="nombre">      
+                        <label class="active" for="descripcion">
+                            Nombre Extra
+                        </label> 
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="input-field col s6">
+                        <input id="provincia" type="text"" name="descripcion">      
+                        <label for="provincia">
+                            Descripcion
+                        </label>
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="input-field col s6">
+                        <input id="pais" type="text" name="precio">      
+                        <label class="active" for="pais">
+                          Precio
+                        </label>
+                  </div>
+              </div>
+              <button type="submit" class="btn">
+                Agregar Extra
+              </button>
+          </form>
+      </div>
+    <% }  %>
+
+    <% if(locals.vistaModificarExtra) {%>
+      <div class="container">
+          <form action="/modificarExtra" method="POST">
+          
+              <div class="row">
+                  <div class="input-field col s6">
+                        <input id="descripcion" type="text"" name="nombre">      
+                        <label class="active" for="descripcion">
+                            Nombre Extra
+                        </label> 
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="input-field col s6">
+                        <input id="descripcion" type="text"" name="nuevoNombre">      
+                        <label class="active" for="descripcion">
+                            Nuevo Nombre Extra
+                        </label> 
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="input-field col s6">
+                        <input id="provincia" type="text"" name="descripcion">      
+                        <label for="provincia">
+                            Descripcion
+                        </label>
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="input-field col s6">
+                        <input id="pais" type="text" name="precio">      
+                        <label class="active" for="pais">
+                          Precio
+                        </label>
+                  </div>
+              </div>
+              <button type="submit" class="btn">
+                Modificar Extra
+              </button>
+          </form>
+      </div>
+    <% }  %>
+
+    <% if(locals.vistaExtraVehiculo) {%>
+      <div>
+        <form action="/asignarExtraAutomovil" method="POST">
+          <div class="row">
+              <div class="input-field col s6">
+                    <input id="descripcion" type="text"" name="idExtra">      
+                    <label class="active" for="descripcion">
+                        IdExtra
+                    </label> 
+              </div>
+          </div>
+          <div class="row">
+              <div class="input-field col s6">
+                    <input id="descripcion" type="text"" name="idVehiculo">      
+                    <label class="active" for="descripcion">
+                        IdVehiculo
+                    </label> 
+              </div>
+          </div>
+          <button class="btn" type="submit">
+            Asignar
+          </button>          
+        </form>
+      </div>
+    <% }  %>
+
+    <% if(locals.vistaExtraVehiculo) {%>
+      <div>
+        <form action="/asignarExtraAutomovil" method="POST">
+          <div class="row">
+              <div class="input-field col s6">
+                    <input id="descripcion" type="text"" name="idExtra">      
+                    <label class="active" for="descripcion">
+                        IdExtra
+                    </label> 
+              </div>
+          </div>
+          <div class="row">
+              <div class="input-field col s6">
+                    <input id="descripcion" type="text"" name="idVehiculo">      
+                    <label class="active" for="descripcion">
+                        IdVehiculo
+                    </label> 
+              </div>
+          </div>
+          <button class="btn" type="submit">
+            Asignar
+          </button>          
+        </form>
+      </div>
+    <% }  %>
+
+    <% if(locals.vistaEmpleadoSucursal) {%>
+      <div>
+          <form action="/crearEmpleadoSucursal" method="POST">
+            <div class="row">
+                <div class="input-field col s6">
+                      <input id="descripcion" type="text"" name="nombre">      
+                      <label class="active" for="descripcion">
+                          Nombre
+                      </label> 
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s6">
+                      <input id="descripcion" type="text"" name="apellido">      
+                      <label class="active" for="descripcion">
+                          Apellido
+                      </label> 
+                </div>
+            </div>
+  
+            <div class="row">
+                <div class="input-field col s6">
+                      <input id="descripcion" type="text"" name="telefono">      
+                      <label class="active" for="descripcion">
+                          telefono
+                      </label> 
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s6">
+                      <input id="descripcion" type="text"" name="correo">      
+                      <label class="active" for="descripcion">
+                          correo
+                      </label> 
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s6">
+                      <input id="descripcion" type="text"" name="supervisor">      
+                      <label class="active" for="descripcion">
+                          Cedula Supervisor
+                      </label> 
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s6">
+                      <input id="descripcion" type="text"" name="puesto">      
+                      <label class="active" for="descripcion">
+                          puesto
+                      </label> 
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s6">
+                      <input id="descripcion" type="text"" name="idSucursal">      
+                      <label class="active" for="descripcion">
+                          IdSucursal
+                      </label> 
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s6">
+                      <input id="descripcion" type="text"" name="cedula">      
+                      <label class="active" for="descripcion">
+                        Cedula
+                      </label> 
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s6">
+                      <input id="descripcion" type="text"" name="password">      
+                      <label class="active" for="descripcion">
+                          Password
+                      </label> 
+                </div>
+            </div>
+            
+            
+            <button class="btn" type="submit">
+              Agregar Empleado
+            </button>          
+          </form>
+        </div>
+        <% }  %>
+
+    <% if(locals.vistaEmpleadoFabrica) {%>
+      <div>
+        <form action="/crearEmpleadoFabrica" method="POST">
+          <div class="row">
+              <div class="input-field col s6">
+                    <input id="descripcion" type="text"" name="nombre">      
+                    <label class="active" for="descripcion">
+                        Nombre
+                    </label> 
+              </div>
+          </div>
+          <div class="row">
+              <div class="input-field col s6">
+                    <input id="descripcion" type="text"" name="apellido">      
+                    <label class="active" for="descripcion">
+                        Apellido
+                    </label> 
+              </div>
+          </div>
+
+          <div class="row">
+              <div class="input-field col s6">
+                    <input id="descripcion" type="text"" name="telefono">      
+                    <label class="active" for="descripcion">
+                        telefono
+                    </label> 
+              </div>
+          </div>
+          <div class="row">
+              <div class="input-field col s6">
+                    <input id="descripcion" type="text"" name="correo">      
+                    <label class="active" for="descripcion">
+                        correo
+                    </label> 
+              </div>
+          </div>
+          <div class="row">
+              <div class="input-field col s6">
+                    <input id="descripcion" type="text"" name="supervisor">      
+                    <label class="active" for="descripcion">
+                        Cedula Supervisor
+                    </label> 
+              </div>
+          </div>
+          <div class="row">
+              <div class="input-field col s6">
+                    <input id="descripcion" type="text"" name="puesto">      
+                    <label class="active" for="descripcion">
+                        puesto
+                    </label> 
+              </div>
+          </div>
+          <div class="row">
+              <div class="input-field col s6">
+                    <input id="descripcion" type="text"" name="idFabrica">      
+                    <label class="active" for="descripcion">
+                        IdFabrica
+                    </label> 
+              </div>
+          </div>
+          <div class="row">
+              <div class="input-field col s6">
+                    <input id="descripcion" type="text"" name="cedula">      
+                    <label class="active" for="descripcion">
+                      Cedula
+                    </label> 
+              </div>
+          </div>
+          <div class="row">
+              <div class="input-field col s6">
+                    <input id="descripcion" type="text"" name="password">      
+                    <label class="active" for="descripcion">
+                        Password
+                    </label> 
+              </div>
+          </div>
+          
+          
+          <button class="btn" type="submit">
+            Agregar Empleado
+          </button>          
+        </form>
+      </div>
+    <% }  %>
+
     
+    <% if(locals.vistaVerEmpleadosSucursal) {%>
+      <div>
+        <form action="/seleccionarEmpleadoSucursal" method="POST">
+          <div class="row">
+              <div class="input-field col s6">
+                    <input id="descripcion" type="text"" name="nombre">      
+                    <label class="active" for="descripcion">
+                        Nombre
+                    </label> 
+              </div>
+          </div>
+          <div class="row">
+              <div class="input-field col s6">
+                    <input id="descripcion" type="text"" name="apellido">      
+                    <label class="active" for="descripcion">
+                        Apellido
+                    </label> 
+              </div>
+          </div>
+
+          <div class="row">
+              <div class="input-field col s6">
+                    <input id="descripcion" type="text"" name="telefono">      
+                    <label class="active" for="descripcion">
+                        telefono
+                    </label> 
+              </div>
+          </div>
+          <div class="row">
+              <div class="input-field col s6">
+                    <input id="descripcion" type="text"" name="correo">      
+                    <label class="active" for="descripcion">
+                        correo
+                    </label> 
+              </div>
+          </div>
+          <div class="row">
+              <div class="input-field col s6">
+                    <input id="descripcion" type="text"" name="supervisor">      
+                    <label class="active" for="descripcion">
+                        Cedula Supervisor
+                    </label> 
+              </div>
+          </div>
+          <div class="row">
+              <div class="input-field col s6">
+                    <input id="descripcion" type="text"" name="puesto">      
+                    <label class="active" for="descripcion">
+                        puesto
+                    </label> 
+              </div>
+          </div>
+          <div class="row">
+              <div class="input-field col s6">
+                    <input id="descripcion" type="text"" name="sucursal">      
+                    <label class="active" for="descripcion">
+                        Sucursal
+                    </label> 
+              </div>
+          </div>
+          <div class="row">
+              <div class="input-field col s6">
+                    <input id="descripcion" type="text"" name="cedula">      
+                    <label class="active" for="descripcion">
+                      Cedula
+                    </label> 
+              </div>
+          </div>
+          <div class="row">
+              <div class="input-field col s6">
+                    <input id="descripcion" type="text"" name="password">      
+                    <label class="active" for="descripcion">
+                        Password
+                    </label> 
+              </div>
+          </div>
+          
+          
+          <button class="btn" type="submit">
+            Agregar Empleado
+          </button>          
+        </form>
+      </div>
+    <% }  %>
+    
+    <% if(locals.vistaReporte) {%>
+      <div>
+        <form action="/consultaVentas" method="POST">
+          <div class="row">
+              <div class="input-field col s6">
+                    <input id="descripcion" type="text"" name="precioInicial">      
+                    <label class="active" for="descripcion">
+                        Precio Inicial
+                    </label> 
+              </div>
+          </div>
+          <div class="row">  
+              <div class="input-field col s6">
+                  <input id="descripcion" type="text"" name="precioFinal">      
+                  <label class="active" for="descripcion">
+                      Precio Final
+                  </label> 
+            </div>
+          </div>
+          <div class="row">  
+              <div class="input-field col s6">
+                  <input id="descripcion" type="text"" name="fechaInicial">      
+                  <label class="active" for="descripcion">
+                      Fecha Inicial
+                  </label> 
+            </div>
+          </div>
+          <div class="row">  
+              <div class="input-field col s6">
+                  <input id="descripcion" type="text"" name="fechaFinal">      
+                  <label class="active" for="descripcion">
+                      Fecha Final
+                  </label> 
+            </div>
+          </div>
+          <div class="row">  
+              <div class="input-field col s6">
+                  <input id="descripcion" type="text"" name="tipoPago">      
+                  <label class="active" for="descripcion">
+                      Tipo Pago
+                  </label> 
+            </div>
+          </div>
+          <div class="row">  
+            <div class="input-field col s6">
+                <input id="descripcion" type="text"" name="pais">      
+                <label class="active" for="descripcion">
+                    Pais
+                </label> 
+            </div>
+          </div>
+          <div class="row">  
+            <div class="input-field col s6">
+                <input id="descripcion" type="text" name="tipoVehiculo">      
+                <label class="active" for="descripcion">
+                    Tipo Vehiculo
+                </label> 
+            </div>
+          </div>
+          <div class="row">  
+            <div class="input-field col s6">
+                <input id="descripcion" type="text"" name="idSucursal">      
+                <label class="active" for="descripcion">
+                    Id Sucursal
+                </label> 
+            </div>
+          </div>
+
+          <button class="btn" type="submit">
+            Reporte
+          </button>          
+        </form>
+      </div>
+    <% }  %>
 
 
 
@@ -598,8 +1091,42 @@
               );
               </script>      
       </div>
-        <% } %>
+      <% } %>
 
+
+      <% if (locals.results2) { %>      
+        <div class="row">
+            <div class="container">
+                <table id="table1" class="display">
+                    <%- results2 %>
+                </table>            
+            </div>
+            <script>
+                $(document).ready( function () {          
+                    var table = $('#table1').DataTable( 
+                      {
+                        dom: 'Bfrtip',
+                        select: true,
+                        buttons: [
+                            {
+                                text: 'Get Selected',
+                                action: function () {
+                                  var ids = $.map(table.rows('.selected').data(), function (item) {
+                                      return item[0]
+                                  });
+                                console.log(ids)
+                                alert(table.rows('.selected').data().length + ' row(s) selected');
+                                  
+                                }
+                            }
+                        ]
+                         } );
+                } 
+                );
+                </script>      
+        </div>
+        <% } %>
+  
   <script>
       document.addEventListener('DOMContentLoaded', function() {
       
