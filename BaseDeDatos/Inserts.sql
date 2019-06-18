@@ -1,6 +1,12 @@
 USE Proyecto_BasesII;
 GO
 
+SELECT *
+FROM PuestoEmpleado
+
+SELECT *
+FROM EmpleadoXFabrica
+
 DECLARE @fecha DATETIME;
 SET @fecha = GETDATE();
 
@@ -10,7 +16,8 @@ VALUES	('Credito'),
 
 INSERT INTO Usuario(Usuario, Pass, Privilegio)
 VALUES	('Usuario', 'Pass', 'Cliente'),
-		('Administrador', 'Pass', 'Administrador')
+		('Administrador', 'Pass', 'Administrador'),
+		('Empleado', 'Pass', 'Empleado')
 
 EXEC insertarPais 'Costa Rica', 'LINESTRING (100 100, 20 180, 180 180)'
 EXEC insertarPais 'Argentina', 'LINESTRING (100 100, 20 180, 180 180)'
@@ -20,12 +27,12 @@ EXEC insertarProvincia 'Alajuela', 'LINESTRING (100 100, 20 180, 180 180)', 1
 EXEC insertarProvincia 'Cartago', 'LINESTRING (100 100, 20 180, 180 180)', 2
 EXEC insertarProvincia 'Heredia', 'LINESTRING (100 100, 20 180, 180 180)', 3
 
-EXEC insertarUbicacion 'Casa 24F', 'POINT(2 2)', 1
-EXEC insertarUbicacion 'Casa 25F', 'POINT(4 2)', 2
-EXEC insertarUbicacion 'Casa 26F', 'POINT(9 2)', 3
-EXEC insertarUbicacion 'Casa 27F', 'POINT(2 6)', 1
-EXEC insertarUbicacion 'Casa 28F', 'POINT(4 10)', 2
-EXEC insertarUbicacion 'Casa 29F', 'POINT(9 20)', 3
+EXEC insertarUbicacion 'Casa 24F', 'POINT(2 2)', 'Alajuela'
+EXEC insertarUbicacion 'Casa 25F', 'POINT(4 2)', 'Cartago'
+EXEC insertarUbicacion 'Casa 26F', 'POINT(9 2)', 'Heredia'
+EXEC insertarUbicacion 'Casa 27F', 'POINT(2 6)', 'Alajuela'
+EXEC insertarUbicacion 'Casa 28F', 'POINT(4 10)', 'Cartago'
+EXEC insertarUbicacion 'Casa 29F', 'POINT(9 20)', 'Heredia'
 
 EXEC insertarCaracteristica 'Spoiler1', 'Rojo'
 EXEC insertarCaracteristica 'Spoiler2', 'Azul'
@@ -37,22 +44,23 @@ EXEC insertarExtra 'Nombre 3', 'Descripcion 3', 350000
 
 EXEC insertarTipoVehiculo '4X4'
 EXEC insertarTipoVehiculo 'Convertible'
-EXEC insertarTipoVehiculo '2X2'
+EXEC insertarTipoVehiculo '5X5'
 
 EXEC insertarCombustible 'Diesel'
 EXEC insertarCombustible 'Super'
 EXEC insertarCombustible 'Hibrido'
 
-EXEC insertarVehiculo '4X4', 'Super', 'Ford', 'Mustang', 10000000
-EXEC insertarVehiculo 'Convertible', 'Hibrido', 'Hyundai', 'Mustang', 100
-EXEC insertarVehiculo 'Convertible', 'Hibrido', 'Honda', '2009', 100
+EXEC insertarVehiculo '4X4', 'Super', 'Ford', 'Mustang', 10000000,0,2
+EXEC insertarVehiculo 'Convertible', 'Hibrido', 'Hyundai', 'Mustang', 1000,0,2
+EXEC insertarVehiculo 'Convertible', 'Hibrido', 'Honda', '2009', 100,0,4
+EXEC insertarVehiculo 'Convertible', 'Hibrido', 'Hyundai', '2009', 100,0,4
 
 EXEC insertarFotoVehiculo 'C:\Users\pierr\Pictures\imagen.jpg', 'Nombre', @fecha, 1
 EXEC insertarFotoVehiculo 'C:\Users\pierr\Pictures\imagen.jpg', 'Nombre', @fecha, 2
 
-EXEC insertarExtraXVehiculo 1, 1, 150000
-EXEC insertarExtraXVehiculo 2, 1, 250000
-EXEC insertarExtraXVehiculo 3, 2, 350000
+EXEC insertarExtraXVehiculo 1, 1
+EXEC insertarExtraXVehiculo 2, 1
+EXEC insertarExtraXVehiculo 3, 2
 
 EXEC insertarCaracteristicaXVehiculo 1, 1
 EXEC insertarCaracteristicaXVehiculo 2, 1
@@ -66,16 +74,16 @@ EXEC insertarPuestoEmpleado 'Supervisor'
 EXEC insertarPuestoEmpleado 'Vendedor'
 EXEC insertarPuestoEmpleado 'Facturador'
 
-INSERT INTO Empleado(Nombre, Apellido, Telefono, Correo, IdSupervisor, IdPuestoEmpleado, IdSucursal, Cedula, IdUsuario)
-VALUES ('Supervisor', 'Supervisor', '1111-1111', 'supervisor@gmail.com', null, 1, 1, '1', 2);
+INSERT INTO Empleado(Nombre, Apellido, Telefono, Correo, IdSupervisor, IdPuestoEmpleado, Cedula, IdUsuario)
+VALUES ('Supervisor', 'Supervisor', '1111-1111', 'supervisor@gmail.com', null, 1, '1', 2);
 
-EXEC insertarEmpleado 'Gabriel', 'Piedra', '2121-2121', 'usuario@gmail.com', '1', 'Vendedor', 1, '2', 2
-EXEC insertarEmpleado 'Luis', 'Piedra', '2121-2121', 'usuario@gmail.com', '1', 'Vendedor', 1, '3', 2
-EXEC insertarEmpleado 'Roberto', 'Piedra', '2121-2121', 'usuario@gmail.com', '1', 'Vendedor', 1, '4', 2
+EXEC insertarEmpleadoSucursal 'Gabriel', 'Piedra', '2121-2121', 'usuario@gmail.com', '1', 'Vendedor', 1, '2', 2
+EXEC insertarEmpleadoSucursal 'Luis', 'Piedra', '2121-2121', 'usuario@gmail.com', '1', 'Vendedor', 1, '3', 2
+EXEC insertarEmpleadoSucursal 'Roberto', 'Piedra', '2121-2121', 'usuario@gmail.com', '1', 'Vendedor', 1, '4', 2
 
-EXEC InsertarCliente 1, 'Israel', 'Piedra', '1111-1111', 'cliente@gmail', 4
-EXEC InsertarCliente 1, 'Jean', 'Piedra', '1111-1111', 'cliente@gmail', 5
-EXEC InsertarCliente 1, 'Pablo', 'Piedra', '1111-1111', 'cliente@gmail', 6
+EXEC InsertarCliente '1998-1-1','hola','998', 'Israel', 'Piedra', '1111-1111', 'cliente@gmail', 'POINT(10 12)','Papas','Cartago'
+EXEC InsertarCliente '1998-1-1','hola','998', 'Jean', 'Piedra', '1112-1111', 'cliente2@gmail', 'POINT(20 12)','Papas','Cartago'
+EXEC InsertarCliente '1998-1-1','hola','998', 'Pablo', 'Piedra', '1113-1111', 'cliente3@gmail', 'POINT(25 12)','Papas','Cartago'
 
 EXEC InsertarDescuento 'Descuento de verano', 20
 EXEC InsertarDescuento 'Descuento de verano', 60
@@ -108,8 +116,8 @@ EXEC InsertarComision 2, 2, 50
 EXEC InsertarEntrega 1, 4, 'En proceso', @fecha
 EXEC InsertarEntrega 2, 5, 'Enviado', @fecha
 
-EXEC InsertarFabrica 1, 'Una fabrica'
-EXEC InsertarFabrica 2, 'Una fabrica'
+EXEC InsertarFabrica 'Una fabrica',1
+EXEC InsertarFabrica 'Una fabrica',2
 
 EXEC InsertarPedido  'En proceso', @fecha, 1, 1
 EXEC InsertarPedido  'Entregado', @fecha, 2, 2

@@ -162,7 +162,7 @@ GO
 create or alter procedure insertarUbicacion
                   @Descripcion varchar(50),
 				  @Locacion geometry,
-				  @idProvincia   int
+				  @NombreProvincia   varchar(50)
 AS 
 BEGIN
      declare @UbicacionRepetida varchar(50)
@@ -174,7 +174,7 @@ BEGIN
 
 	 SELECT @ProvinciaConfirmado = IdProvincia
 	 FROM   Provincia
-	 WHERE  IdProvincia = @idProvincia
+	 WHERE  Nombre = @NombreProvincia
 	 
 	 IF @UbicacionRepetida IS NULL AND @ProvinciaConfirmado IS NOT NULL
 		BEGIN
@@ -182,8 +182,7 @@ BEGIN
 		insert into Ubicacion(Descripcion,IdProvincia,LocacionExacta)
 		values (@Descripcion,@ProvinciaConfirmado,@Locacion)
 		COMMIT
-		SELECT Descripcion,LocacionExacta,IdUbicacion,IdProvincia
-		FROM Ubicacion
+		SELECT @@IDENTITY AS IdUbicacion
 		END
 	ELSE
 		BEGIN
@@ -532,7 +531,9 @@ create or alter procedure insertarVehiculo
 				  @Combustible varchar(50),
 				  @Marca   varchar(50),
 				  @Modelo  varchar(50),
-				  @Precio   int
+				  @Precio   int,
+				  @usado	bit,
+				  @puertas  int
 AS 
 BEGIN
 	 declare @TipoConfirmado    int
@@ -549,8 +550,8 @@ BEGIN
 	 IF @TipoConfirmado IS NOT NULL AND @CombustibleConfirmado IS NOT NULL
 		BEGIN
 		BEGIN TRANSACTION
-		insert into Vehiculo(IdTipoVehiculo,IdCombustible,Marca,Modelo,Precio)
-		values (@TipoConfirmado,@CombustibleConfirmado,@Marca,@Modelo,@Precio)
+		insert into Vehiculo(IdTipoVehiculo,IdCombustible,Marca,Modelo,Precio, Usado,Puertas)
+		values (@TipoConfirmado,@CombustibleConfirmado,@Marca,@Modelo,@Precio, @usado,@puertas)
 		COMMIT
 		SELECT IdVehiculo,IdTipoVehiculo,IdCombustible,Marca,Modelo,Precio
 		FROM Vehiculo
@@ -570,6 +571,28 @@ create or alter  procedure seleccionarVehiculo
 				  @Marca   varchar(50),
 				  @Modelo  varchar(50),
 				  @PrecioLow   int,
+				  @PrecioHigh  int,
+				  @usado	   bit,
+				  @puertas     int
+AS 
+BEGIN
+
+	 SELECT Vehiculo.IdVehiculo,TipoVehiculo.Nombre as Tipo,Combustible.Nombre as Combustible,Vehiculo.Marca,Vehiculo.Modelo,Vehiculo.Precio,Vehiculo.Puertas,Vehiculo.Usado
+	 FROM Vehiculo inner join TipoVehiculo on Vehiculo.IdTipoVehiculo = TipoVehiculo.IdTipoVehiculo
+		  inner join Combustible on Vehiculo.IdCombustible = Combustible.IdCombustible
+	 WHERE Vehiculo.Marca = isnull(@Marca,Vehiculo.Marca) AND Vehiculo.Modelo = isnull(@Modelo,Vehiculo.Modelo) AND Vehiculo.Precio between isnull(@PrecioLow,Vehiculo.Precio) and isnull(@PrecioHigh,Vehiculo.Precio)
+		   AND TipoVehiculo.Nombre = isnull(@Tipo,TipoVehiculo.Nombre) AND Combustible.Nombre = isnull(@Combustible,Combustible.Nombre) and
+		   Vehiculo.Usado = ISNULL(@usado, Vehiculo.Usado) AND Vehiculo.Puertas = isnull(@puertas,Vehiculo.Puertas) AND Vehiculo.IdVehiculo NOT IN (SELECT FacturaXVehiculo.IdVehiculo FROM FacturaXVehiculo )
+END
+GO
+
+
+create or alter  procedure seleccionarVehiculoComprado
+                  @Tipo varchar(50),
+				  @Combustible varchar(50),
+				  @Marca   varchar(50),
+				  @Modelo  varchar(50),
+				  @PrecioLow   int,
 				  @PrecioHigh  int
 AS 
 BEGIN
@@ -577,6 +600,7 @@ BEGIN
 	 SELECT Vehiculo.IdVehiculo,TipoVehiculo.Nombre as Tipo,Combustible.Nombre as Combustible,Vehiculo.Marca,Vehiculo.Modelo,Vehiculo.Precio
 	 FROM Vehiculo inner join TipoVehiculo on Vehiculo.IdTipoVehiculo = TipoVehiculo.IdTipoVehiculo
 		  inner join Combustible on Vehiculo.IdCombustible = Combustible.IdCombustible
+		  inner join FacturaXVehiculo on FacturaXVehiculo.IdVehiculo = Vehiculo.IdVehiculo
 	 WHERE Vehiculo.Marca = isnull(@Marca,Vehiculo.Marca) AND Vehiculo.Modelo = isnull(@Modelo,Vehiculo.Modelo) AND Vehiculo.Precio between isnull(@PrecioLow,Vehiculo.Precio) and isnull(@PrecioHigh,Vehiculo.Precio)
 		   AND TipoVehiculo.Nombre = isnull(@Tipo,TipoVehiculo.Nombre) AND Combustible.Nombre = isnull(@Combustible,Combustible.Nombre)
 END
@@ -588,7 +612,9 @@ create or alter procedure modificarVehiculo
 				  @Combustible varchar(50),
 				  @Marca   varchar(50),
 				  @Modelo  varchar(50),
-				  @Precio  int
+				  @Precio  int,
+				  @Usado bit,
+				  @Puertas int
 AS 
 BEGIN
      declare @VehiculoConfirmado int
@@ -618,7 +644,7 @@ BEGIN
 		BEGIN TRANSACTION
 		UPDATE Vehiculo
 		SET IdTipoVehiculo = isnull(@TipoConfirmado,IdTipoVehiculo),IdCombustible = isnull(@CombustibleConfirmado,IdCombustible),Marca = isnull(@Marca,Marca),Modelo = isnull(@Modelo,Modelo),
-		    Precio = isnull(@Precio,Precio)
+		    Precio = isnull(@Precio,Precio),Usado = ISNULL(@Usado,Usado),Puertas = ISNULL(@Puertas,Puertas)
 		WHERE  IdVehiculo = @VehiculoConfirmado
 		COMMIT
 		SELECT IdVehiculo,IdTipoVehiculo,IdCombustible,Marca,Modelo,Precio
@@ -635,8 +661,6 @@ create or alter procedure insertarFotoVehiculo
 AS 
 BEGIN
 	 declare @VehiculoConfirmado    int
-	 declare @sql                   varchar(max)
-	 set @sql = 'Insert into FotoVehiculo(Foto) SELECT BulkColumn FROM OPENROWSET(BULK '''+@foto+''', SINGLE_BLOB) as X'
 
 	 SELECT @VehiculoConfirmado = IdVehiculo
 	 FROM   Vehiculo
@@ -645,12 +669,8 @@ BEGIN
 	 IF @VehiculoConfirmado IS NOT NULL 
 		BEGIN
 		BEGIN TRANSACTION
-		exec(@sql)
-		COMMIT
-		BEGIN TRANSACTION
-		UPDATE FotoVehiculo 
-		SET NombreFoto = @Nombre,Fecha = @fecha,IdVehiculo = @idVehiculo
-		Where IdFotoVehiculo = IDENT_CURRENT('FotoVehiculo')
+		INSERT INTO FotoVehiculo (Fecha,Foto,NombreFoto,IdVehiculo)
+		VALUES (GETDATE(),@foto,@Nombre,@idVehiculo)
 		COMMIT
 		SELECT IdFotoVehiculo,Foto,NombreFoto,Fecha,IdVehiculo
 		FROM FotoVehiculo
@@ -736,18 +756,18 @@ GO
 
 create or alter procedure insertarExtraXVehiculo
 				  @idExtra int,
-				  @idVehiculo int,
-				  @precio int
+				  @idVehiculo int
 AS 
 BEGIN
 	 declare @VehiculoConfirmado    int
 	 declare @ExtraConfirmado       int
+	 declare @Precio                int
 
 	 SELECT @VehiculoConfirmado = IdVehiculo
 	 FROM   Vehiculo
 	 WHERE  IdVehiculo = @idVehiculo
 
-	 SELECT @ExtraConfirmado = IdExtra
+	 SELECT @ExtraConfirmado = IdExtra,@Precio = Precio
 	 FROM   Extra
 	 WHERE  IdExtra = @idExtra
 	 
@@ -755,7 +775,7 @@ BEGIN
 		BEGIN
 		BEGIN TRANSACTION
 		insert into ExtraXVehiculo(IdExtra,IdVehiculo,PrecioPagado)
-		Values (@ExtraConfirmado,@VehiculoConfirmado,@precio)
+		Values (@ExtraConfirmado,@VehiculoConfirmado,@Precio)
 		COMMIT
 		SELECT IdExtra,IdVehiculo,PrecioPagado
 		FROM ExtraXVehiculo
@@ -823,6 +843,94 @@ BEGIN
 		BEGIN
 		DECLARE @error varchar(50)
 		SET	 @error = 'El extraXVehiculo no existe'
+		SELECT @error as Error
+		END
+END
+GO
+
+create or alter procedure insertarVehiculoXSucursal
+				  @idVehiculo int,
+				  @idSucursal int
+AS 
+BEGIN
+	 declare @VehiculoConfirmado    int
+	 declare @SucursalConfirmada       int
+
+	 SELECT @VehiculoConfirmado = IdVehiculo
+	 FROM   Vehiculo
+	 WHERE  IdVehiculo = @idVehiculo
+
+	 SELECT @SucursalConfirmada = IdSucursal
+	 FROM   Sucursal
+	 WHERE  IdSucursal = @idSucursal
+	 
+	 IF @VehiculoConfirmado IS NOT NULL AND @SucursalConfirmada IS NOT NULL
+		BEGIN
+		BEGIN TRANSACTION
+		insert into VehiculoXSucursal(IdSucursal,IdVehiculo)
+		Values (@SucursalConfirmada,@VehiculoConfirmado)
+		COMMIT
+		SELECT IdSucursal,IdVehiculo
+		FROM VehiculoXSucursal
+		END
+	ELSE
+		BEGIN
+		DECLARE @error varchar(100)
+		SET	 @error = 'El vehiculo o sucursal indicado no existen'
+		SELECT @error as Error
+		END
+END
+GO
+
+create or alter procedure seleccionarVehiculoXSucursal
+				  @idVehiculo int,
+				  @idSucursal int
+AS 
+BEGIN
+
+	 SELECT Vehiculo.Marca,Vehiculo.Modelo,Sucursal.Nombre,VehiculoXSucursal.IdVehiculoXSucursal
+	 FROM   VehiculoXSucursal inner join Vehiculo on VehiculoXSucursal.IdVehiculo = Vehiculo.IdVehiculo
+	        inner join Sucursal on VehiculoXSucursal.IdSucursal = Sucursal.IdSucursal
+	 WHERE  VehiculoXSucursal.IdSucursal  = isnull(@idSucursal,VehiculoXSucursal.IdSucursal) AND VehiculoXSucursal.IdVehiculo  = isnull(@IdVehiculo,VehiculoXSucursal.IdVehiculo)
+END
+GO
+
+create or alter procedure modificarVehiculoXSucursal
+				  @idVehiculoXSucursal int,
+				  @idSucursal int,
+				  @idVehiculo int
+AS 
+BEGIN
+	 declare @VehiculoConfirmado    int
+	 declare @SucursalConfirmada       int
+	 declare @VehiculoXSucursalConfirmado int
+
+	 SELECT @VehiculoConfirmado = IdVehiculo
+	 FROM   Vehiculo
+	 WHERE  IdVehiculo = @idVehiculo
+
+	 SELECT @SucursalConfirmada = IdSucursal
+	 FROM   Sucursal
+	 WHERE  IdSucursal = @idSucursal
+
+	 SELECT @VehiculoXSucursalConfirmado = IdVehiculoXSucursal
+	 FROM   VehiculoXSucursal
+	 WHERE  IdVehiculoXSucursal = @idVehiculoXSucursal
+	 
+	 IF @VehiculoXSucursalConfirmado IS NOT NULL
+		BEGIN
+		BEGIN TRANSACTION
+		UPDATE VehiculoXSucursal
+		SET IdSucursal = isnull(@SucursalConfirmada,IdSucursal),IdVehiculo = isnull(@VehiculoConfirmado,IdVehiculo)
+		WHERE IdVehiculoXSucursal = @VehiculoXSucursalConfirmado
+		COMMIT
+		SELECT IdVehiculoXSucursal,IdVehiculo
+		FROM VehiculoXSucursal
+		END
+	ELSE
+		BEGIN
+		DECLARE @error varchar(50)
+		SET	 @error = 'El VehiculoXSucursal no existe'
 		SELECT @error as Error
 		END
 END
@@ -961,14 +1069,17 @@ GO
 create or alter procedure seleccionarSucursal
                   @Nombre varchar(50),
 				  @Descripcion varchar(50),
-				  @IdUbicacion   int
+				  @NombrePais    varchar(50),
+				  @NombreProvincia varchar(50)
 AS 
 BEGIN
 
-	 SELECT Sucursal.IdSucursal,Sucursal.Nombre,Sucursal.Descripcion,Ubicacion.Descripcion
-	 FROM  Sucursal INNER JOIN Ubicacion on Sucursal.IdUbicacion = Ubicacion.IdUbicacion
-	 WHERE Sucursal.Nombre = isnull(@Nombre,Sucursal.Nombre) AND Sucursal.Descripcion = isnull(@Descripcion,Sucursal.Descripcion) AND 
-	       Sucursal.IdUbicacion = isnull(@IdUbicacion,Sucursal.IdUbicacion)
+	 SELECT Sucursal.IdSucursal,Sucursal.Nombre as NombreSucursal,Sucursal.Descripcion,Ubicacion.Descripcion as DescripcionUbicacion,Provincia.Nombre as NombreProvincia,Pais.Nombre as NombrePais
+	 FROM  Sucursal INNER JOIN Ubicacion on Sucursal.IdUbicacion = Ubicacion.IdUbicacion,Pais,Provincia
+	 WHERE Ubicacion.IdProvincia = Provincia.IdProvincia AND Provincia.IdPais = Pais.IdPais AND
+		   Sucursal.Nombre = isnull(@Nombre,Sucursal.Nombre) AND Sucursal.Descripcion = isnull(@Descripcion,Sucursal.Descripcion) AND 
+	       Provincia.Nombre = ISNULL(@NombreProvincia,Provincia.Nombre) AND
+		   Pais.Nombre = ISNULL(@NombrePais,Pais.Nombre)
 
 END
 GO
@@ -1085,7 +1196,7 @@ BEGIN
 END
 GO
 
-create or alter procedure insertarEmpleado
+create or alter procedure insertarEmpleadoSucursal
                   @Nombre   varchar(50),
 				  @Apellido varchar(50),
 				  @Telefono varchar(50),
@@ -1094,7 +1205,7 @@ create or alter procedure insertarEmpleado
 				  @Puesto   varchar(50),
 				  @Sucursal int,
 				  @Cedula   varchar(50),
-				  @idUsuario int
+				  @Pass     varchar(50)
 
 AS 
 BEGIN
@@ -1122,10 +1233,70 @@ BEGIN
 	 IF @CedulaRepetida IS NULL AND @SucursalConfirmada IS NOT NULL AND @PuestoConfirmado IS NOT NULL
 		BEGIN
 		BEGIN TRANSACTION
-		insert into Empleado(Nombre,Apellido,Telefono,Correo,IdSupervisor,IdPuestoEmpleado,IdSucursal,Cedula,IdUsuario)
-		values (@Nombre,@Apellido,@Telefono,@Correo,@SupervisadorConfirmado,@PuestoConfirmado,@SucursalConfirmada,@Cedula,@idUsuario)
+		INSERT INTO Usuario(Usuario, Pass, Privilegio)
+        VALUES	(@Cedula, @Pass, 'Empleado')
+		insert into Empleado(Nombre,Apellido,Telefono,Correo,IdSupervisor,IdPuestoEmpleado,Cedula,IdUsuario)
+		values (@Nombre,@Apellido,@Telefono,@Correo,@SupervisadorConfirmado,@PuestoConfirmado,@Cedula,@@IDENTITY)
+		insert into EmpleadoXSucursal(IdEmpleado,IdSucursal)
+		values(@@IDENTITY,@SucursalConfirmada)
 		COMMIT
-		SELECT IdEmpleado,Nombre,Apellido,Telefono,Correo,IdSupervisor,IdPuestoEmpleado,IdSucursal,Cedula
+		SELECT IdEmpleado,Nombre,Apellido,Telefono,Correo,IdSupervisor,IdPuestoEmpleado,Cedula
+		FROM Empleado
+		END
+	ELSE
+		BEGIN
+		DECLARE @error varchar(50)
+		SET	 @error = 'La cedula indicada ya esta registrada o la sucursal o puesto no existen'
+		SELECT @error as Error
+		END
+END
+GO
+
+create or alter procedure insertarEmpleadoFabrica
+                  @Nombre   varchar(50),
+				  @Apellido varchar(50),
+				  @Telefono varchar(50),
+				  @Correo   varchar(50),
+				  @Supervisor varchar(50),
+				  @Puesto   varchar(50),
+				  @Fabrica int,
+				  @Cedula   varchar(50),
+				  @Pass     varchar(50)
+
+AS 
+BEGIN
+     declare @CedulaRepetida varchar(50)
+	 declare @FabricaConfirmada     int
+	 declare @SupervisadorConfirmado int
+	 declare @PuestoConfirmado       int
+
+	 SELECT @CedulaRepetida = Cedula
+	 FROM Empleado
+	 WHERE Cedula = @Cedula
+
+	 SELECT @FabricaConfirmada = IdFabrica
+	 FROM   Fabrica
+	 WHERE  IdFabrica = @Fabrica
+
+	 SELECT @SupervisadorConfirmado = IdEmpleado
+	 FROM   Empleado
+	 WHERE  Cedula = @Supervisor
+
+	 SELECT @PuestoConfirmado = IdPuestoEmpleado
+	 FROM   PuestoEmpleado
+	 WHERE  Puesto = @Puesto
+	 
+	 IF @CedulaRepetida IS NULL AND @FabricaConfirmada IS NOT NULL AND @PuestoConfirmado IS NOT NULL
+		BEGIN
+		BEGIN TRANSACTION
+		INSERT INTO Usuario(Usuario, Pass, Privilegio)
+        VALUES	(@Cedula, @Pass, 'Fabrica')
+		insert into Empleado(Nombre,Apellido,Telefono,Correo,IdSupervisor,IdPuestoEmpleado,Cedula,IdUsuario)
+		values (@Nombre,@Apellido,@Telefono,@Correo,@SupervisadorConfirmado,@PuestoConfirmado,@Cedula,@@IDENTITY)
+		insert into EmpleadoXFabrica(IdEmpleado,IdFabrica)
+		values(@@IDENTITY,@FabricaConfirmada)
+		COMMIT
+		SELECT IdEmpleado,Nombre,Apellido,Telefono,Correo,IdSupervisor,IdPuestoEmpleado,Cedula
 		FROM Empleado
 		END
 	ELSE
@@ -1153,15 +1324,17 @@ BEGIN
 	 SELECT  Empleado.IdEmpleado,Empleado.Nombre,Empleado.Apellido,Empleado.Telefono,Empleado.Correo,Empleado.IdSupervisor,PuestoEmpleado.Puesto,Sucursal.Nombre,Empleado.Cedula
 
 	 FROM Empleado INNER JOIN PuestoEmpleado on Empleado.IdPuestoEmpleado = PuestoEmpleado.IdPuestoEmpleado
-	      inner join Sucursal on Empleado.IdSucursal = Sucursal.IdSucursal
-		  inner join Empleado e2 on Empleado.IdSupervisor = e2.IdEmpleado
+	      inner join EmpleadoXSucursal on Empleado.IdEmpleado = EmpleadoXSucursal.IdEmpleado
+		  inner join Sucursal on EmpleadoXSucursal.IdSucursal = Sucursal.IdSucursal
 
-	 WHERE Empleado.Nombre = isnull(@Nombre,Empleado.Nombre) AND Empleado.Apellido = isnull(@Apellido,Empleado.Apellido) AND Empleado.Telefono = isnull(@Telefono,Empleado.Telefono)
-	       AND Empleado.Correo = isnull(@Correo,Empleado.Correo) AND e2.Cedula = isnull(@Supervisor,e2.Cedula) AND PuestoEmpleado.Puesto = isnull(@Puesto,PuestoEmpleado.Puesto)
+	 WHERE
+	       Empleado.Nombre = isnull(@Nombre,Empleado.Nombre) AND Empleado.Apellido = isnull(@Apellido,Empleado.Apellido) AND Empleado.Telefono = isnull(@Telefono,Empleado.Telefono)
+	       AND Empleado.Correo = isnull(@Correo,Empleado.Correo) AND PuestoEmpleado.Puesto = isnull(@Puesto,PuestoEmpleado.Puesto)
 		   AND Sucursal.IdSucursal = isnull(@Sucursal,Sucursal.IdSucursal) AND Empleado.Cedula = isnull(@Cedula,Empleado.Cedula)
  
 END
 GO
+
 
 create or alter procedure modificarEmpleado
                   @Nombre   varchar(50),
@@ -1170,13 +1343,11 @@ create or alter procedure modificarEmpleado
 				  @Correo   varchar(50),
 				  @Supervisor varchar(50),
 				  @Puesto   varchar(50),
-				  @Sucursal int,
 				  @Cedula   varchar(50)
 
 AS 
 BEGIN
      declare @CedulaRepetida varchar(50)
-	 declare @SucursalConfirmada     int
 	 declare @SupervisadorConfirmado int
 	 declare @PuestoConfirmado       int
 
@@ -1184,9 +1355,6 @@ BEGIN
 	 FROM Empleado
 	 WHERE Cedula = @Cedula
 
-	 SELECT @SucursalConfirmada = IdSucursal
-	 FROM   Sucursal
-	 WHERE  IdSucursal = @Sucursal
 
 	 SELECT @SupervisadorConfirmado = IdEmpleado
 	 FROM   Empleado
@@ -1201,10 +1369,10 @@ BEGIN
 		BEGIN TRANSACTION
 		UPDATE Empleado
 		SET Nombre = isnull(@Nombre,Nombre),Apellido = isnull(@Apellido,Apellido),Telefono = isnull(@Telefono,Telefono),Correo = isnull(@Correo,Correo),
-		    IdSupervisor = isnull(@SupervisadorConfirmado,IdSupervisor),IdPuestoEmpleado = isnull(@PuestoConfirmado,IdPuestoEmpleado),IdSucursal = isnull(@SucursalConfirmada,IdSucursal)
+		    IdSupervisor = isnull(@SupervisadorConfirmado,IdSupervisor),IdPuestoEmpleado = isnull(@PuestoConfirmado,IdPuestoEmpleado)
 		Where Cedula = @CedulaRepetida
 		COMMIT
-		SELECT IdEmpleado,Nombre,Apellido,Telefono,Correo,IdSupervisor,IdPuestoEmpleado,IdSucursal,Cedula
+		SELECT IdEmpleado,Nombre,Apellido,Telefono,Correo,IdSupervisor,IdPuestoEmpleado,Cedula
 		FROM Empleado
 		END
 	ELSE
@@ -1216,7 +1384,7 @@ BEGIN
 END
 GO
 
-CREATE OR ALTER PROCEDURE ActualizarCliente(@IdCliente INT, @Nombre VARCHAR(50), @Apellido VARCHAR(50), @Telefono VARCHAR(50), @Correo VARCHAR(50), @IdUbicacion INT)
+CREATE OR ALTER PROCEDURE ActualizarCliente(@IdCliente INT, @Nombre VARCHAR(50), @Apellido VARCHAR(50), @Telefono VARCHAR(50), @Correo VARCHAR(50))
 AS
 	IF @IdCliente IS NULL
 		BEGIN
@@ -1240,18 +1408,9 @@ AS
 					RAISERROR(N'Correo utilizado', 1, 1);
 				END
 		END
-	IF @IdUbicacion IS NOT NULL
-		BEGIN
-			DECLARE @ComprobarUbicacion INT;
-			SET @ComprobarUbicacion = (SELECT IdUbicacion FROM Ubicacion WHERE IdUbicacion = @IdUbicacion)
-			IF @ComprobarUbicacion IS NULL
-				BEGIN
-					RAISERROR(N'La ubicacion no existe', 1, 1);
-				END
-		END
 	BEGIN TRANSACTION
 		UPDATE Cliente
-		SET Nombre = @Nombre, Apellido = @Apellido, Telefono = @Telefono, Correo = @Correo, IdUbicacion = @IdUbicacion
+		SET Nombre = @Nombre, Apellido = @Apellido, Telefono = @Telefono, Correo = @Correo
 		WHERE IdCliente = @IdCliente
 	COMMIT TRANSACTION
 	RETURN @@IDENTITY;
@@ -1281,18 +1440,18 @@ GO
 USE Proyecto_BasesII;
 GO
 
-CREATE OR ALTER PROCEDURE InsertarCliente(@IdUsuario INT, @Nombre VARCHAR(50), @Apellido VARCHAR(50), @Telefono VARCHAR(50), @Correo VARCHAR(50), @IdUbicacion INT)
+CREATE OR ALTER PROCEDURE InsertarCliente(@fechaNacimiento date,@pass varchar(50),@cedula varchar(50), @Nombre VARCHAR(50), @Apellido VARCHAR(50), @Telefono VARCHAR(50), @Correo VARCHAR(50), @Locacion geometry,@Descripcion varchar(50),@Provincia varchar(50))
 AS
-	IF @Nombre IS NULL OR @Apellido IS NULL OR @Telefono IS NULL OR @Correo IS NULL OR @IdUbicacion IS NULL
+	IF @Nombre IS NULL OR @Apellido IS NULL OR @Telefono IS NULL OR @Correo IS NULL OR (select datediff(year,@fechaNacimiento,getDate()))<18 
 		BEGIN
 			RAISERROR(N'Informacion Incompleta', 1, 1);
 		END
 	DECLARE @ComprobarCorreo	INT,
 			@ComprobarTelefono	INT,
-			@ComprobarUbicacion INT;
+			@ComprobarProvincia INT;
 	SELECT	@ComprobarCorreo = (SELECT IdCliente FROM Cliente WHERE Correo = @Correo),
 			@ComprobarTelefono = (SELECT IdCliente FROM Cliente WHERE Telefono = @Telefono),
-			@ComprobarUbicacion = (SELECT IdUbicacion FROM Ubicacion WHERE IdUbicacion = @IdUbicacion);
+			@ComprobarProvincia = (SELECT IdProvincia FROM Provincia WHERE Nombre = @Provincia);
 	IF @ComprobarCorreo IS NOT NULL
 		BEGIN
 			RAISERROR(N'Correo ya utilizado', 1, 1);
@@ -1301,19 +1460,26 @@ AS
 		BEGIN
 			RAISERROR(N'Numero de telefono duplicado', 1, 1);
 		END
-	ELSE IF @ComprobarUbicacion IS NULL
+	ELSE IF @ComprobarProvincia IS NULL
 		BEGIN
-			RAISERROR(N'No existe la ubicacion', 1, 1);
+			RAISERROR(N'No existe la provincia', 1, 1);
 		END
 	ELSE
 		BEGIN
 			BEGIN TRANSACTION
-				INSERT INTO Cliente(Nombre, Apellido, Telefono, Correo, IdUbicacion, IdUsuario)
-				VALUES	(@Nombre, @Apellido, @Telefono, @Correo, @IdUbicacion, @IdUsuario)
+			    declare @UbicacionId int
+			    INSERT INTO Ubicacion(LocacionExacta,Descripcion,IdProvincia)
+				VALUES (@Locacion,@Descripcion,@ComprobarProvincia)
+				SET @UbicacionId = @@IDENTITY
+			    INSERT INTO Usuario(Usuario,Pass,Privilegio)
+				VALUES(@cedula,@pass,'Cliente')
+				INSERT INTO Cliente(Nombre, Apellido, Telefono, Correo, IdUbicacion, IdUsuario,Cedula)
+				VALUES	(@Nombre, @Apellido, @Telefono, @Correo, @UbicacionId, @@IDENTITY,@cedula)
 			COMMIT TRANSACTION
 			RETURN @@IDENTITY;
 		END
 GO
+
 
 USE Proyecto_BasesII;
 GO
@@ -1584,8 +1750,8 @@ AS
 	FROM		Entrega
 	INNER JOIN	Factura
 	ON			Factura.IdFactura = Entrega.IdFactura
-	INNER JOIN  Ubcacion
-	ON          Entrega.IdUbicacion = Ubicacion.IdUbicacion
+	INNER JOIN  Ubicacion
+	ON          Entrega.IdUbicacionEntrega = Ubicacion.IdUbicacion
 	WHERE		IdEntrega = ISNULL(@IdEntrega, IdEntrega) AND
 				EstatusEntrega = ISNULL(@EstatusEntrega, EstatusEntrega) AND
 				Entrega.FechaEntrega BETWEEN ISNULL(@FechaInicial, Entrega.FechaEntrega) AND ISNULL(@FechaFinal, Entrega.FechaEntrega) AND
@@ -1646,15 +1812,20 @@ GO
 USE Proyecto_BasesII;
 GO
 
-CREATE OR ALTER PROCEDURE SeleccionarFacturas(@IdFactura INT, @NumeroFactura VARCHAR(50), @IdDetalleFactura INT, @PrecioInicial INT, @PrecioFinal INT, @FechaInicial DATE, @FechaFinal DATE)
+CREATE OR ALTER PROCEDURE SeleccionarFacturas(@IdFactura INT, @NumeroFactura VARCHAR(50), @PrecioInicial INT, @PrecioFinal INT, @FechaInicial DATE, @FechaFinal DATE, @tipoPago VARCHAR(50),@Pais varchar(50),@TipoVehiculo varchar(50),@IdSucursal int)
 AS
-	SELECT	NumeroFactura, PrecioTotal, Fecha, Factura.IdDetalleFactura,DetalleFactura.Comentario
+	SELECT	NumeroFactura, PrecioTotal, Fecha, Factura.IdDetalleFactura,DetalleFactura.Comentario, DetalleFactura.Descuento, TipoPago.Pago
 	FROM	Factura inner join DetalleFactura on Factura.IdDetalleFactura = DetalleFactura.IdDetalleFactura
-	WHERE	IdFactura = ISNULL(@IdFactura, IdFactura) AND
+					inner join TipoPago on DetalleFactura.IdTipoPago = TipoPago.IdTipoPago,Cliente,Ubicacion,Provincia,Pais,Vehiculo,FacturaXVehiculo,Sucursal,TipoVehiculo
+	WHERE	DetalleFactura.IdCliente = Cliente.IdCliente AND Cliente.IdUbicacion = Ubicacion.IdUbicacion AND Ubicacion.IdProvincia = Provincia.IdProvincia AND
+	        Provincia.IdPais = Pais.IdPais AND FacturaXVehiculo.IdVehiculo = Vehiculo.IdVehiculo AND FacturaXVehiculo.IdFactura = Factura.IdFactura AND Vehiculo.IdTipoVehiculo = TipoVehiculo.IdTipoVehiculo AND
+			DetalleFactura.IdSucursal = Sucursal.IdSucursal AND 
+			Factura.IdFactura = ISNULL(@IdFactura, Factura.IdFactura) AND
 			NumeroFactura = ISNULL(@NumeroFactura, NumeroFactura) AND
-			Factura.IdDetalleFactura = ISNULL(@IdDetalleFactura, Factura.IdDetalleFactura) AND
 			PrecioTotal BETWEEN ISNULL(@PrecioInicial, PrecioTotal) AND ISNULL(@PrecioFinal, PrecioTotal) AND
-			Fecha BETWEEN ISNULL(@FechaInicial, Fecha) AND ISNULL(@FechaFinal, Fecha)
+			Fecha BETWEEN ISNULL(@FechaInicial, Fecha) AND ISNULL(@FechaFinal, Fecha) AND
+			TipoPago.Pago = ISNULL(@tipoPago, TipoPago.Pago) AND Pais.Nombre = ISNULL(@Pais,Pais.Nombre) AND TipoVehiculo.Nombre = ISNULL(@TipoVehiculo,TipoVehiculo.Nombre) AND
+			Sucursal.IdSucursal = ISNULL(@IdSucursal,Sucursal.IdSucursal)
 GO
 
 USE Proyecto_BasesII;
@@ -1922,41 +2093,42 @@ GO
 /**************************FABRICA*********************************/
 
 CREATE OR ALTER PROCEDURE InsertarFabrica
-	 @IdSucursal int, @Descripcion Varchar(50)
+				  @Descripcion varchar(50),
+				  @IdUbicacion   int
 AS
 BEGIN
 
 	Begin Transaction;
 	--validar si existe
-	insert into Fabrica(IdSucursal,Descripcion)
-	values(@IdSucursal,@Descripcion)
+	insert into Fabrica(IdUbicacion,Descripcion)
+	values(@IdUbicacion,@Descripcion)
 	--end
 	commit 
 END
 go
 
 CREATE OR ALTER PROCEDURE ModificarFabrica
-	@IdFabrica int, @IdSucursal int, @Descripcion Varchar(50)
+	@IdFabrica int, @Descripcion Varchar(50),@IdUbicacion int
 AS
 BEGIN
 	BEGIN TRANSACTION
 		update Fabrica 
-		SET IdSucursal = isnull(@IdSucursal,IdSucursal),
-			Descripcion = isnull(@Descripcion,Descripcion)
+		SET Descripcion = isnull(@Descripcion,Descripcion),IdUbicacion = isnull(@IdUbicacion,IdUbicacion)
 		WHERE IdFabrica = @IdFabrica
 	COMMIT
 END
 go
 
 CREATE OR ALTER PROCEDURE SeleccionarFabrica
-                  @IdFabrica int, @IdSucursal int, @Descripcion Varchar(50)
+                  @IdFabrica int, @Descripcion Varchar(50),@NombreProvincia varchar(50),@NombrePais varchar(50),@IdUbicacion int 
 AS 
 BEGIN
-     SELECT IdFabrica,Fabrica.IdSucursal,Fabrica.Descripcion as Fabrica,Sucursal.Nombre as Sucursal
-	 FROM Fabrica inner join Sucursal on Fabrica.IdSucursal = Sucursal.IdSucursal
-	 WHERE	IdFabrica=isnull(@IdFabrica,IdFabrica) AND
-			Fabrica.IdSucursal = isnull(@IdSucursal,Fabrica.IdSucursal) AND
-			Fabrica.Descripcion = isnull(@Descripcion,Fabrica.Descripcion)      
+     SELECT Fabrica.IdFabrica,Fabrica.Descripcion,Ubicacion.Descripcion,Provincia.Nombre,Pais.Nombre
+	 FROM Fabrica inner join Ubicacion on Fabrica.IdUbicacion = Ubicacion.IdUbicacion,Provincia,Pais
+	 WHERE	Ubicacion.IdProvincia = Provincia.IdProvincia AND Provincia.IdPais = Pais.IdPais AND
+	        IdFabrica=isnull(@IdFabrica,IdFabrica) AND Fabrica.Descripcion = isnull(@Descripcion,Fabrica.Descripcion)  AND
+		    Fabrica.IdUbicacion = isnull(@IdUbicacion,Fabrica.IdUbicacion) AND Provincia.Nombre = ISNULL(@NombreProvincia,Provincia.Nombre) AND
+		    Pais.Nombre = ISNULL(@NombrePais,Pais.Nombre)
 END
 go
 
@@ -2186,3 +2358,482 @@ BEGIN
 			Estatus=ISNULL(@Estatus,Estatus)    
 END
 go
+
+CREATE OR ALTER PROCEDURE SeleccionarEmpleadosFabrica 
+							  @Nombre   varchar(50),
+							  @Apellido varchar(50),
+							  @Telefono varchar(50),
+							  @Correo   varchar(50),
+							  @Supervisor varchar(50),
+							  @Puesto   varchar(50),
+							  @Fabrica int,
+							  @Cedula   varchar(50)
+AS
+	SELECT Empleado.Nombre, Apellido, Telefono, Correo, Fabrica.Descripcion 
+	FROM Empleado,EmpleadoXFabrica,Fabrica
+	WHERE	Empleado.IdEmpleado = EmpleadoXFabrica.IdEmpleado AND EmpleadoXFabrica.IdFabrica = Fabrica.IdFabrica AND
+			Empleado.Nombre = ISNULL(@Nombre, Empleado.Nombre) AND
+			Apellido = ISNULL(@Apellido, Apellido) AND
+			Telefono = ISNULL(@Telefono, Telefono) AND
+			Correo = ISNULL(@Correo, Correo) AND
+			IdPuestoEmpleado = ISNULL(@Puesto, IdPuestoEmpleado) AND
+			Fabrica.IdFabrica = ISNULL(@Fabrica, Fabrica.IdFabrica) AND
+			Empleado.Cedula = ISNULL(@Cedula, Empleado.Cedula)
+GO
+
+CREATE OR ALTER PROCEDURE SeleccionarEmpleadosSucursal
+							  @Nombre   varchar(50),
+							  @Apellido varchar(50),
+							  @Telefono varchar(50),
+							  @Correo   varchar(50),
+							  @Supervisor varchar(50),
+							  @Puesto   varchar(50),
+							  @Sucursal int,
+							  @Cedula   varchar(50)
+AS
+    declare @idPuestoEmpleado int
+	SELECT @idPuestoEmpleado = IdPuestoEmpleado FROM PuestoEmpleado WHERE Puesto = @Puesto 
+
+	SELECT Empleado.IdEmpleado,Empleado.Nombre, Apellido, Telefono, Correo,IdPuestoEmpleado, Sucursal.Descripcion,Sucursal.IdSucursal
+	FROM Empleado,EmpleadoXSucursal,Sucursal
+	WHERE	Empleado.IdEmpleado = EmpleadoXSucursal.IdEmpleado AND EmpleadoXSucursal.IdSucursal = Sucursal.IdSucursal AND
+			Empleado.Nombre = ISNULL(@Nombre, Empleado.Nombre) AND
+			Apellido = ISNULL(@Apellido, Apellido) AND
+			Telefono = ISNULL(@Telefono, Telefono) AND
+			Correo = ISNULL(@Correo, Correo) AND
+			IdPuestoEmpleado = ISNULL(@idPuestoEmpleado, IdPuestoEmpleado) AND
+			Sucursal.IdSucursal = ISNULL(@Sucursal, Sucursal.IdSucursal) AND
+			Empleado.Cedula = ISNULL(@Cedula, Empleado.Cedula)
+GO
+
+
+
+create or alter procedure loginUsuario
+                  @username			varchar(50),
+				  @password			varchar(50)	
+AS
+
+	DECLARE @IdUsuario VARCHAR(100)
+	DECLARE @Privilegio VARCHAR(100)
+	
+	SELECT	@IdUsuario = Usuario.Usuario, @Privilegio = Usuario.Privilegio
+	FROM	Usuario 
+	WHERE Usuario.Usuario = @username AND Usuario.Pass = @password
+	
+	IF @IdUsuario IS NULL 
+		BEGIN
+			Select 'no existe el usuario' as error
+		END
+
+	IF @Privilegio = 'Cliente'
+	BEGIN 
+		SELECT TOP 1 Cliente.IdCliente as IdUsuario, 'Cliente' as Privilegio
+		FROM Cliente
+		INNER JOIN Usuario
+		ON Usuario.IdUsuario = Cliente.IdUsuario 
+	END
+
+	IF @Privilegio = 'Empleado'
+	BEGIN 
+		SELECT TOP 1 Empleado.IdEmpleado as IdUsuario, 'Empleado' as Privilegio
+		FROM Empleado
+		INNER JOIN Usuario
+		ON Usuario.IdUsuario = Empleado.IdUsuario 
+	END
+
+	IF @Privilegio = 'Administrador'
+	BEGIN 
+		SELECT TOP 1 Empleado.IdEmpleado as IdUsuario, 'Administrador' as Privilegio
+		FROM Empleado
+		INNER JOIN Usuario
+		ON Usuario.IdUsuario = Empleado.IdUsuario 
+	END
+GO
+
+USE Proyecto_BasesII;
+GO
+
+CREATE OR ALTER PROCEDURE FacturarCredito(@prima int,@idEmpleado int,@idVehiculo INT, @idCliente INT, @comentario VARCHAR(50), @impuesto INT, @descuento INT, @tipoPago VARCHAR(50), @tipoModalidad VARCHAR(50), @subTotal INT, @idSucursal INT)
+AS	
+	IF @idVehiculo IS NULL OR @idCliente IS NULL OR @comentario IS NULL OR @impuesto IS NULL OR @descuento IS NULL OR @tipoPago IS NULL OR @tipoModalidad IS NULL
+		BEGIN
+			RAISERROR(N'Informacion incompleta', 1, 1);
+			RETURN;
+		END
+	DECLARE @idTipoPago INT,
+			@idTipoModalidad INT,
+			@idEmpleadoConfirmado  int,
+			@idVehiculoConfirmado int,
+			@idClienteConfirmado   int;
+	SELECT	@idTipoPago = (SELECT idTipoPago FROM TipoPago WHERE Pago = @tipoPago),
+			@idTipoModalidad = (SELECT IdTipoModalidad FROM TipoModalidad WHERE Nombre = @tipoModalidad),
+			@idEmpleadoConfirmado = (SELECT IdEmpleado From Empleado Where IdEmpleado = @idEmpleado),
+			@idVehiculoConfirmado = (SELECT IdVehiculo From Vehiculo Where IdVehiculo = @idVehiculo),
+			@idClienteConfirmado = (SELECT IdCliente From Cliente Where IdCliente = @idCliente)
+
+	IF @idTipoPago IS NULL OR @idTipoModalidad IS NULL OR @idEmpleadoConfirmado IS NULL OR @idVehiculoConfirmado IS NULL OR @idClienteConfirmado IS NULL OR @prima > @subTotal
+		BEGIN
+			RAISERROR(N'Informacion incorrecta', 1, 1);
+			RETURN;
+		END
+	DECLARE @idDetalleFactura	INT,
+			@idFactura			INT,
+			@montoTotal			INT;
+	SET		@montoTotal = @subTotal - (@subTotal * @descuento / 100);
+	BEGIN TRANSACTION
+		INSERT INTO DetalleFactura(IdVendedor,IdCliente, IdSucursal, SubTotal, Descuento, Impuestos, IdTipoPago, IdTipoModalidad, Comentario)
+		VALUES	(@idEmpleadoConfirmado,@idCliente, @idSucursal, @subTotal, @descuento, @impuesto, @idTipoPago, @idTipoModalidad, @comentario)
+		SET @idDetalleFactura = @@IDENTITY;
+		INSERT INTO Factura(NumeroFactura, IdDetalleFactura, PrecioTotal, Fecha,MontoPagado)
+		VALUES	(@idDetalleFactura, @idDetalleFactura, @montoTotal, GETDATE(),@prima)
+		SET @idFactura = @@IDENTITY;
+		IF @tipoPago = 'Tarjeta'
+		BEGIN
+		INSERT INTO MontoHacienda(Monto,IdFactura)
+		VALUES(@montoTotal*0.2,@idFactura)
+		END
+		INSERT INTO FacturaXVehiculo(IdFactura, IdVehiculo)
+		VALUES	(@idFactura, @idVehiculo)
+	COMMIT TRANSACTION
+	RETURN @@IDENTITY;
+GO
+
+CREATE PROCEDURE realizarPago(@idFactura int,@Cantidad int)
+as
+   declare @FacturaConfirmada int
+   declare @error             varchar(50)
+   SELECT @FacturaConfirmada = IdFactura
+   FROM   Factura
+   WHERE IdFactura = @idFactura
+
+   if @FacturaConfirmada is null
+      BEGIN
+	  SET @error = 'La factura no existe'
+	  SELECT @error as Error
+	  END
+   else
+      BEGIN
+	  INSERT INTO Pago(Cantidad,Fecha,IdFactura)
+	  VALUES (@Cantidad,GETDATE(),@FacturaConfirmada)
+	  UPDATE Factura
+	  SET MontoPagado = MontoPagado+@Cantidad
+	  WHERE IdFactura = @FacturaConfirmada
+	  end
+go
+
+
+
+CREATE OR ALTER PROCEDURE FacturarContado(@idEmpleado int,@idVehiculo INT, @idCliente INT, @comentario VARCHAR(50), @impuesto INT, @descuento INT, @tipoPago VARCHAR(50), @tipoModalidad VARCHAR(50), @subTotal INT, @idSucursal INT)
+AS	
+	IF @idVehiculo IS NULL OR @idCliente IS NULL OR @comentario IS NULL OR @impuesto IS NULL OR @descuento IS NULL OR @tipoPago IS NULL OR @tipoModalidad IS NULL
+		BEGIN
+			RAISERROR(N'Informacion incompleta', 1, 1);
+			RETURN;
+		END
+	DECLARE @idTipoPago INT,
+			@idTipoModalidad INT,
+			@idEmpleadoConfirmado  int,
+			@idVehiculoConfirmado int,
+			@idClienteConfirmado   int;
+	SELECT	@idTipoPago = (SELECT idTipoPago FROM TipoPago WHERE Pago = @tipoPago),
+			@idTipoModalidad = (SELECT IdTipoModalidad FROM TipoModalidad WHERE Nombre = @tipoModalidad),
+			@idEmpleadoConfirmado = (SELECT IdEmpleado From Empleado Where IdEmpleado = @idEmpleado),
+			@idVehiculoConfirmado = (SELECT IdVehiculo From Vehiculo Where IdVehiculo = @idVehiculo),
+			@idClienteConfirmado = (SELECT IdCliente From Cliente Where IdCliente = @idCliente)
+
+	IF @idTipoPago IS NULL OR @idTipoModalidad IS NULL OR @idEmpleadoConfirmado IS NULL OR @idVehiculoConfirmado IS NULL OR @idClienteConfirmado IS NULL
+		BEGIN
+			RAISERROR(N'Informacion incorrecta', 1, 1);
+			RETURN;
+		END
+	DECLARE @idDetalleFactura	INT,
+			@idFactura			INT,
+			@montoTotal			INT;
+	SET		@montoTotal = @subTotal - (@subTotal * @descuento / 100);
+	BEGIN TRANSACTION
+		INSERT INTO DetalleFactura(IdVendedor,IdCliente, IdSucursal, SubTotal, Descuento, Impuestos, IdTipoPago, IdTipoModalidad, Comentario)
+		VALUES	(@idEmpleadoConfirmado,@idCliente, @idSucursal, @subTotal, @descuento, @impuesto, @idTipoPago, @idTipoModalidad, @comentario)
+		SET @idDetalleFactura = @@IDENTITY;
+		INSERT INTO Factura(NumeroFactura, IdDetalleFactura, PrecioTotal, Fecha,MontoPagado)
+		VALUES	(@idDetalleFactura, @idDetalleFactura, @montoTotal, GETDATE(),@montoTotal)
+		SET @idFactura = @@IDENTITY;
+		IF @tipoPago = 'Tarjeta'
+		BEGIN
+		INSERT INTO MontoHacienda(Monto,IdFactura)
+		VALUES(@montoTotal*0.2,@idFactura)
+		END
+		INSERT INTO FacturaXVehiculo(IdFactura, IdVehiculo)
+		VALUES	(@idFactura, @idVehiculo)
+	COMMIT TRANSACTION
+	RETURN @@IDENTITY;
+GO
+
+
+USE Proyecto_BasesII;
+GO
+
+CREATE OR ALTER PROCEDURE AprobarPedido(@idPedido INT)
+AS
+	IF @idPedido IS NULL
+		BEGIN
+			RAISERROR(N'El id es necesario', 1, 1);
+			RETURN;
+		END
+	DECLARE @comprobarPedido INT;
+	SET		@comprobarPedido = (SELECT idPedido FROM Pedido WHERE IdPedido = @idPedido)
+	IF @comprobarPedido IS NULL
+		BEGIN
+			RAISERROR(N'No existe el pedido', 1, 1);
+			RETURN;
+		END
+	BEGIN TRANSACTION
+		UPDATE Pedido
+		SET EstatusPedido = 'Aprobado'
+		WHERE IdPedido = @idPedido
+	COMMIT TRANSACTION
+	RETURN @@IDENTITY;
+GO
+
+
+create or alter procedure insertarConsignacion
+				  @idCliente varchar(50),
+				  @idVehiculo int,
+				  @Ganancia   int
+AS 
+BEGIN
+	 declare @VehiculoConfirmado    int
+	 declare @ClienteConfirmado       int
+
+	 SELECT @VehiculoConfirmado = IdVehiculo
+	 FROM   Vehiculo
+	 WHERE  IdVehiculo = @idVehiculo
+
+	 SELECT @ClienteConfirmado = Cedula
+	 FROM   Cliente
+	 WHERE  Cedula = @idCliente
+	 
+	 IF @VehiculoConfirmado IS NOT NULL AND @ClienteConfirmado IS NOT NULL
+		BEGIN
+		BEGIN TRANSACTION
+		insert into Consignacion(IdCliente,IdVehiculo,GananciaCliente)
+		Values (@ClienteConfirmado,@VehiculoConfirmado,@Ganancia)
+		COMMIT
+		SELECT IdConsignacion,IdCliente,IdVehiculo,GananciaCliente
+		FROM Consignacion
+		END
+	ELSE
+		BEGIN
+		DECLARE @error varchar(100)
+		SET	 @error = 'El cliente o vehiculo indicado no existen'
+		SELECT @error as Error
+		END
+END
+GO
+
+create or alter procedure seleccionarConsignacion
+                  @IdConsignacion int,
+				  @idCliente varchar(50),
+				  @idVehiculo int,
+				  @GananciaLow   int,
+				  @GananaciaHigh int
+AS 
+BEGIN
+
+	 SELECT Vehiculo.Marca,Vehiculo.Modelo,Cliente.Nombre,Consignacion.IdConsignacion,Consignacion.GananciaCliente
+	 FROM   Consignacion inner join Cliente on Consignacion.IdCliente = Cliente.Cedula
+	        inner join Vehiculo on Consignacion.IdVehiculo = Vehiculo.IdVehiculo
+	 WHERE  Consignacion.IdCliente  = isnull(@idCliente,Consignacion.IdCliente) AND Consignacion.IdVehiculo  = isnull(@IdVehiculo,Consignacion.IdVehiculo) AND 
+	        Consignacion.GananciaCliente between isnull(@GananciaLow,Consignacion.GananciaCliente) and isnull(@GananaciaHigh,Consignacion.GananciaCliente) AND
+			Consignacion.IdConsignacion = isnull(@IdConsignacion,Consignacion.IdConsignacion)
+	 
+END
+GO
+
+create or alter procedure modificarConsignacion
+				  @idConsignacion   int,
+				  @idCliente varchar(50),
+				  @idVehiculo int,
+				  @Ganancia   int
+AS 
+BEGIN
+	 declare @VehiculoConfirmado    int
+	 declare @ClienteConfirmado       int
+	 declare @ConsignacionConfirmada int
+
+	 SELECT @VehiculoConfirmado = IdVehiculo
+	 FROM   Vehiculo
+	 WHERE  IdVehiculo = @idVehiculo
+
+	 SELECT @ClienteConfirmado = Cedula
+	 FROM   Cliente
+	 WHERE  Cedula = @idCliente
+
+	 SELECT @ConsignacionConfirmada = IdConsignacion
+	 FROM   Consignacion
+	 WHERE  IdConsignacion = @idConsignacion
+	 
+	 IF @ConsignacionConfirmada IS NOT NULL
+		BEGIN
+		BEGIN TRANSACTION
+		UPDATE Consignacion
+		SET GananciaCliente = isnull(@Ganancia,GananciaCliente),IdCliente = isnull(@ClienteConfirmado,IdCliente),IdVehiculo = isnull(@VehiculoConfirmado,IdVehiculo)
+		WHERE IdConsignacion = @ConsignacionConfirmada
+		COMMIT
+		SELECT IdConsignacion,IdCliente,IdVehiculo,GananciaCliente
+		FROM Consignacion
+		END
+	ELSE
+		BEGIN
+		DECLARE @error varchar(50)
+		SET	 @error = 'La consignacion no existe'
+		SELECT @error as Error
+		END
+END
+GO
+
+CREATE OR ALTER procedure insertarDespacho
+                  @Telefono   varchar(50),
+				  @Extension varchar(50),
+				  @Correo varchar(50),
+				  @IdFabrica   int
+AS 
+BEGIN
+
+	 declare @FabricaConfirmada    int
+	 declare @ExtensionRepetida int
+
+	 SELECT @FabricaConfirmada = IdFabrica
+	 FROM   Fabrica
+	 WHERE  IdFabrica = @IdFabrica
+
+	 SELECT @ExtensionRepetida = IdDespacho
+	 FROM   Despacho
+	 WHERE  Extension = @Extension
+
+	 IF @FabricaConfirmada IS NOT NULL AND @ExtensionRepetida IS NULL
+		BEGIN
+		BEGIN TRANSACTION
+		INSERT into Despacho(Telefono,Extension,Correo,IdFabrica) 
+		VALUES(@Telefono,@Extension,@Correo,@FabricaConfirmada)
+		COMMIT
+		SELECT Telefono,Extension,Correo,IdFabrica
+		FROM Despacho
+		END
+	ELSE
+		BEGIN
+		DECLARE @error varchar(200)
+		SET	 @error = 'La extension ya existe o la fabrica no existe'
+		SELECT @error as Error
+		END
+
+END
+GO
+
+CREATE OR ALTER procedure seleccionarDespacho
+                  @Telefono   varchar(50),
+				  @Extension varchar(50),
+				  @Correo varchar(50),
+				  @IdFabrica   int
+AS 
+BEGIN
+
+
+	 SELECT Telefono,Extension,Correo,Despacho.IdFabrica,Fabrica.Descripcion as DescripcionFabrica
+	 FROM   Despacho inner join Fabrica on Despacho.Idfabrica = Fabrica.IdFabrica
+	 WHERE  Telefono = isnull(@Telefono,Telefono) AND Extension = isnull(@Extension,Extension) AND Correo = isnull(@Correo,Correo)
+	        AND Fabrica.IdFabrica = ISNULL(@IdFabrica,Fabrica.IdFabrica)
+
+END
+GO
+
+CREATE OR ALTER procedure modificarDespacho
+			      @IdDespacho int,
+                  @Telefono   varchar(50),
+				  @Extension varchar(50),
+				  @Correo varchar(50),
+				  @IdFabrica   int
+AS 
+BEGIN
+
+	 declare @FabricaConfirmada    int
+	 declare @ExtensionRepetida int
+
+	 SELECT @FabricaConfirmada = IdFabrica
+	 FROM   Fabrica
+	 WHERE  IdFabrica = @IdFabrica
+
+	 SELECT @ExtensionRepetida = IdDespacho
+	 FROM   Despacho
+	 WHERE  IdDespacho = @IdDespacho
+
+	 IF @FabricaConfirmada IS NOT NULL AND @ExtensionRepetida IS NOT NULL
+		BEGIN
+		BEGIN TRANSACTION
+		Update Despacho
+		SET Telefono = isnull(@Telefono,Telefono),Extension = isnull(@Extension,Extension),Correo = isnull(@Correo,Correo),IdFabrica = isnull(@IdFabrica,IdFabrica)
+		WHERE IdDespacho = @IdDespacho
+		COMMIT
+		SELECT Telefono,Extension,Correo,IdFabrica
+		FROM Despacho
+		END
+	ELSE
+		BEGIN
+		DECLARE @error varchar(200)
+		SET	 @error = 'La fabrica no existe o el despacho no existe'
+		SELECT @error as Error
+		END
+
+END
+GO
+
+
+create or alter  procedure seleccionarTopVehiculos
+                  @Tipo varchar(50),
+				  @Combustible varchar(50),
+				  @Marca   varchar(50),
+				  @Modelo  varchar(50),
+				  @PrecioLow   int,
+				  @PrecioHigh  int,
+				  @IdSucursal int
+AS 
+BEGIN
+
+	 SELECT TOP (10) Sucursal.IdSucursal,Sucursal.Nombre,Vehiculo.IdVehiculo,TipoVehiculo.Nombre as Tipo,Combustible.Nombre as Combustible,Vehiculo.Marca,Vehiculo.Modelo,Vehiculo.Precio,Count(Vehiculo.Modelo) AS Vendidos
+	 FROM Vehiculo inner join TipoVehiculo on Vehiculo.IdTipoVehiculo = TipoVehiculo.IdTipoVehiculo
+		  inner join Combustible on Vehiculo.IdCombustible = Combustible.IdCombustible
+		  inner join FacturaXVehiculo on FacturaXVehiculo.IdVehiculo = Vehiculo.IdVehiculo inner join VehiculoXSucursal on Vehiculo.IdVehiculo = VehiculoXSucursal.IdVehiculo,Sucursal
+	 WHERE VehiculoXSucursal.IdSucursal = Sucursal.IdSucursal AND
+	       Vehiculo.Marca = isnull(@Marca,Vehiculo.Marca) AND Vehiculo.Modelo = isnull(@Modelo,Vehiculo.Modelo) AND Vehiculo.Precio between isnull(@PrecioLow,Vehiculo.Precio) and isnull(@PrecioHigh,Vehiculo.Precio)
+		   AND TipoVehiculo.Nombre = isnull(@Tipo,TipoVehiculo.Nombre) AND Combustible.Nombre = isnull(@Combustible,Combustible.Nombre) AND VehiculoXSucursal.IdSucursal = ISNULL(@IdSucursal,VehiculoXSucursal.IdSucursal)
+	 GROUP BY
+	        Sucursal.IdSucursal,Sucursal.Nombre,Vehiculo.IdVehiculo,TipoVehiculo.Nombre,Combustible.Nombre,Vehiculo.Marca,Vehiculo.Modelo,Vehiculo.Precio
+	 ORDER BY 
+	       Vendidos DESC
+END
+GO
+
+
+create or alter  procedure seleccionarVehiculoCercano
+                  @Locacion geometry,
+                  @Tipo varchar(50),
+				  @Combustible varchar(50),
+				  @Marca   varchar(50),
+				  @Modelo  varchar(50),
+				  @PrecioLow   int,
+				  @PrecioHigh  int,
+				  @usado	   bit,
+				  @puertas     int
+AS 
+BEGIN
+
+	 SELECT Top 10 Vehiculo.IdVehiculo,TipoVehiculo.Nombre as Tipo,Combustible.Nombre as Combustible,Vehiculo.Marca,Vehiculo.Modelo,Vehiculo.Precio,Vehiculo.Puertas,Vehiculo.Usado,@Locacion.STDistance(Ubicacion.LocacionExacta) as Distancia
+	 FROM Vehiculo inner join TipoVehiculo on Vehiculo.IdTipoVehiculo = TipoVehiculo.IdTipoVehiculo
+		  inner join Combustible on Vehiculo.IdCombustible = Combustible.IdCombustible inner join VehiculoXSucursal on Vehiculo.IdVehiculo = VehiculoXSucursal.IdVehiculo inner join Sucursal on VehiculoXSucursal.IdSucursal = Sucursal.IdSucursal inner join Ubicacion on Sucursal.IdUbicacion = Ubicacion.IdUbicacion
+	 WHERE Vehiculo.Marca = isnull(@Marca,Vehiculo.Marca) AND Vehiculo.Modelo = isnull(@Modelo,Vehiculo.Modelo) AND Vehiculo.Precio between isnull(@PrecioLow,Vehiculo.Precio) and isnull(@PrecioHigh,Vehiculo.Precio)
+		   AND TipoVehiculo.Nombre = isnull(@Tipo,TipoVehiculo.Nombre) AND Combustible.Nombre = isnull(@Combustible,Combustible.Nombre) and
+		   Vehiculo.Usado = ISNULL(@usado, Vehiculo.Usado) AND Vehiculo.Puertas = isnull(@puertas,Vehiculo.Puertas) AND Vehiculo.IdVehiculo NOT IN (SELECT FacturaXVehiculo.IdVehiculo FROM FacturaXVehiculo )
+	ORDER BY 
+	      Distancia ASC
+END
+GO
+

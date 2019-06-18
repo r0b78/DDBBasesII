@@ -59,13 +59,16 @@ CREATE TABLE Vehiculo(
   Marca                         VARCHAR(50),
   Modelo                        VARCHAR(50),
   Precio                        INT,
+  Usado							BIT,
+  Kilometros					INT DEFAULT 0,
+  Puertas                       INT,
   FOREIGN KEY (IdTipoVehiculo)  REFERENCES TipoVehiculo(IdTipoVehiculo),
   FOREIGN KEY (IdCombustible)   REFERENCES Combustible(IdCombustible)
 )
 
 CREATE TABLE FotoVehiculo(
   IdFotoVehiculo                INT PRIMARY KEY IDENTITY,
-  Foto                          VARBINARY(MAX),
+  Foto                          varchar(MAX),
   NombreFoto                    VARCHAR(50),
   Fecha                         DATE,
   IdVehiculo                    INT,
@@ -117,15 +120,14 @@ CREATE TABLE Empleado(
   Correo                           VARCHAR(50),
   IdSupervisor                     INT,
   IdPuestoEmpleado                 INT,
-  IdSucursal                       INT,
   Cedula                           VARCHAR(50),
   IdUsuario                        INT,
   FOREIGN KEY (IdSupervisor)       REFERENCES Empleado(IdEmpleado),
   FOREIGN KEY (IdPuestoEmpleado)   REFERENCES PuestoEmpleado(IdPuestoEmpleado),
-  FOREIGN KEY (IdSucursal)         REFERENCES Sucursal(IdSucursal),
   FOREIGN KEY (IdUsuario)         REFERENCES Usuario(IdUsuario)
-
 )
+
+
 
 CREATE TABLE Cliente(
   IdCliente INT PRIMARY KEY IDENTITY,
@@ -183,6 +185,21 @@ CREATE TABLE Factura(
   MontoPagado               INT,
   Fecha                     DATE
   FOREIGN KEY (IdDetalleFactura) REFERENCES DetalleFactura(IdDetalleFactura)
+)
+
+CREATE TABLE MontoHacienda(
+ IdMontoHacienda INT PRIMARY KEY IDENTITY,
+ Monto    int,
+ IdFactura int,
+ FOREIGN KEY (IdFactura) REFERENCES Factura(IdFactura)
+)
+
+CREATE TABLE Pago(
+ IdPago     INT PRIMARY KEY IDENTITY,
+ Cantidad   INT,
+ Fecha      DATE,
+ IdFactura  INT,
+ FOREIGN KEY (IdFactura) REFERENCES Factura(IdFactura)
 )     
 
 CREATE TABLE DescuentoXDetalleFactura(
@@ -230,9 +247,9 @@ CREATE TABLE Entrega(
 
 CREATE TABLE Fabrica(
   IdFabrica                 INT PRIMARY KEY IDENTITY,
-  IdSucursal                INT,
+  IdUbicacion               INT,
   Descripcion               VARCHAR(50),
-  FOREIGN KEY (IdSucursal) REFERENCES Sucursal(IdSucursal)
+  FOREIGN KEY (IdUbicacion) REFERENCES Ubicacion(IdUbicacion)
 )
 
 CREATE TABLE Pedido(
@@ -296,8 +313,38 @@ CREATE TABLE VehiculoXSucursal(
 
 
 
+CREATE TABLE EmpleadoXSucursal(
+ IdEmpleadoXSucursal             INT PRIMARY KEY IDENTITY,
+ IdEmpleado                      INT,
+ IdSucursal                      INT,
+ FOREIGN KEY (IdSucursal)         REFERENCES Sucursal(IdSucursal),
+ FOREIGN KEY (IdEmpleado)         REFERENCES Empleado(IdEmpleado)
+)
 
+CREATE TABLE EmpleadoXFabrica(
+ IdEmpleadoXSucursal             INT PRIMARY KEY IDENTITY,
+ IdEmpleado                      INT,
+ IdFabrica                      INT,
+ FOREIGN KEY (IdFabrica)         REFERENCES Fabrica(IdFabrica),
+ FOREIGN KEY (IdEmpleado)         REFERENCES Empleado(IdEmpleado)
+)
 
+CREATE TABLE Consignacion(
+ IdConsignacion               INT PRIMARY KEY IDENTITY,
+ IdCliente                    INT,
+ IdVehiculo                   INT,
+ GananciaCliente               INT,
+ FOREIGN KEY (IdCliente)         REFERENCES Cliente(IdCliente),
+ FOREIGN KEY (IdVehiculo)         REFERENCES Vehiculo(IdVehiculo)
+)
 
+CREATE TABLE Despacho(
+ IdDespacho     INT PRIMARY KEY IDENTITY,
+ Telefono       varchar(50),
+ Extension      varchar(50),
+ Correo         varchar(50),
+ IdFabrica      int,
+ FOREIGN KEY (IdFabrica)         REFERENCES Fabrica(IdFabrica),
+)
 
 
