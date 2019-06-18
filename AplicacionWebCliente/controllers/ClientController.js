@@ -110,7 +110,21 @@ exports.verCompraVehiculo = async(req,res) => {
   });
 }
 
-
+exports.buscarVehiculoCercano = async (req, res) => {
+  const body = req.body;
+  var locacion = (body.locacion !== undefined) ? body.locacion : 'NULL';
+  var tipo = (body.tipo !== undefined) ? body.tipo : 'NULL';
+  var combustible = (body.combustible !== undefined) ? body.combustible : 'NULL';
+  var marca = (body.marca !== undefined) ? body.marca : 'NULL';
+  var modelo = (body.modelo !== undefined) ? body.modelo : 'NULL';
+  var precioLow = (body.precioLow !== undefined) ? body.precioLow : 'NULL';
+  var precioHigh = (body.precioHigh !== undefined) ? body.precioHigh : 'NULL';
+  var usado = (body.usado !== undefined) ? body.usado : 'NULL';
+  var puertas = (body.puertas !== undefined) ? body.puertas : 'NULL';
+  const pool = await poolPromise;
+  const query = await pool.request().query('seleccionarVehiculoCercano ' + locacion + ',' + tipo + ',' + combustible + ',' + marca + ',' + modelo + ',' + precioLow + ',' + precioHigh + ',' + usado + ',' + puertas);
+  //TODO
+};
 
 exports.comprarVehiculo = async (req,res) => {
   var IDVehiculo = req.params.id

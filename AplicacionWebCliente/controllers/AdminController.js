@@ -261,7 +261,7 @@ exports.selecionarExtra = async (req, res) => {
   var descripcion = (body.descripcion !== undefined) ? body.descripcion : 'NULL';
   var precio = (body.precio !== undefined) ? body.precio : 'NULL';
   const pool = await poolPromise;
-  const query = await pool.request.query('modificarExtra ' + nombre + ',' + descripcion + ',' + precio);
+  const query = await pool.request.query('seleccionarExtra ' + nombre + ',' + descripcion + ',' + precio);
   //TODO
 };
 

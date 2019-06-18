@@ -66,3 +66,46 @@ exports.realizarPago = async (req, res) => {
     //TODO
   }
 };
+
+//CRUD Clientes
+
+exports.crearCliente = async (req, res) => {
+  const body = req.body;
+  if(body.fecha === undefined || body.password === undefined || body.cedula === undefined || body.nombre === undefined ||  body.apellido === undefined || body.telefono === undefined || body.correo === undefined || body.locacion === undefined || body.descripcion === undefined || body.provincia === undefined) {
+    return res.json({status : -1, message : "Informacion incompleta"});
+  }
+  else {
+    const pool = await poolPromise;
+    const query = await pool.request().query('InsertarCliente ' + body.fecha + ',' + body.password + ',' + body.cedula + ',' + body.nombre + ',' + body.apellido + ',' + body.telefono + ',' + body.correo + ',' + body.locacion + ',' + body.descripcion + ',' + body.provincia);
+    //TODO
+  }
+};
+
+exports.modificarCliente = async (req, res) => {
+  const body = req.body;
+  if(body.idCliente === undefined) {
+    return res.json({status : -1, message : "Informacion incompleta"});
+  }
+  else {
+    var nombre = (body.nombre !== undefined) ? body.nombre : 'NULL';
+    var apellido = (body.apellido !== undefined) ? body.apellido : 'NULL';
+    var telefono = (body.telefono !== undefined) ? body.telefono : 'NULL';
+    var correo = (body.correo !== undefined) ? body.correo : 'NULL';
+    const pool = await poolPromise;
+    const query = await pool.request().query('ActualizarCliente ' + body.idCliente + ',' + nombre + ',' + apellido + ',' + telefono + ',' + correo);
+    //TODO
+  }
+};
+
+exports.seleccionarClientes = async (req, res) => {
+  const body = req.body;
+  var nombre = (body.nombre !== undefined) ? body.nombre : 'NULL';
+  var apellido = (body.apellido !== undefined) ? body.apellido : 'NULL';
+  var telefono = (body.telefono !== undefined) ? body.telefono : 'NULL';
+  var correo = (body.correo !== undefined) ? body.correo : 'NULL';
+  var provincia = (body.provincia !== undefined) ? body.provincia : 'NULL';
+  var pais = (body.pais !== undefined) ? body.pais : 'NULL';
+  const pool = await poolPromise;
+  const query = await pool.request().query('SeleccionarClientes ' + nombre + ',' + apellido + ',' + telefono + ',' + correo + ',' + provincia + ',' + pais);
+  //TODO
+};
