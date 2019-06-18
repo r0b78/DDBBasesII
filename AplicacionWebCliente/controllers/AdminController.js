@@ -51,14 +51,14 @@ exports.verSucursales = async (req, res) => {
   const pool = await poolPromise;
   console.log(body)
   console.log(nombre + ',' + descripcion + ',' + provincia + ',' + pais)
-  const query = await pool.request().query('seleccionarSucursal ' 
-                                + nombre + ',' 
-                                + descripcion + ',' 
-                                + provincia + ',' 
+  const query = await pool.request().query('seleccionarSucursal '
+                                + nombre + ','
+                                + descripcion + ','
+                                + provincia + ','
                                 + pais);
   const results = query.recordset
   const html = t.transformDataWith(results)
-  res.render('../views/dashboardAdmin.ejs',{results:html});  
+  res.render('../views/dashboardAdmin.ejs',{results:html});
 }
 
 exports.vistaModificarSucursal = async(req,res) => {
@@ -97,14 +97,14 @@ exports.vistaModificarFabrica = async(req,res) => {
 exports.crearFabrica = async (req, res) => {
   const body = req.body;
   if(body.descripcion === undefined ||
-     body.provincia === undefined || 
-     body.locacion === undefined || 
+     body.provincia === undefined ||
+     body.locacion === undefined ||
      body.senas === undefined) {
     return res.json({status : -1, message : "Falta informacion"});
   }
   else {
     const pool = await poolPromise;
-    var location = "'POINT("+body.locacion+")'"  
+    var location = "'POINT("+body.locacion+")'"
     const query = await pool.request().query('insertarUbicacion ' + body.senas + ',' + body.locacion + ',' + body.idProvincia);
     var idUbicacion = query.recordset[0].idUbicacion;
     const poolFabrica = await poolPromise;
@@ -139,7 +139,7 @@ exports.seleccionarFabrica = async (req, res) => {
   const query = await pool.request().query('SeleccionarFabrica ' + idFabrica + ',' + descripcion + ',' + nombreProvincia + ',' + nombrePais + ',' + idUbicacion);
   const results = query.recordset
   const html = t.transformDataWith(results)
-  res.render('../views/dashboardAdmin.ejs',{results:html});  
+  res.render('../views/dashboardAdmin.ejs',{results:html});
 
 };
 
@@ -157,12 +157,12 @@ exports.vistaVerVehiculo = (req,res) => {
 
 exports.crearVehiculo = async (req, res) => {
   const body = req.body;
-  if(body.tipo === undefined || 
-    body.combustible === undefined || 
-    body.marca === undefined || 
+  if(body.tipo === undefined ||
+    body.combustible === undefined ||
+    body.marca === undefined ||
     body.modelo === undefined ||
-     body.precio === undefined || 
-     body.usado === undefined || 
+     body.precio === undefined ||
+     body.usado === undefined ||
      body.puertas === undefined) {
     return res.json({status : -1, message : "Faltan parametros"});
   }
@@ -172,15 +172,15 @@ exports.crearVehiculo = async (req, res) => {
       bit= 'true'
     }
     console.log(body)
-  
+
     const pool = await poolPromise;
-    const query = await pool.request().query('insertarVehiculo ' 
-        + body.tipo + ',' 
-        + body.combustible + ',' 
-        + body.marca + ',' 
-        + body.modelo + ',' 
-        + body.precio + ',' 
-        + bit + ',' 
+    const query = await pool.request().query('insertarVehiculo '
+        + body.tipo + ','
+        + body.combustible + ','
+        + body.marca + ','
+        + body.modelo + ','
+        + body.precio + ','
+        + bit + ','
         + body.puertas);
         console.log(query.recordset.length)
       if(query.recordset.length==1){
@@ -188,7 +188,7 @@ exports.crearVehiculo = async (req, res) => {
       }
       else {
         res.render('../views/dashboardAdmin',{ listo: 'Transaccion Existosa' });
- 
+
       }
 
   }
@@ -226,7 +226,7 @@ exports.verVehiculos = async (req, res) => {
   const query = await pool.request().query('seleccionarVehiculo ' + tipo + ',' + combustible + ',' + marca + ',' + modelo + ',' + precioLow + ',' + precioHigh + ',' + usado + ',' + puertas);
   const results = query.recordset
   const html = t.transformDataWith(results)
-  res.render('../views/dashboardAdmin.ejs',{results:html});  
+  res.render('../views/dashboardAdmin.ejs',{results:html});
 
 };
 
@@ -461,14 +461,14 @@ exports.seleccionarComisiones = async (req, res) => {
 
 exports.crearEmpleadoSucursal = async (req, res) => {
   const body = req.body;
-  if(body.nombre === undefined 
-    || body.apellido === undefined 
-    || body.telefono === undefined 
-    || body.correo === undefined 
-    || body.supervisor === undefined 
-    || body.puesto === undefined 
-    || body.idSucursal === undefined 
-    || body.cedula === undefined 
+  if(body.nombre === undefined
+    || body.apellido === undefined
+    || body.telefono === undefined
+    || body.correo === undefined
+    || body.supervisor === undefined
+    || body.puesto === undefined
+    || body.idSucursal === undefined
+    || body.cedula === undefined
     || body.password === undefined) {
     res.json({status : -1, message : "Faltan parametros"});
     return
@@ -482,7 +482,7 @@ exports.crearEmpleadoSucursal = async (req, res) => {
 
 exports.crearEmpleadoFabrica = async (req, res) => {
   const body = req.body;
-  if(body.nombre === undefined || body.apellido === undefined || 
+  if(body.nombre === undefined || body.apellido === undefined ||
     body.telefono === undefined || body.correo === undefined ||
      body.supervisor === undefined || body.puesto === undefined ||
       body.idFabrica === undefined || body.cedula === undefined ||
@@ -509,7 +509,7 @@ exports.modificarEmpleado = async (req, res) => {
     var supervisor = (body.supervisor !== undefined) ? body.supervisor : 'NULL';
     var puesto = (body.puesto !== undefined) ? body.puesto : 'NULL';
     const pool = await poolPromise;
-    const query = await pool.request().query('modificarEmpleado ' + nombre + ',' + apellido + ',' + 
+    const query = await pool.request().query('modificarEmpleado ' + nombre + ',' + apellido + ',' +
                 telefono + ',' + correo + ',' + supervisor + ',' + puesto + ','+ body.cedula);
     //TODO
   }
